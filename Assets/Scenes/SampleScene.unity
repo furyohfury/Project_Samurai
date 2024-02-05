@@ -254,6 +254,10 @@ PrefabInstance:
       propertyPath: m_Avatar
       value: 
       objectReference: {fileID: 9000000, guid: 4c89d8affd612674b9c238ff8651667e, type: 3}
+    - target: {fileID: 9500000, guid: 5ae02fce3fd08f140888c4d8f1f2cfc3, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 2eb1dc785c569284dacf694e888b2aae, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5ae02fce3fd08f140888c4d8f1f2cfc3, type: 3}
 --- !u!4 &394388550 stripped
@@ -1160,7 +1164,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   m_LocalRotation: {x: 0.5426614, y: 0, z: 0, w: 0.8399515}
-  m_LocalPosition: {x: 0, y: 10, z: -10.8}
+  m_LocalPosition: {x: 2.3, y: 7.59, z: -9.55}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1915,8 +1919,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   UnitStats:
-    HP: 0
-    MoveSpeed: 0
+    HP: 2
+    MoveSpeed: 5
   TestShit: {x: 0, y: 0, z: 0}
 --- !u!114 &1884649473
 MonoBehaviour:

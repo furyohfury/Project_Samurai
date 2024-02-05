@@ -20,14 +20,12 @@ namespace Samurai
         {
             base.Awake();
             _input = GetComponent<PlayerInput>();
-
-            UnitStats = new UnitStatsStruct() { HP = 5, MoveSpeed = 2 };
         }
 
         private void Start()
         {
             if (_camera == null) _camera = Camera.main;
-            _cameraOffset = Vector3.Distance(transform.position, _camera.transform.position);
+            
         }
         private void Update()
         {
@@ -36,10 +34,12 @@ namespace Samurai
 
 
             // Facing cursor
+            _cameraOffset = Vector3.Distance(transform.position, _camera.transform.position); //todo fix. Must be constant Y
             Vector3 cursorPosition = new Vector3(Mouse.current.position.ReadValue().x, Mouse.current.position.ReadValue().y, _cameraOffset);
             cursorPosition = _camera.ScreenToWorldPoint(cursorPosition);
+            cursorPosition = new Vector3(cursorPosition.x, this.transform.position.y, cursorPosition.z);
             TestShit = cursorPosition;
-            transform.LookAt(new Vector3(cursorPosition.x, this.transform.position.y, cursorPosition.z));
+            transform.LookAt(cursorPosition);
         }
 
         #endregion
