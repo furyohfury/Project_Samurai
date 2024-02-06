@@ -13,7 +13,8 @@ namespace Samurai
             return UnitStats;
         }
 
-
+        [SerializeField]
+        protected ColorDictionary MaterialColorsDict;
 
         #region Unity_Methods
         protected virtual void Awake()

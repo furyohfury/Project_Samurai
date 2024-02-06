@@ -13,7 +13,7 @@ namespace Samurai
         protected Animator UnitAnimator;
 
         //TestShit
-        public Vector2 TestShit;
+        public Vector3 TestShit;
         protected virtual void Awake()
         {
             UnitAnimator = GetComponent<Animator>();
@@ -27,9 +27,10 @@ namespace Samurai
             if (MoveDirection != Vector3.zero)
             {
                 UnitAnimator.SetBool("Moving", true);
-                UnitAnimator.SetFloat("FMove", MoveDirection.x);
-                UnitAnimator.SetFloat("SMove", MoveDirection.y);
-                TestShit = MoveDirection;
+                Vector3 animVector = transform.InverseTransformVector(MoveDirection);
+                UnitAnimator.SetFloat("FMove", animVector.z);
+                UnitAnimator.SetFloat("SMove", animVector.x);
+                TestShit = animVector;
             }
             else UnitAnimator.SetBool("Moving", false);
 

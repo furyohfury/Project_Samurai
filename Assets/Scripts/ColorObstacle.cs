@@ -2,7 +2,7 @@ using UnityEngine;
 using Zenject;
 namespace Samurai
 {
-    public class ColorObstacle: ColorObject, IChangeColor
+    public class ColorObstacle: ColorObject
     {
         [Inject]
         private Player Player; //todo inj
@@ -18,7 +18,7 @@ namespace Samurai
         {
             
         }
-        public void ChangeColor(PhaseColor color){}
+        public override void ChangeColor(PhaseColor color){}
         
     }
 }

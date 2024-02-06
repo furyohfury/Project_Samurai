@@ -3,10 +3,15 @@ using UnityEngine;
 
 namespace Samurai
 {
-    public class ColorObject : MonoBehaviour
+    public abstract class ColorObject : MonoBehaviour
     {
 
         private PhaseColor _currentColor;
         public PhaseColor CurrentColor { get => _currentColor; protected set => _currentColor = value; }
+
+        [SerializeField]
+        protected MeshRenderer MeshForColorChange;
+
+        public abstract void ChangeColor(PhaseColor color);
     }
 }

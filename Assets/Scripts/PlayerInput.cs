@@ -30,7 +30,7 @@ namespace Samurai
         {
             // Moving
             Vector2 movement = _playerControls.PlayerMap.Movement.ReadValue<Vector2>();
-            MoveDirection = movement;
+            MoveDirection = new Vector3 (movement.x, 0, movement.y);
             base.Update();
         }
         private void OnDisable()

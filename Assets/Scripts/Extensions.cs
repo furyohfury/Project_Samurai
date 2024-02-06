@@ -1,3 +1,4 @@
+using RotaryHeart.Lib.SerializableDictionary;
 using UnityEngine;
 namespace Samurai
 {
@@ -5,9 +6,12 @@ namespace Samurai
 
     public delegate void ChangeColorHandle(PhaseColor color);
 
-    public interface IChangeColor
+    /* public interface IChangeColor
     {
         void ChangeColor();
         void ChangeColor(PhaseColor color);
-    }
+    } */
+
+    [System.Serializable]
+    public class ColorDictionary : SerializableDictionaryBase<PhaseColor, Material> { }
 }

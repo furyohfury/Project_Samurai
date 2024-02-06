@@ -5,7 +5,7 @@ using static UnityEngine.InputSystem.InputAction;
 namespace Samurai
 {
     [RequireComponent(typeof(Rigidbody), typeof(PlayerInput))]
-    public class Player : Unit, IChangeColor
+    public class Player : Unit
     {
         public Vector3 TestShit;
 
@@ -14,6 +14,8 @@ namespace Samurai
         private float _cameraOffset;
 
         private PlayerInput _input;
+
+        
 
         #region Unity_Methods
         protected override void Awake()
@@ -30,7 +32,7 @@ namespace Samurai
         private void Update()
         {
 
-            transform.position += Time.deltaTime * UnitStats.MoveSpeed * new Vector3(_input.MoveDirection.x, 0, _input.MoveDirection.y);
+            transform.position += Time.deltaTime * UnitStats.MoveSpeed * new Vector3(_input.MoveDirection.x, 0, _input.MoveDirection.z);
 
 
             // Facing cursor
@@ -43,22 +45,16 @@ namespace Samurai
         }
 
         #endregion
-        public void ChangeColor()
-        {
-            if (CurrentColor == PhaseColor.Red)
-            {
-                CurrentColor = PhaseColor.Blue;
-            }
-            else if (CurrentColor == PhaseColor.Blue)
-            {
-                CurrentColor = PhaseColor.Red;
-            }
-            OnPlayerSwapColor?.Invoke();
-        }
-        public void ChangeColor(PhaseColor color)
+        public override void ChangeColor(PhaseColor color)
         {
             if (color == PhaseColor.Green) CurrentColor = PhaseColor.Green;
         }
+
+        public override void SwapRedBlue()
+        {
+            
+        }
+
         public event SimpleHandle OnPlayerSwapColor;
     }
 }

@@ -1,14 +1,9 @@
 using UnityEngine;
 namespace Samurai
 {
-    public abstract class Enemy : Unit, IChangeColor
+    public abstract class Enemy : Unit
     {
         public void ChangeColor()
-        {
-            
-        }
-
-        public void ChangeColor(PhaseColor color)
         {
             
         }

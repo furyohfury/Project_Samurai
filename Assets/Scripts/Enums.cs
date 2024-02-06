@@ -5,6 +5,6 @@ namespace Samurai
         Blue = 0,
         Red = 1,
         Green = 10,
-        None = 500
+        Default = 500
     }
 }
