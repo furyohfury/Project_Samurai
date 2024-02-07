@@ -9,9 +9,10 @@ namespace Samurai
     [RequireComponent(typeof(Player))]
     public class PlayerInput : UnitInput
     {
-        [Inject, SerializeField] //todo ostavit tolko zenject
+        [Inject]
         private Player _player;
         private PlayerControls _playerControls;
+        #region Unity_methods
         protected override void Awake()
         {
             base.Awake();
@@ -25,18 +26,31 @@ namespace Samurai
         {
             _playerControls.Enable();
             _playerControls.PlayerMap.Shoot.performed += UnitShoot;
+            _playerControls.PlayerMap.Shoot.performed += _player.PlayerShoot;
+            _playerControls.PlayerMap.BlueColor.performed += (cb) => _player.ChangeColor(PhaseColor.Blue);
+            _playerControls.PlayerMap.RedColor.performed += (cb) => _player.ChangeColor(PhaseColor.Red);
+
         }
         protected override void Update()
         {
             // Moving
             Vector2 movement = _playerControls.PlayerMap.Movement.ReadValue<Vector2>();
-            MoveDirection = new Vector3 (movement.x, 0, movement.y);
+            MoveDirection = new Vector3(movement.x, 0, movement.y);
             base.Update();
         }
         private void OnDisable()
         {
             _playerControls.PlayerMap.Shoot.performed -= UnitShoot;
             _playerControls.Disable();
+        }
+        #endregion
+        private void OnDefGunShootAnimationStarted_UnityEvent()
+        {
+            CanShoot = false;
+        }
+        private void OnDefGunShootAnimationEnded_UnityEvent()
+        {
+            CanShoot = true;
         }
     }
 }

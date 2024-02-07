@@ -1,11 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Zenject.SpaceFighter;
 
 namespace Samurai
 {
-    [RequireComponent(typeof(CharacterController, UnitInput))]
-    public abstract class Unit: ColorObject
+    [RequireComponent(typeof(CharacterController))]
+    public abstract class Unit : ColorObject
     {
         [SerializeField]
         protected UnitStatsStruct UnitStats;
@@ -13,21 +14,64 @@ namespace Samurai
         {
             return UnitStats;
         }
-        
-        protected CharacterController CharController;
 
+        protected CharacterController CharController;
         protected UnitInput UnitInput;
+        
+
+
         #region Unity_Methods
         protected virtual void Awake()
         {
-            CharController = GetComponent<CharacterController>();
-            UnitInput = GetComponent<UnitUnpit>();
+            Bindings();
+        }
+        protected override void Start()
+        {
+            base.Start();
         }
         protected virtual void Update()
         {
-            // Walking
-            CharController.SimpleMove(UnitStats.MoveSpeed * new Vector3(UnitInput.MoveDirection.x, 0, UnitInput.MoveDirection.z));
+            Movement();
+
+        }
+        protected void OnTriggerEnter(Collider other)
+        {
+            GetDamaged(other);
         }
         #endregion
+        protected void Bindings()
+        {
+            CharController = GetComponent<CharacterController>();
+            UnitInput = GetComponent<UnitInput>();
+        }
+        protected void Movement()
+        {
+            // Walking
+            if (UnitInput.MoveDirection != Vector3.zero)
+            {
+                if (CharController.isGrounded) CharController.Move(UnitStats.MoveSpeed * Time.deltaTime * new Vector3(UnitInput.MoveDirection.x, 0, UnitInput.MoveDirection.z));
+                else CharController.Move(UnitStats.MoveSpeed * Time.deltaTime * new Vector3(UnitInput.MoveDirection.x, -9.8f, UnitInput.MoveDirection.z));
+            }
+        }
+        public void GetDamaged(Collider other)
+        {
+            if (other.TryGetComponent(out Projectile proj))
+            {
+                // if ((proj.Owner as Player != null && this as Enemy != null) || (proj.Owner as Enemy != null && this as Player != null))
+                if ((proj.CurrentColor != this.CurrentColor) && (this.GetType() != proj.Owner.GetType()) && (this as Enemy == null || proj.Owner as Enemy == null))
+                {
+                    UnitStats.HP -= proj.Damage;
+                    if (UnitStats.HP <= 0)
+                    {
+                        Die();
+                        Destroy(gameObject);
+                    }
+                }
+            }
+        }
+        protected void Die()
+        {
+            Debug.Log($"{gameObject.name} died");
+        }
     }
 }

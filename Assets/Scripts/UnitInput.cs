@@ -11,9 +11,13 @@ namespace Samurai
         public ref Vector3 MoveDirection => ref _movement;
 
         protected Animator UnitAnimator;
+        public bool CanShoot { get; protected set; } = true;
 
         //TestShit
         public Vector3 TestShit;
+
+
+        #region Unity_Methods
         protected virtual void Awake()
         {
             UnitAnimator = GetComponent<Animator>();
@@ -35,9 +39,10 @@ namespace Samurai
             else UnitAnimator.SetBool("Moving", false);
 
         }
-        protected virtual void UnitShoot(CallbackContext context)
+        #endregion
+        protected virtual void UnitShoot(CallbackContext _)
         {
-            UnitAnimator.SetTrigger("Shoot");
+            if (CanShoot) UnitAnimator.SetTrigger("Shoot");
         }
 
     }

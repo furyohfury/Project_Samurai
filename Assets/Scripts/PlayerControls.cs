@@ -48,18 +48,18 @@ namespace Samurai
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""RedColor"",
+                    ""name"": ""BlueColor"",
                     ""type"": ""Button"",
-                    ""id"": ""9e806afb-cb39-432d-89d1-a00d20cd9a50"",
+                    ""id"": ""cff0ed7f-2416-4019-9add-c737a978e00d"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""BlueColor"",
+                    ""name"": ""RedColor"",
                     ""type"": ""Button"",
-                    ""id"": ""cff0ed7f-2416-4019-9add-c737a978e00d"",
+                    ""id"": ""9e806afb-cb39-432d-89d1-a00d20cd9a50"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -136,7 +136,7 @@ namespace Samurai
                 {
                     ""name"": """",
                     ""id"": ""7a2c94d6-f969-4c50-b573-b31a81abcbfb"",
-                    ""path"": ""<Keyboard>/q"",
+                    ""path"": ""<Keyboard>/e"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -147,7 +147,7 @@ namespace Samurai
                 {
                     ""name"": """",
                     ""id"": ""b3888261-6124-454c-80e4-92117521c811"",
-                    ""path"": ""<Keyboard>/e"",
+                    ""path"": ""<Keyboard>/q"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -164,8 +164,8 @@ namespace Samurai
             m_PlayerMap = asset.FindActionMap("PlayerMap", throwIfNotFound: true);
             m_PlayerMap_Movement = m_PlayerMap.FindAction("Movement", throwIfNotFound: true);
             m_PlayerMap_Shoot = m_PlayerMap.FindAction("Shoot", throwIfNotFound: true);
-            m_PlayerMap_RedColor = m_PlayerMap.FindAction("RedColor", throwIfNotFound: true);
             m_PlayerMap_BlueColor = m_PlayerMap.FindAction("BlueColor", throwIfNotFound: true);
+            m_PlayerMap_RedColor = m_PlayerMap.FindAction("RedColor", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -229,16 +229,16 @@ namespace Samurai
         private List<IPlayerMapActions> m_PlayerMapActionsCallbackInterfaces = new List<IPlayerMapActions>();
         private readonly InputAction m_PlayerMap_Movement;
         private readonly InputAction m_PlayerMap_Shoot;
-        private readonly InputAction m_PlayerMap_RedColor;
         private readonly InputAction m_PlayerMap_BlueColor;
+        private readonly InputAction m_PlayerMap_RedColor;
         public struct PlayerMapActions
         {
             private @PlayerControls m_Wrapper;
             public PlayerMapActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
             public InputAction @Movement => m_Wrapper.m_PlayerMap_Movement;
             public InputAction @Shoot => m_Wrapper.m_PlayerMap_Shoot;
-            public InputAction @RedColor => m_Wrapper.m_PlayerMap_RedColor;
             public InputAction @BlueColor => m_Wrapper.m_PlayerMap_BlueColor;
+            public InputAction @RedColor => m_Wrapper.m_PlayerMap_RedColor;
             public InputActionMap Get() { return m_Wrapper.m_PlayerMap; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -254,12 +254,12 @@ namespace Samurai
                 @Shoot.started += instance.OnShoot;
                 @Shoot.performed += instance.OnShoot;
                 @Shoot.canceled += instance.OnShoot;
-                @RedColor.started += instance.OnRedColor;
-                @RedColor.performed += instance.OnRedColor;
-                @RedColor.canceled += instance.OnRedColor;
                 @BlueColor.started += instance.OnBlueColor;
                 @BlueColor.performed += instance.OnBlueColor;
                 @BlueColor.canceled += instance.OnBlueColor;
+                @RedColor.started += instance.OnRedColor;
+                @RedColor.performed += instance.OnRedColor;
+                @RedColor.canceled += instance.OnRedColor;
             }
 
             private void UnregisterCallbacks(IPlayerMapActions instance)
@@ -270,12 +270,12 @@ namespace Samurai
                 @Shoot.started -= instance.OnShoot;
                 @Shoot.performed -= instance.OnShoot;
                 @Shoot.canceled -= instance.OnShoot;
-                @RedColor.started -= instance.OnRedColor;
-                @RedColor.performed -= instance.OnRedColor;
-                @RedColor.canceled -= instance.OnRedColor;
                 @BlueColor.started -= instance.OnBlueColor;
                 @BlueColor.performed -= instance.OnBlueColor;
                 @BlueColor.canceled -= instance.OnBlueColor;
+                @RedColor.started -= instance.OnRedColor;
+                @RedColor.performed -= instance.OnRedColor;
+                @RedColor.canceled -= instance.OnRedColor;
             }
 
             public void RemoveCallbacks(IPlayerMapActions instance)
@@ -297,8 +297,8 @@ namespace Samurai
         {
             void OnMovement(InputAction.CallbackContext context);
             void OnShoot(InputAction.CallbackContext context);
-            void OnRedColor(InputAction.CallbackContext context);
             void OnBlueColor(InputAction.CallbackContext context);
+            void OnRedColor(InputAction.CallbackContext context);
         }
     }
 }

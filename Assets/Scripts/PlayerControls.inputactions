@@ -24,18 +24,18 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "RedColor",
+                    "name": "BlueColor",
                     "type": "Button",
-                    "id": "9e806afb-cb39-432d-89d1-a00d20cd9a50",
+                    "id": "cff0ed7f-2416-4019-9add-c737a978e00d",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
                 },
                 {
-                    "name": "BlueColor",
+                    "name": "RedColor",
                     "type": "Button",
-                    "id": "cff0ed7f-2416-4019-9add-c737a978e00d",
+                    "id": "9e806afb-cb39-432d-89d1-a00d20cd9a50",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -112,7 +112,7 @@
                 {
                     "name": "",
                     "id": "7a2c94d6-f969-4c50-b573-b31a81abcbfb",
-                    "path": "<Keyboard>/q",
+                    "path": "<Keyboard>/e",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -123,7 +123,7 @@
                 {
                     "name": "",
                     "id": "b3888261-6124-454c-80e4-92117521c811",
-                    "path": "<Keyboard>/e",
+                    "path": "<Keyboard>/q",
                     "interactions": "",
                     "processors": "",
                     "groups": "",

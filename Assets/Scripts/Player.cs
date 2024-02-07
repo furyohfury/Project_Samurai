@@ -1,6 +1,9 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Pool;
 using UnityEngine.Windows;
+using Zenject;
 using static UnityEngine.InputSystem.InputAction;
 namespace Samurai
 {
@@ -15,25 +18,31 @@ namespace Samurai
 
         private PlayerInput _input;
 
-        
+        [SerializeField]
+        private PlayerWeapon _weapon;
+        public PlayerWeapon Weapon
+        {
+            get => _weapon;
+            set => _weapon = value;
+        }
+
+        [Inject]
+        private DefaultPlayerGunPool _defaultGunPool;
 
         #region Unity_Methods
         protected override void Awake()
         {
-            
+            base.Awake();
             _input = GetComponent<PlayerInput>();
-            
         }
-
-        private void Start()
+        protected override void Start()
         {
+            base.Start();
             if (_camera == null) _camera = Camera.main;
-            
         }
-        private void Update()
+        protected override void Update()
         {
             base.Update();
-
 
             // Facing cursor
             _cameraOffset = Vector3.Distance(transform.position, _camera.transform.position); //todo fix. Must be constant Y
@@ -47,11 +56,23 @@ namespace Samurai
         #endregion
         public override void ChangeColor(PhaseColor color)
         {
-            base.ChangeColor();
+            base.ChangeColor(color);
             // Notification to obstacles to change color too
             OnPlayerSwapColor?.Invoke(color);
         }
 
-        public event ChangeColorHandle OnPlayerSwapColor(PhaseColor color);
+        public void PlayerShoot(CallbackContext _)
+        {
+            if (_input.CanShoot && Weapon == PlayerWeapon.DefaultPistol)
+            {
+                Projectile proj = _defaultGunPool.Pool.Get();
+                proj.SetProjectileOnShoot(this, UnitStats.MoveSpeed, UnitStats.Damage);
+                proj.ChangeColor(CurrentColor);
+                proj.gameObject.transform.position = transform.position + transform.forward * 0.5f + transform.up * 0.7f;
+                proj.transform.rotation = this.transform.rotation;
+            }
+        }
+
+        public event ChangeColorHandle OnPlayerSwapColor;
     }
 }

@@ -7,4 +7,10 @@ namespace Samurai
         Green = 10,
         Default = 500
     }
+    public enum PlayerWeapon
+    {
+        Shotgun = 0,
+        SniperRifle = 1,
+        DefaultPistol = 10
+    }
 }
