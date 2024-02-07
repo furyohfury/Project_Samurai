@@ -13,5 +13,5 @@ namespace Samurai
     } */
 
     [System.Serializable]
-    public class ColorDictionary : SerializableDictionaryBase<PhaseColor, Material> { }
+    public class MaterialColorDictionary : SerializableDictionaryBase<PhaseColor, Material> { }
 }

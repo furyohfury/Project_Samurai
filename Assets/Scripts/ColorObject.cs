@@ -10,8 +10,18 @@ namespace Samurai
         public PhaseColor CurrentColor { get => _currentColor; protected set => _currentColor = value; }
 
         [SerializeField]
-        protected MeshRenderer MeshForColorChange;
+        protected MeshRenderer[] MeshForColorChange;
 
-        public abstract void ChangeColor(PhaseColor color);
+        [SerializeField]
+        protected MaterialColorDictionary MaterialColorsDict<PhaseColor, Material>;
+
+        public virtual void ChangeColor(PhaseColor color)
+        {
+            CurrentColor = color;
+            foreach (var mesh in MeshForColorChange)
+            {
+                mesh.material = MaterialColorDictionary[color];
+            }
+        }
     }
 }

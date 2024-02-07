@@ -4,7 +4,7 @@ using UnityEngine.Windows;
 using static UnityEngine.InputSystem.InputAction;
 namespace Samurai
 {
-    [RequireComponent(typeof(Rigidbody), typeof(PlayerInput))]
+    [RequireComponent(typeof(PlayerInput))]
     public class Player : Unit
     {
         public Vector3 TestShit;
@@ -20,8 +20,9 @@ namespace Samurai
         #region Unity_Methods
         protected override void Awake()
         {
-            base.Awake();
+            
             _input = GetComponent<PlayerInput>();
+            
         }
 
         private void Start()
@@ -31,8 +32,7 @@ namespace Samurai
         }
         private void Update()
         {
-
-            transform.position += Time.deltaTime * UnitStats.MoveSpeed * new Vector3(_input.MoveDirection.x, 0, _input.MoveDirection.z);
+            base.Update();
 
 
             // Facing cursor
@@ -47,14 +47,11 @@ namespace Samurai
         #endregion
         public override void ChangeColor(PhaseColor color)
         {
-            if (color == PhaseColor.Green) CurrentColor = PhaseColor.Green;
+            base.ChangeColor();
+            // Notification to obstacles to change color too
+            OnPlayerSwapColor?.Invoke(color);
         }
 
-        public override void SwapRedBlue()
-        {
-            
-        }
-
-        public event SimpleHandle OnPlayerSwapColor;
+        public event ChangeColorHandle OnPlayerSwapColor(PhaseColor color);
     }
 }

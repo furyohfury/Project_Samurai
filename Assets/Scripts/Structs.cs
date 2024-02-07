@@ -5,5 +5,6 @@ namespace Samurai
     {
         public int HP;
         public float MoveSpeed;
+        public int Damage;
     }
 }
