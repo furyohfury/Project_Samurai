@@ -16,7 +16,7 @@ namespace Samurai
         private Camera _camera;
         private float _cameraOffset;
 
-        private PlayerInput _input;
+        private UnitInput UnitInput;
 
         [SerializeField]
         private PlayerWeapon _weapon;
@@ -28,12 +28,12 @@ namespace Samurai
 
         [Inject]
         private DefaultPlayerGunPool _defaultGunPool;
-
+     
         #region Unity_Methods
         protected override void Awake()
         {
             base.Awake();
-            _input = GetComponent<PlayerInput>();
+            UnitInput = GetComponent<PlayerInput>();
         }
         protected override void Start()
         {
@@ -61,9 +61,10 @@ namespace Samurai
             OnPlayerSwapColor?.Invoke(color);
         }
 
-        public void PlayerShoot(CallbackContext _)
+        public override void UnitShoot(CallbackContext _)
         {
-            if (_input.CanShoot && Weapon == PlayerWeapon.DefaultPistol)
+            base.UnitShoot();
+            if (UnitInput.CanShoot && Weapon == PlayerWeapon.DefaultPistol)
             {
                 Projectile proj = _defaultGunPool.Pool.Get();
                 proj.SetProjectileOnShoot(this, UnitStats.MoveSpeed, UnitStats.Damage);
@@ -72,7 +73,12 @@ namespace Samurai
                 proj.transform.rotation = this.transform.rotation;
             }
         }
-
+        protected override void Die()
+        {            
+            UnitInput.enabled = false;
+            Time.timeScale = 0;
+            GameObject gameOverScreen = Resources.Load<GameObject>("UI/GameOverScreen");
+        }      
         public event ChangeColorHandle OnPlayerSwapColor;
     }
 }

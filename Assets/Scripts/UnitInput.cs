@@ -11,7 +11,10 @@ namespace Samurai
         public ref Vector3 MoveDirection => ref _movement;
 
         protected Animator UnitAnimator;
+        
         public bool CanShoot { get; protected set; } = true;
+
+        protected Unit Unit;
 
         //TestShit
         public Vector3 TestShit;
@@ -21,6 +24,7 @@ namespace Samurai
         protected virtual void Awake()
         {
             UnitAnimator = GetComponent<Animator>();
+            Unit = GetComponent<Unit>();
         }
         private void Start()
         {
@@ -40,10 +44,23 @@ namespace Samurai
 
         }
         #endregion
-        protected virtual void UnitShoot(CallbackContext _)
+        protected virtual void UnitShootAnimation(CallbackContext _)
         {
-            if (CanShoot) UnitAnimator.SetTrigger("Shoot");
+            if (CanShoot) 
+            {
+                UnitAnimator.SetTrigger("Shoot");
+                Unit.UnitShoot();
+            }            
         }
+        public virtual void UnitInputDie()
+        {
+            UnitAnimator.SetTrigger("Die");
+        }
+        public void UnitDieAnimationEnded_UnityEvent() //bind w/ death animation
+        {
+            Unit.Die();
+        }
+
 
     }
 }

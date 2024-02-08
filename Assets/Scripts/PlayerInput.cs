@@ -25,8 +25,7 @@ namespace Samurai
         private void OnEnable()
         {
             _playerControls.Enable();
-            _playerControls.PlayerMap.Shoot.performed += UnitShoot;
-            _playerControls.PlayerMap.Shoot.performed += _player.PlayerShoot;
+            _playerControls.PlayerMap.Shoot.performed += UnitShootAnimation;
             _playerControls.PlayerMap.BlueColor.performed += (cb) => _player.ChangeColor(PhaseColor.Blue);
             _playerControls.PlayerMap.RedColor.performed += (cb) => _player.ChangeColor(PhaseColor.Red);
 
@@ -40,7 +39,7 @@ namespace Samurai
         }
         private void OnDisable()
         {
-            _playerControls.PlayerMap.Shoot.performed -= UnitShoot;
+            _playerControls.PlayerMap.Shoot.performed -= UnitShootAnimation;
             _playerControls.Disable();
         }
         #endregion

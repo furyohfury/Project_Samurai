@@ -50,8 +50,12 @@ namespace Samurai
             if (UnitInput.MoveDirection != Vector3.zero)
             {
                 if (CharController.isGrounded) CharController.Move(UnitStats.MoveSpeed * Time.deltaTime * new Vector3(UnitInput.MoveDirection.x, 0, UnitInput.MoveDirection.z));
-                else CharController.Move(UnitStats.MoveSpeed * Time.deltaTime * new Vector3(UnitInput.MoveDirection.x, -9.8f, UnitInput.MoveDirection.z));
+                else CharController.Move(UnitStats.MoveSpeed * Time.deltaTime * new Vector3(UnitInput.MoveDirection.x, 0, UnitInput.MoveDirection.z) + 9.8f * Time.deltaTime * Vector3.down);
             }
+        }
+        protected virtual void UnitShoot()
+        {
+
         }
         public void GetDamaged(Collider other)
         {
@@ -63,15 +67,14 @@ namespace Samurai
                     UnitStats.HP -= proj.Damage;
                     if (UnitStats.HP <= 0)
                     {
-                        Die();
-                        Destroy(gameObject);
+                        UnitInput.UnitInputDie();                       
                     }
                 }
             }
         }
-        protected void Die()
+        protected virtual void Die()
         {
-            Debug.Log($"{gameObject.name} died");
+            Debug.Log($"{gameObject.name} died");            
         }
     }
 }

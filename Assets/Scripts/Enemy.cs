@@ -12,5 +12,12 @@ namespace Samurai
         {
             
         }
+        protected override Die()
+        {
+            base.Die();
+            Destroy(gameObject);
+            //todo remove from pools
+            //todo What to do with projectiles where he's owner
+        }
     }
 }

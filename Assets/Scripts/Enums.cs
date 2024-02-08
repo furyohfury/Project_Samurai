@@ -3,7 +3,8 @@ namespace Samurai
     public enum PhaseColor
     {
         Blue = 0,
-        Red = 1,
+        Red = 1,               
+        Damaged = 2,
         Green = 10,
         Default = 500
     }
