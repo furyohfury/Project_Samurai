@@ -12,7 +12,7 @@ namespace Samurai
         {
             
         }
-        protected override Die()
+        public override void Die()
         {
             base.Die();
             Destroy(gameObject);

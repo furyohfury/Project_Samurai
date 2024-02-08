@@ -13,6 +13,10 @@
 /[Aa]ssets/Scifi/
 /[Aa]ssets/Frank_RPG_Gunslinger
 /[Aa]ssets/EditorThemes/
+/[Aa]ssets/PROTOFACTOR/
+/[Aa]ssets/Ultimate Animation Collection/
+/[Aa]ssets/Sci-fi Pistol/
+/[Aa]ssets/Animations/
 
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data
@@ -55,6 +59,7 @@ ExportedObj/
 *.pidb.meta
 *.pdb.meta
 *.mdb.meta
+*.meta
 
 # Unity3D generated file on crash reports
 sysinfo.txt

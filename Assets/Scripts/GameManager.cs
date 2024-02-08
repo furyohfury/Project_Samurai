@@ -8,8 +8,7 @@ namespace Samurai
     {
         public override void InstallBindings()
         {
-            var defaultPlayerGunPool = FindObjectOfType<DefaultPlayerGunPool>();
-            Container.BindInstance(defaultPlayerGunPool).AsSingle();
+            Container.BindInstance(FindObjectOfType<DefaultPlayerGunPool>()).AsSingle();
             Container.BindInstance(FindObjectOfType<Player>()).AsSingle();
         }
     }
