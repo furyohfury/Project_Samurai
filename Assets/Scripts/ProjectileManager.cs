@@ -20,7 +20,7 @@ namespace Samurai
         {
             foreach (var proj in ProjectileList)
             {
-                proj.transform.position += proj.MoveSpeed * Time.deltaTime * proj.transform.forward;
+                proj.transform.position += proj.GetProjectileStats().ProjectileSpeed * Time.deltaTime * proj.transform.forward;
             }
         }
     }

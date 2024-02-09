@@ -1,8 +1,5 @@
-using UnityEngine
+using UnityEngine;
 namespace Samurai
 {
-    public abstract class PickableWeapon : Weapon
-    {
-
-    }
+    public abstract class PickableWeapon { }
 }

@@ -23,6 +23,9 @@ namespace Samurai
         
         public Weapon UnitWeapon {get; protected set;}
 
+        [SerializeField]
+        protected float BlinkWhenDamagedTime = 0.1f;
+
         #region Unity_Methods
         protected virtual void Awake()
         {
@@ -82,8 +85,11 @@ namespace Samurai
                 // if ((proj.Owner as Player != null && this as Enemy != null) || (proj.Owner as Enemy != null && this as Player != null))
                 if ((proj.CurrentColor != this.CurrentColor) && (this.GetType() != proj.Owner.GetType()) && (this as Enemy == null || proj.Owner as Enemy == null))
                 {
-                    UnitStats.HP -= proj.Damage;
-                    DefPlayerGunPool.Pool.Release(proj);
+                    UnitStats.HP -= proj.GetProjectileStats().Damage;
+                    var defProj = proj as DefaultPlayerWeaponProjectile;
+                    if (defProj != null) DefPlayerGunPool.Pool.Release(defProj);
+                    else Destroy(proj);
+
 
                     StartCoroutine(GotHitBlink());
                     if (UnitStats.HP <= 0)

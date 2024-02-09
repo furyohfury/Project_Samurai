@@ -20,7 +20,11 @@ namespace Samurai
             // For painting unit at spawn
             ChangeColor(CurrentColor);
         }
-
+        [ContextMenu("Set Default Material Dictionary")]
+        private void SetDefaultMaterialDictionary()
+        {
+            MaterialColorsDict = new MaterialColorDictionary() { { PhaseColor.Blue, Resources.Load<Material>("Materials/BlueColor") }, { PhaseColor.Red, Resources.Load<Material>("Materials/RedColor") }, { PhaseColor.Damaged, Resources.Load<Material>("Materials/DamagedColor") } };
+        }
         public virtual void ChangeColor(PhaseColor color)
         {
             CurrentColor = color;

@@ -10,7 +10,8 @@ namespace Samurai
         public void OnReturnedToPool()
         {
             Owner = null;
-            MoveSpeed = 0;
+            ProjectileStats.ProjectileSpeed = 0;
+            transform.localScale = Vector3.one;
         }        
     }
 }

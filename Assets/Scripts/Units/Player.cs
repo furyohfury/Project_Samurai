@@ -24,11 +24,21 @@ namespace Samurai
             get => _weapon;
             set => _weapon = value;
         } */
-        
+
 
         [Inject]
         private DefaultPlayerGunPool _defaultGunPool;
-     
+
+        [SerializeField]
+        private Transform _weaponHand;
+
+        private Weapon _pickableWeapon;
+        public Weapon PickableWeapon
+        {
+            get => _pickableWeapon;
+            private set => _pickableWeapon = value;
+        }
+
         #region Unity_Methods
         protected override void Awake()
         {
@@ -55,9 +65,16 @@ namespace Samurai
         protected override void OnTriggerEnter(Collider other)
         {
             base.OnTriggerEnter(other);
-            if (other.TryGetComponent(out Weapon _))
+            if (other.TryGetComponent(out Weapon weapon) && weapon.IsPickable)
             {
-
+                PickableWeapon = weapon;
+            }
+        }
+        private void OnTriggerExit(Collider other)
+        {
+            if (other.TryGetComponent(out Weapon weapon) && weapon.IsPickable)
+            {
+                PickableWeapon = null;
             }
         }
         #endregion
@@ -70,22 +87,28 @@ namespace Samurai
 
         public override void UnitShoot()
         {
-            base.UnitShoot(); // Empty now
-            if (UnitInput.CanShoot && Weapon == PlayerWeapon.DefaultPistol)
-            {
-                Projectile proj = _defaultGunPool.Pool.Get();
-                proj.SetProjectileOnShoot(this, UnitStats.MoveSpeed, UnitStats.Damage);
-                proj.ChangeColor(CurrentColor);
-                proj.gameObject.transform.position = transform.position + transform.forward * 0.5f + transform.up * 0.7f;
-                proj.transform.rotation = this.transform.rotation;
-            }
+            base.UnitShoot();
         }
         public override void Die()
-        {            
+        {
             UnitInput.enabled = false;
             Time.timeScale = 0;
             Instantiate(Resources.Load<GameObject>("UI/GameOverScreen"));
-        }      
+        }
+        public void EquipWeapon(CallbackContext _)
+        {
+            UnitWeapon.gameObject.SetActive(false);
+            ((PlayerInput)UnitInput).SetAnimatorController(PickableWeapon.AnimController);
+            PickableWeapon.transform.position = _weaponHand.position;
+            // PickableWeapon.transform.rotation = Quaternion.Euler(new Vector3(55, this.transform.eulerAngles.y - 90, 0));
+            // PickableWeapon.transform.eulerAngles = new Vector3(290, -35, 90);
+            PickableWeapon.transform.parent = _weaponHand.transform;
+            
+            UnitWeapon = PickableWeapon;
+            PickableWeapon.Equipped(this);
+            PickableWeapon = null;
+
+        }
         public event ChangeColorHandle OnPlayerSwapColor;
     }
 }

@@ -3,7 +3,7 @@ using UnityEngine.Pool;
 using Zenject;
 namespace Samurai
 {
-    public class Obstacle: ColorObject
+    public class Obstacle : ColorObject
     {
         [Inject]
         private DefaultPlayerGunPool _defaultPlayerGunPool;
@@ -16,7 +16,9 @@ namespace Samurai
         {
             if (other.TryGetComponent(out Projectile proj) && proj.CurrentColor != this.CurrentColor)
             {
-                _defaultPlayerGunPool.Pool.Release(proj);
+                var projDef = proj as DefaultPlayerWeaponProjectile;
+                if (projDef != null) _defaultPlayerGunPool.Pool.Release(projDef);
+                else Destroy(proj);
             }
         }
     }

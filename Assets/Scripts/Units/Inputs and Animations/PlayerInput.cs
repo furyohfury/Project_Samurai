@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEditor;
+using UnityEditor.Animations;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using Zenject;
@@ -18,9 +19,9 @@ namespace Samurai
             base.Awake();
             _playerControls = new();
         }
-        private void Start()
+        protected override void Start()
         {
-
+            base.Start();            
         }
         private void OnEnable()
         {
@@ -28,7 +29,7 @@ namespace Samurai
             _playerControls.PlayerMap.Shoot.performed += UnitShootAnimation;
             _playerControls.PlayerMap.BlueColor.performed += (cb) => _player.ChangeColor(PhaseColor.Blue);
             _playerControls.PlayerMap.RedColor.performed += (cb) => _player.ChangeColor(PhaseColor.Red);
-
+            _playerControls.PlayerMap.PickWeapon.performed += _player.EquipWeapon;
         }
         protected override void Update()
         {
@@ -43,6 +44,10 @@ namespace Samurai
             _playerControls.Disable();
         }
         #endregion
+        public void SetAnimatorController(AnimatorController controller)
+        {
+            UnitAnimator.runtimeAnimatorController = controller;
+        }
         private void OnDefGunShootAnimationStarted_UnityEvent()
         {
             CanShoot = false;

@@ -1,4 +1,5 @@
-using UnityEngine
+using UnityEditor.Animations;
+using UnityEngine;
 namespace Samurai
 {
     public abstract class Weapon : MonoBehaviour
@@ -13,7 +14,14 @@ namespace Samurai
         [SerializeField]
         protected float AttackSpeed; //todo
         [SerializeField]
-        protected GameObject WeaponProjectilePrefab;        
+        protected GameObject WeaponProjectilePrefab;
+        [SerializeField]
+        protected bool _isPickable = true;
+        public bool IsPickable
+        {
+            get => _isPickable;
+            protected set => _isPickable = value;
+        }
         
         protected Unit Owner;
         
@@ -24,24 +32,26 @@ namespace Samurai
         protected ProjectileStatsStruct PlayerProjectileStats;
         [SerializeField]
         protected ProjectileStatsStruct EnemyProjectileStats;
+
+        [SerializeField]
+        protected AnimatorController _animController;
+        public AnimatorController AnimController
+        { 
+            get => _animController;
+            protected set => _animController = value;
+        }
         
         
         #region Unity_Methods
         protected virtual void Start()
         {
-            Owner = GetComponentInParent<Unit>();
+            Equipped(GetComponentInParent<Unit>());
         }
         #endregion
-        /* public virtual void ChangeOwner(Unit owner)
+        public abstract void Shoot();
+        public virtual void Equipped(Unit owner)
         {
-            Owner = owner;
-            ProjectileSpeed = owner.GetUnitStats().ProjectileSpeed;
-            Damage = owner.GetUnitStats().Damage;
-            ProjectileScale = owner.GetUnitStats().ProjectileScale;
-        } */
-        public abstract void Shoot(){}
-        public vurtial void Equipped(Unit owner)
-        {
+            if (owner == null) return;
             Owner = owner;
             if (owner.GetType() == typeof(Player)) ProjectileStats = PlayerProjectileStats;
             else ProjectileStats = EnemyProjectileStats;

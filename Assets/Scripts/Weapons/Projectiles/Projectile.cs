@@ -13,7 +13,8 @@ namespace Samurai
         public void SetProjectileStatsOnShoot(Unit owner)
         {
             Owner = owner;
-            ProjStats = owner.UnitWeapon.GetProjectileStats();
+            ProjectileStats = owner.UnitWeapon.GetProjectileStats();
+            transform.localScale *= ProjectileStats.ProjectileScale;
             ChangeColor(owner.CurrentColor);
         }        
         protected virtual void OnEnable()
