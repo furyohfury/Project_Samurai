@@ -6,32 +6,27 @@ namespace Samurai
 {
     public class Projectile : ColorObject
     {
-        public Unit Owner {get; private set;}
-        public float MoveSpeed {get; private set;}
-        public int Damage {get; private set;}
-
+        public Unit Owner {get; protected set;}
+        public float MoveSpeed {get; protected set;}
+        public int Damage {get; protected set;}
 
         
-        public void SetProjectileOnShoot(Unit owner, float ms, int dmg)
+        public void SetProjectileStatsOnShoot(Unit owner, float ms, int dmg, PhaseColor color)
         {
             Owner = owner;
             MoveSpeed = ms;
             Damage = dmg;
-        }
-        public void OnReturnedToPool()
-        {
-            Owner = null;
-            MoveSpeed = 0;
-        }
-        private void OnEnable()
+            ChangeColor(color);
+        }        
+        protected virtual void OnEnable()
         {
             ProjectileManager.Instance.ProjectileList.Add(this);
         }
-        private void OnDisable()
+        protected virtual void OnDisable()
         {
             ProjectileManager.Instance.ProjectileList.Remove(this);
         }
-        private void OnDestroy()
+        protected virtual void OnDestroy()
         {
             
         }

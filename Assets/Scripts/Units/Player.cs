@@ -17,13 +17,14 @@ namespace Samurai
         private float _cameraOffset;
 
 
-        [SerializeField]
+        /* [SerializeField]
         private PlayerWeapon _weapon;
         public PlayerWeapon Weapon
         {
             get => _weapon;
             set => _weapon = value;
-        }
+        } */
+        
 
         [Inject]
         private DefaultPlayerGunPool _defaultGunPool;
@@ -51,7 +52,14 @@ namespace Samurai
             TestShit = cursorPosition;
             transform.LookAt(cursorPosition);
         }
+        protected override void OnTriggerEnter(Collider other)
+        {
+            base.OnTriggerEnter(other);
+            if (other.TryGetComponent(out Weapon _))
+            {
 
+            }
+        }
         #endregion
         public override void ChangeColor(PhaseColor color)
         {
@@ -62,7 +70,7 @@ namespace Samurai
 
         public override void UnitShoot()
         {
-            base.UnitShoot();
+            base.UnitShoot(); // Empty now
             if (UnitInput.CanShoot && Weapon == PlayerWeapon.DefaultPistol)
             {
                 Projectile proj = _defaultGunPool.Pool.Get();

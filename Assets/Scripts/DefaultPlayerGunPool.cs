@@ -20,18 +20,18 @@ namespace Samurai
         public bool collectionChecks = true;
         public int maxPoolSize = 10;
 
-        IObjectPool<Projectile> m_Pool;
+        IObjectPool<DefaultPlayerWeaponProjectile> m_Pool;
 
-        public IObjectPool<Projectile> Pool
+        public IObjectPool<DefaultPlayerWeaponProjectile> Pool
         {
             get
             {
                 if (m_Pool == null)
                 {
                     if (poolType == PoolType.Stack)
-                        m_Pool = new ObjectPool<Projectile>(CreatePooledItem, OnTakeFromPool, OnReturnedToPool, OnDestroyPoolObject, collectionChecks, 5, maxPoolSize);
+                        m_Pool = new ObjectPool<DefaultPlayerWeaponProjectile>(CreatePooledItem, OnTakeFromPool, OnReturnedToPool, OnDestroyPoolObject, collectionChecks, 5, maxPoolSize);
                     else
-                        m_Pool = new LinkedPool<Projectile>(CreatePooledItem, OnTakeFromPool, OnReturnedToPool, OnDestroyPoolObject, collectionChecks, maxPoolSize);
+                        m_Pool = new LinkedPool<DefaultPlayerWeaponProjectile>(CreatePooledItem, OnTakeFromPool, OnReturnedToPool, OnDestroyPoolObject, collectionChecks, maxPoolSize);
                 }
                 return m_Pool;
             }
@@ -39,14 +39,14 @@ namespace Samurai
 
 
 
-        Projectile CreatePooledItem()
+        DefaultPlayerWeaponProjectile CreatePooledItem()
         {
             GameObject proj = Instantiate(ProjectilePrefab);
-            return proj.GetComponent<Projectile>();
+            return proj.GetComponent<DefaultPlayerWeaponProjectile>();
         }
 
         // Called when an item is returned to the pool using Release
-        void OnReturnedToPool(Projectile proj)
+        void OnReturnedToPool(DefaultPlayerWeaponProjectile proj)
         {
             proj.OnReturnedToPool();
             proj.gameObject.SetActive(false);
@@ -54,7 +54,7 @@ namespace Samurai
         }
 
         // Called when an item is taken from the pool using Get
-        void OnTakeFromPool(Projectile proj)
+        void OnTakeFromPool(DefaultPlayerWeaponProjectile proj)
         {
             proj.gameObject.SetActive(true);
             proj.transform.parent = null;
@@ -62,7 +62,7 @@ namespace Samurai
 
         // If the pool capacity is reached then any items returned will be destroyed.
         // We can control what the destroy behavior does, here we destroy the GameObject.
-        void OnDestroyPoolObject(Projectile proj)
+        void OnDestroyPoolObject(DefaultPlayerWeaponProjectile proj)
         {
             Destroy(proj.gameObject);
         }

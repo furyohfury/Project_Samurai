@@ -21,7 +21,7 @@ namespace Samurai
         [Inject]
         protected DefaultPlayerGunPool DefPlayerGunPool;
         
-
+        protected Weapon UnitWeapon;
 
         #region Unity_Methods
         protected virtual void Awake()
@@ -31,15 +31,19 @@ namespace Samurai
         protected override void Start()
         {
             base.Start();
+            UnitWeapon = GetComponentInChildren<Weapon>();
         }
         protected virtual void Update()
         {
             Movement();
 
         }
-        protected void OnTriggerEnter(Collider other)
+        protected virtual void OnTriggerEnter(Collider other)
         {
-            GetDamaged(other);
+            if (other.TryGetComponent(out Projectile _))
+            {
+                GetDamaged(other);
+            }
         }
         private void OnDestroy()
         {
@@ -66,7 +70,8 @@ namespace Samurai
 
         public virtual void UnitShoot()
         {
-
+            if (!UnitInput.CanShoot) return;
+            UnitWeapon.Shoot();
         }
 
 
