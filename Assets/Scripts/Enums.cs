@@ -13,5 +13,5 @@ namespace Samurai
         Shotgun = 0,
         SniperRifle = 1,
         DefaultPistol = 10
-    }
+    }    
 }

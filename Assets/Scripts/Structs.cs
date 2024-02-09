@@ -4,7 +4,13 @@ namespace Samurai
     public struct UnitStatsStruct
     {
         public int HP;
-        public float MoveSpeed;
+        public float MoveSpeed;        
+    }
+    [System.Serializable]
+    public struct ProjectileStatsStruct
+    {
         public int Damage;
+        public float ProjectileSpeed;
+        public float ProjectileScale;
     }
 }

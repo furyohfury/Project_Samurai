@@ -7,16 +7,14 @@ namespace Samurai
     public class Projectile : ColorObject
     {
         public Unit Owner {get; protected set;}
-        public float MoveSpeed {get; protected set;}
-        public int Damage {get; protected set;}
-
+        protected ProjectileStatsStruct ProjectileStats;
+        public ProjectileStatsStruct GetProjectileStats() => ProjectileStats;
         
-        public void SetProjectileStatsOnShoot(Unit owner, float ms, int dmg, PhaseColor color)
+        public void SetProjectileStatsOnShoot(Unit owner)
         {
             Owner = owner;
-            MoveSpeed = ms;
-            Damage = dmg;
-            ChangeColor(color);
+            ProjStats = owner.UnitWeapon.GetProjectileStats();
+            ChangeColor(owner.CurrentColor);
         }        
         protected virtual void OnEnable()
         {

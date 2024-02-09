@@ -21,7 +21,7 @@ namespace Samurai
         [Inject]
         protected DefaultPlayerGunPool DefPlayerGunPool;
         
-        protected Weapon UnitWeapon;
+        public Weapon UnitWeapon {get; protected set;}
 
         #region Unity_Methods
         protected virtual void Awake()

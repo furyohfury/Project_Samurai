@@ -15,7 +15,7 @@ namespace Samurai
         public void Shoot()
         {            
             Projectile proj = _pool.Pool.Get();
-            proj.SetProjectileStatsOnShoot(Owner, ProjectileSpeed, UnitStats.Damage, Owner.CurrentColor);
+            proj.SetProjectileStatsOnShoot(Owner, ProjectileSpeed, Damage, Owner.CurrentColor);
             proj.transform.SetPositionAndRotation(this.transform.position + this.transfrom.forward * 0.1f, this.transform.rotation);
         }
     }
