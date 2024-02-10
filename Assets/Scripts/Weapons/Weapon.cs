@@ -2,19 +2,19 @@ using UnityEditor.Animations;
 using UnityEngine;
 namespace Samurai
 {
+    [RequireComponent(typeof(Unit))]
     public abstract class Weapon : MonoBehaviour
     {
-        // Gettable        
-        /* [SerializeField]
-        protected int Damage;
         [SerializeField]
-        protected float ProjectileSpeed;
-        protected float ProjectileScale; */    
-        // Ungettable
+        protected int _numberOfBulletsForPlayer;
+        public int NumberOfBulletsForPlayer { get => _numberOfBulletsForPlayer; protected set => _numberOfBulletsForPlayer = value; }
+
         [SerializeField]
         protected float AttackSpeed; //todo
         [SerializeField]
+
         protected GameObject WeaponProjectilePrefab;
+
         [SerializeField]
         protected bool _isPickable = true;
         public bool IsPickable
@@ -22,8 +22,11 @@ namespace Samurai
             get => _isPickable;
             protected set => _isPickable = value;
         }
-        
-        protected Unit Owner;
+
+        public abstract Vector3 WeaponPositionWhenPicked { get;}
+        public abstract Vector3 WeaponRotationWhenPicked { get;}
+
+        public Unit Owner { get; protected set; }
         
         protected ProjectileStatsStruct ProjectileStats;
         public ProjectileStatsStruct GetProjectileStats() => ProjectileStats;
@@ -56,5 +59,19 @@ namespace Samurai
             if (owner.GetType() == typeof(Player)) ProjectileStats = PlayerProjectileStats;
             else ProjectileStats = EnemyProjectileStats;
         }
+
+        protected virtual void CheckIfEmpty()
+        {
+            if (Owner as Player != null)
+            {
+                NumberOfBulletsForPlayer -= 1;
+                if (NumberOfBulletsForPlayer <= 0)
+                {
+                    OnBulletsEnded?.Invoke();
+                }
+            }
+        }
+
+        public SimpleHandle OnBulletsEnded;
     }
 }

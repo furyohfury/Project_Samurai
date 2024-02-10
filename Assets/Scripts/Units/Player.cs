@@ -28,9 +28,10 @@ namespace Samurai
 
         [Inject]
         private DefaultPlayerGunPool _defaultGunPool;
+        private DefaultPlayerWeapon _defaultPlayerWeapon;
 
         [SerializeField]
-        private Transform _weaponHand;
+        private Transform _weaponSlot;
 
         private Weapon _pickableWeapon;
         public Weapon PickableWeapon
@@ -49,6 +50,7 @@ namespace Samurai
         {
             base.Start();
             if (_camera == null) _camera = Camera.main;
+            _defaultPlayerWeapon = GetComponentInChildren<DefaultPlayerWeapon>();
         }
         protected override void Update()
         {
@@ -65,14 +67,19 @@ namespace Samurai
         protected override void OnTriggerEnter(Collider other)
         {
             base.OnTriggerEnter(other);
-            if (other.TryGetComponent(out Weapon weapon) && weapon.IsPickable)
+            if (other.TryGetComponent(out Weapon weapon) && weapon.IsPickable && weapon.Owner == null)
             {
                 PickableWeapon = weapon;
+            }
+            else if (other.TryGetComponent(out Projectile proj))
+            {
+                Destroy(proj);
             }
         }
         private void OnTriggerExit(Collider other)
         {
-            if (other.TryGetComponent(out Weapon weapon) && weapon.IsPickable)
+            // if (other.TryGetComponent(out Weapon weapon) && weapon.IsPickable && weapon.Owner == null)
+            if (PickableWeapon != null && other.transform == PickableWeapon.transform && UnitWeapon != PickableWeapon)
             {
                 PickableWeapon = null;
             }
@@ -84,31 +91,50 @@ namespace Samurai
             // Notification to obstacles to change color too
             OnPlayerSwapColor?.Invoke(color);
         }
-
-        public override void UnitShoot()
-        {
-            base.UnitShoot();
-        }
         public override void Die()
         {
             UnitInput.enabled = false;
             Time.timeScale = 0;
             Instantiate(Resources.Load<GameObject>("UI/GameOverScreen"));
         }
-        public void EquipWeapon(CallbackContext _)
+        #region Guns
+        public override void UnitShoot()
         {
-            UnitWeapon.gameObject.SetActive(false);
-            ((PlayerInput)UnitInput).SetAnimatorController(PickableWeapon.AnimController);
-            PickableWeapon.transform.position = _weaponHand.position;
-            // PickableWeapon.transform.rotation = Quaternion.Euler(new Vector3(55, this.transform.eulerAngles.y - 90, 0));
-            // PickableWeapon.transform.eulerAngles = new Vector3(290, -35, 90);
-            PickableWeapon.transform.parent = _weaponHand.transform;
-            
-            UnitWeapon = PickableWeapon;
-            PickableWeapon.Equipped(this);
-            PickableWeapon = null;
-
+            base.UnitShoot();
         }
+        
+        public void EquipPickableWeapon(CallbackContext _)
+        {
+            if (PickableWeapon == null) return;
+
+            UnitWeapon = PickableWeapon;
+            // Throw away empty gun
+            UnitWeapon.OnBulletsEnded += UnequipPickableWeapon;
+
+            _defaultPlayerWeapon.gameObject.SetActive(false);
+            UnitWeapon.transform.parent = _weaponSlot;
+
+            UnitWeapon.transform.SetLocalPositionAndRotation(UnitWeapon.WeaponPositionWhenPicked, Quaternion.Euler(UnitWeapon.WeaponRotationWhenPicked));
+
+            ((PlayerInput)UnitInput).SetAnimatorController(UnitWeapon.AnimController);
+            UnitWeapon.Equipped(this);
+            PickableWeapon = null;
+        }
+        public void UnequipPickableWeapon()
+        {
+            Destroy(UnitWeapon.gameObject);
+            _defaultPlayerWeapon.gameObject.SetActive(true);
+            UnitWeapon = _defaultPlayerWeapon;
+            ((PlayerInput)UnitInput).SetAnimatorController(_defaultPlayerWeapon.AnimController);
+            _defaultPlayerWeapon.Equipped(this);            
+        }
+        #endregion
+        #region Melee
+        public override void MeleeAttack(CallbackContext _)
+        {
+            base.MeleeAttack(_);
+        }
+        #endregion
         public event ChangeColorHandle OnPlayerSwapColor;
     }
 }

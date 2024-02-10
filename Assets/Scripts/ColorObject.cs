@@ -25,13 +25,17 @@ namespace Samurai
         {
             MaterialColorsDict = new MaterialColorDictionary() { { PhaseColor.Blue, Resources.Load<Material>("Materials/BlueColor") }, { PhaseColor.Red, Resources.Load<Material>("Materials/RedColor") }, { PhaseColor.Damaged, Resources.Load<Material>("Materials/DamagedColor") } };
         }
-        public virtual void ChangeColor(PhaseColor color)
+        protected virtual void ChangeColorVisual(PhaseColor color)
         {
-            CurrentColor = color;
             foreach (var mesh in MeshForColorChange)
             {
                 mesh.material = MaterialColorsDict[color];
             }
+        }
+        public virtual void ChangeColor(PhaseColor color)
+        {
+            CurrentColor = color;
+            ChangeColorVisual(color);
         }
     }
 }

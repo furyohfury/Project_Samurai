@@ -73,6 +73,15 @@ namespace Samurai
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""MeleeAttack"",
+                    ""type"": ""Button"",
+                    ""id"": ""81ebff83-5f2d-4764-9cd1-fbae9bf9991b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -174,6 +183,17 @@ namespace Samurai
                     ""action"": ""PickWeapon"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""16944630-9468-42cd-b509-361f0e83d380"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MeleeAttack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -187,6 +207,7 @@ namespace Samurai
             m_PlayerMap_BlueColor = m_PlayerMap.FindAction("BlueColor", throwIfNotFound: true);
             m_PlayerMap_RedColor = m_PlayerMap.FindAction("RedColor", throwIfNotFound: true);
             m_PlayerMap_PickWeapon = m_PlayerMap.FindAction("PickWeapon", throwIfNotFound: true);
+            m_PlayerMap_MeleeAttack = m_PlayerMap.FindAction("MeleeAttack", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -253,6 +274,7 @@ namespace Samurai
         private readonly InputAction m_PlayerMap_BlueColor;
         private readonly InputAction m_PlayerMap_RedColor;
         private readonly InputAction m_PlayerMap_PickWeapon;
+        private readonly InputAction m_PlayerMap_MeleeAttack;
         public struct PlayerMapActions
         {
             private @PlayerControls m_Wrapper;
@@ -262,6 +284,7 @@ namespace Samurai
             public InputAction @BlueColor => m_Wrapper.m_PlayerMap_BlueColor;
             public InputAction @RedColor => m_Wrapper.m_PlayerMap_RedColor;
             public InputAction @PickWeapon => m_Wrapper.m_PlayerMap_PickWeapon;
+            public InputAction @MeleeAttack => m_Wrapper.m_PlayerMap_MeleeAttack;
             public InputActionMap Get() { return m_Wrapper.m_PlayerMap; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -286,6 +309,9 @@ namespace Samurai
                 @PickWeapon.started += instance.OnPickWeapon;
                 @PickWeapon.performed += instance.OnPickWeapon;
                 @PickWeapon.canceled += instance.OnPickWeapon;
+                @MeleeAttack.started += instance.OnMeleeAttack;
+                @MeleeAttack.performed += instance.OnMeleeAttack;
+                @MeleeAttack.canceled += instance.OnMeleeAttack;
             }
 
             private void UnregisterCallbacks(IPlayerMapActions instance)
@@ -305,6 +331,9 @@ namespace Samurai
                 @PickWeapon.started -= instance.OnPickWeapon;
                 @PickWeapon.performed -= instance.OnPickWeapon;
                 @PickWeapon.canceled -= instance.OnPickWeapon;
+                @MeleeAttack.started -= instance.OnMeleeAttack;
+                @MeleeAttack.performed -= instance.OnMeleeAttack;
+                @MeleeAttack.canceled -= instance.OnMeleeAttack;
             }
 
             public void RemoveCallbacks(IPlayerMapActions instance)
@@ -329,6 +358,7 @@ namespace Samurai
             void OnBlueColor(InputAction.CallbackContext context);
             void OnRedColor(InputAction.CallbackContext context);
             void OnPickWeapon(InputAction.CallbackContext context);
+            void OnMeleeAttack(InputAction.CallbackContext context);
         }
     }
 }

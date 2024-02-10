@@ -7,6 +7,10 @@ namespace Samurai
         [Inject]
         private readonly DefaultPlayerGunPool _pool;
 
+        public override Vector3 WeaponPositionWhenPicked => Vector3.zero;
+
+        public override Vector3 WeaponRotationWhenPicked => Vector3.zero;
+
         protected override void Start()
         {
             base.Start();

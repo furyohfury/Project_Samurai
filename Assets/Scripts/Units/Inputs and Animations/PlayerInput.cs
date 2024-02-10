@@ -1,9 +1,12 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEditor;
 using UnityEditor.Animations;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 using Zenject;
+using static UnityEngine.InputSystem.InputAction;
 
 namespace Samurai
 {
@@ -13,6 +16,10 @@ namespace Samurai
         [Inject]
         private Player _player;
         private PlayerControls _playerControls;
+        [SerializeField]
+        private GameObject _attackKatana;
+        [SerializeField]
+        private GameObject _sheathedKatana;
         #region Unity_methods
         protected override void Awake()
         {
@@ -21,7 +28,7 @@ namespace Samurai
         }
         protected override void Start()
         {
-            base.Start();            
+            base.Start();
         }
         private void OnEnable()
         {
@@ -29,13 +36,16 @@ namespace Samurai
             _playerControls.PlayerMap.Shoot.performed += UnitShootAnimation;
             _playerControls.PlayerMap.BlueColor.performed += (cb) => _player.ChangeColor(PhaseColor.Blue);
             _playerControls.PlayerMap.RedColor.performed += (cb) => _player.ChangeColor(PhaseColor.Red);
-            _playerControls.PlayerMap.PickWeapon.performed += _player.EquipWeapon;
+            _playerControls.PlayerMap.PickWeapon.performed += _player.EquipPickableWeapon;
+            _playerControls.PlayerMap.MeleeAttack.performed += _player.MeleeAttack;
+            _playerControls.PlayerMap.MeleeAttack.performed += MeleeAttackAnimation;
         }
         protected override void Update()
         {
             // Moving
             Vector2 movement = _playerControls.PlayerMap.Movement.ReadValue<Vector2>();
             MoveDirection = new Vector3(movement.x, 0, movement.y);
+            // Moving is after defining MD
             base.Update();
         }
         private void OnDisable()
@@ -48,13 +58,28 @@ namespace Samurai
         {
             UnitAnimator.runtimeAnimatorController = controller;
         }
-        private void OnDefGunShootAnimationStarted_UnityEvent()
+        protected override void OnMeleeAttackAnimationStarted_UnityEvent()
         {
-            CanShoot = false;
+            base.OnMeleeAttackAnimationStarted_UnityEvent();
+            _sheathedKatana.SetActive(false);
+            _attackKatana.SetActive(true);
+            _player.UnitWeapon.gameObject.SetActive(false);
         }
-        private void OnDefGunShootAnimationEnded_UnityEvent()
+        protected override void OnMeleeAttackAnimationEnded_UnityEvent()
         {
-            CanShoot = true;
+            base.OnMeleeAttackAnimationEnded_UnityEvent();
+            _attackKatana.SetActive(false);
+            _sheathedKatana.SetActive(true);
+            _player.UnitWeapon.gameObject.SetActive(true);
+        }
+        protected override void OnMeleeAttackSlashAnimationStarted_UnityEvent()
+        {
+            base.OnMeleeAttackSlashAnimationStarted_UnityEvent();
+        }
+        protected override void OnMeleeAttackSlashAnimationEnded_UnityEvent()
+        {
+            base.OnMeleeAttackSlashAnimationEnded_UnityEvent();
+
         }
     }
 }

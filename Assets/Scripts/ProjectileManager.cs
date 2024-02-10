@@ -8,13 +8,11 @@ namespace Samurai
     {
         public static ProjectileManager Instance;
 
-        public List<Projectile> ProjectileList;
+        public List<Projectile> ProjectileList = new();
         private void Awake()
         {
             if (Instance == null) Instance = this;
             else Destroy(this);
-
-            ProjectileList = new();
         }
         private void Update()
         {

@@ -1,15 +1,19 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Pool;
+using Zenject;
 
 namespace Samurai
 {
     public class Projectile : ColorObject
     {
-        public Unit Owner {get; protected set;}
+        // [Inject]
+        // protected ProjectileManager ProjectileManager;
+        [SerializeField]
+        protected Unit _owner;
+        public Unit Owner { get => _owner; protected set => _owner = value; }
         protected ProjectileStatsStruct ProjectileStats;
-        public ProjectileStatsStruct GetProjectileStats() => ProjectileStats;
-        
+        public ProjectileStatsStruct GetProjectileStats() => ProjectileStats;        
         public void SetProjectileStatsOnShoot(Unit owner)
         {
             Owner = owner;
@@ -17,9 +21,22 @@ namespace Samurai
             transform.localScale *= ProjectileStats.ProjectileScale;
             ChangeColor(owner.CurrentColor);
         }        
+
+
         protected virtual void OnEnable()
         {
             ProjectileManager.Instance.ProjectileList.Add(this);
+        }
+        protected override void Start()
+        {
+            base.Start();            
+        }
+        protected virtual void OnTriggerEnter(Collider other)
+        {
+            if (other.TryGetComponent(out MeleeWeapon weapon) && weapon.Owner != Owner)
+            {
+                Destroy(this.gameObject);
+            }
         }
         protected virtual void OnDisable()
         {
@@ -28,6 +45,6 @@ namespace Samurai
         protected virtual void OnDestroy()
         {
             
-        }
+        }        
     }
 }
