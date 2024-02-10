@@ -71,10 +71,6 @@ namespace Samurai
             {
                 PickableWeapon = weapon;
             }
-            else if (other.TryGetComponent(out Projectile proj))
-            {
-                Destroy(proj);
-            }
         }
         private void OnTriggerExit(Collider other)
         {

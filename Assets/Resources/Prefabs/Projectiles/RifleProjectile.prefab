@@ -12,10 +12,10 @@ GameObject:
   - component: {fileID: 8192338573318526866}
   - component: {fileID: 9190962712848089201}
   - component: {fileID: 4802810427798507618}
-  - component: {fileID: 1395861497634946465}
-  - component: {fileID: -5815941173214602260}
+  - component: {fileID: -2968232911170811306}
+  - component: {fileID: -6669949990767252342}
   m_Layer: 0
-  m_Name: ShotgunProjectile
+  m_Name: RifleProjectile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -99,7 +99,23 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &1395861497634946465
+--- !u!54 &-2968232911170811306
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8827768608434931341}
+  serializedVersion: 2
+  m_Mass: 0.0000001
+  m_Drag: 0
+  m_AngularDrag: 0
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 112
+  m_CollisionDetection: 0
+--- !u!114 &-6669949990767252342
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -108,7 +124,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8827768608434931341}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: da0a2e85457aae5499508add41495478, type: 3}
+  m_Script: {fileID: 11500000, guid: f4bd3aa857be96c4fa0f2eecd516032e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _currentColor: 500
@@ -144,19 +160,3 @@ MonoBehaviour:
     - {fileID: 2100000, guid: 6fc962880b38ad24d86428442fce17f6, type: 2}
     - {fileID: 2100000, guid: 99719b2fa31b3184c9d117ba958214a6, type: 2}
   _owner: {fileID: 0}
---- !u!54 &-5815941173214602260
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8827768608434931341}
-  serializedVersion: 2
-  m_Mass: 0.0000001
-  m_Drag: 0
-  m_AngularDrag: 0
-  m_UseGravity: 0
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0

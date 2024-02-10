@@ -99,7 +99,7 @@ namespace Samurai
 
                 var defProj = proj as DefaultPlayerWeaponProjectile;
                 if (defProj != null) DefPlayerGunPool.Pool.Release(defProj);
-                else Destroy(proj);
+                else Destroy(proj.gameObject);
             }
 
         }

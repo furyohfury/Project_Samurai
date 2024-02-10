@@ -15,6 +15,7 @@ namespace Samurai
             proj.GetComponent<Projectile>().SetProjectileStatsOnShoot(Owner);
             proj.transform.position = this.transform.position + this.transform.forward * 0.1f;
             proj.transform.eulerAngles = new Vector3(0, this.transform.eulerAngles.y, 0);
+            CheckIfEmpty();
         }
     }
 }

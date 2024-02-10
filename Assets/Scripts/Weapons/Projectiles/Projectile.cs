@@ -12,6 +12,8 @@ namespace Samurai
         [SerializeField]
         protected Unit _owner;
         public Unit Owner { get => _owner; protected set => _owner = value; }
+
+        [SerializeField]
         protected ProjectileStatsStruct ProjectileStats;
         public ProjectileStatsStruct GetProjectileStats() => ProjectileStats;        
         public void SetProjectileStatsOnShoot(Unit owner)
@@ -25,11 +27,12 @@ namespace Samurai
 
         protected virtual void OnEnable()
         {
-            ProjectileManager.Instance.ProjectileList.Add(this);
+            if (ProjectileManager.Instance != null) ProjectileManager.Instance.ProjectileList.Add(this);
+            else Debug.LogWarning("Projectile didnt find ProjectileManager");
         }
         protected override void Start()
         {
-            base.Start();            
+            base.Start();
         }
         protected virtual void OnTriggerEnter(Collider other)
         {

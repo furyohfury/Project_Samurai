@@ -11,18 +11,7 @@ namespace Samurai
         public override Vector3 WeaponPositionWhenPicked { get => new Vector3(0.1f, -0.1f, 0); }
         public override Vector3 WeaponRotationWhenPicked { get => new Vector3(145, -90, 0); }
 
-
-        // public Vector4 TestShit;
-        protected override void Start()
-        {
-            base.Start();
-            // transform.SetPositionAndRotation(new Vector3(0.1f, -0.1f, 0), Quaternion.Euler(new Vector3(180, -120, -90)));
-            // transform.position = new Vector3(0.1f, -0.1f, 0);            
-        }
-        private void Update()
-        {
-            // TestShit = new Vector4(transform.rotation.x, transform.rotation.y, transform.rotation.z, transform.rotation.w);
-        }
+        
         public override void Shoot()
         {
             for (var i = 0; i < _numberOfShells; i++)
