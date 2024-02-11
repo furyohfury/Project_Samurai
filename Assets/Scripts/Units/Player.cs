@@ -30,8 +30,7 @@ namespace Samurai
         private DefaultPlayerGunPool _defaultGunPool;
         private DefaultPlayerWeapon _defaultPlayerWeapon;
 
-        [SerializeField]
-        private Transform _weaponSlot;
+        
 
         private Weapon _pickableWeapon;
         public Weapon PickableWeapon
@@ -39,6 +38,12 @@ namespace Samurai
             get => _pickableWeapon;
             private set => _pickableWeapon = value;
         }
+
+        [SerializeField, Tooltip("Time for slow-mo after parry")]
+        private float _parrySlowmoTime;
+        [SerializeField, Tooltip("Coefficient for timescale")]
+        private float _slowMoMultiplier;
+
 
         #region Unity_Methods
         protected override void Awake()
@@ -55,14 +60,7 @@ namespace Samurai
         protected override void Update()
         {
             base.Update();
-
-            // Facing cursor
-            _cameraOffset = Vector3.Distance(transform.position, _camera.transform.position); //todo fix. Must be constant Y
-            Vector3 cursorPosition = new Vector3(Mouse.current.position.ReadValue().x, Mouse.current.position.ReadValue().y, _cameraOffset);
-            cursorPosition = _camera.ScreenToWorldPoint(cursorPosition);
-            cursorPosition = new Vector3(cursorPosition.x, this.transform.position.y, cursorPosition.z);
-            TestShit = cursorPosition;
-            transform.LookAt(cursorPosition);
+            FaceCursor();
         }
         protected override void OnTriggerEnter(Collider other)
         {
@@ -81,11 +79,25 @@ namespace Samurai
             }
         }
         #endregion
+        protected override void GetDamagedByMelee(MeleeWeapon weapon)
+        {
+            base.GetDamagedByMelee(weapon);
+        }
         public override void ChangeColor(PhaseColor color)
         {
             base.ChangeColor(color);
             // Notification to obstacles to change color too
             OnPlayerSwapColor?.Invoke(color);
+        }
+        private void FaceCursor()
+        {
+            // Facing cursor
+            _cameraOffset = Vector3.Distance(transform.position, _camera.transform.position); //todo fix. Must be constant Y
+            Vector3 cursorPosition = new Vector3(Mouse.current.position.ReadValue().x, Mouse.current.position.ReadValue().y, _cameraOffset);
+            cursorPosition = _camera.ScreenToWorldPoint(cursorPosition);
+            cursorPosition = new Vector3(cursorPosition.x, this.transform.position.y, cursorPosition.z);
+            TestShit = cursorPosition;
+            transform.LookAt(cursorPosition);
         }
         public override void Die()
         {
@@ -108,7 +120,7 @@ namespace Samurai
             UnitWeapon.OnBulletsEnded += UnequipPickableWeapon;
 
             _defaultPlayerWeapon.gameObject.SetActive(false);
-            UnitWeapon.transform.parent = _weaponSlot;
+            UnitWeapon.transform.parent = WeaponSlot;
 
             UnitWeapon.transform.SetLocalPositionAndRotation(UnitWeapon.WeaponPositionWhenPicked, Quaternion.Euler(UnitWeapon.WeaponRotationWhenPicked));
 

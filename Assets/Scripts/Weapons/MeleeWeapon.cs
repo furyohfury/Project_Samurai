@@ -18,5 +18,9 @@ namespace Samurai
         {
             Owner = GetComponentInParent<Unit>();
         }
+        private void OnTriggerEnter(Collider other)
+        {
+            
+        }
     }
 }

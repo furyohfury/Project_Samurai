@@ -17,9 +17,9 @@ namespace Samurai
         private Player _player;
         private PlayerControls _playerControls;
         [SerializeField]
-        private GameObject _attackKatana;
+        private MeshRenderer _attackKatana;
         [SerializeField]
-        private GameObject _sheathedKatana;
+        private MeshRenderer _sheathedKatana;
         #region Unity_methods
         protected override void Awake()
         {
@@ -37,7 +37,7 @@ namespace Samurai
             _playerControls.PlayerMap.BlueColor.performed += (cb) => _player.ChangeColor(PhaseColor.Blue);
             _playerControls.PlayerMap.RedColor.performed += (cb) => _player.ChangeColor(PhaseColor.Red);
             _playerControls.PlayerMap.PickWeapon.performed += _player.EquipPickableWeapon;
-            _playerControls.PlayerMap.MeleeAttack.performed += _player.MeleeAttack;
+            // _playerControls.PlayerMap.MeleeAttack.performed += _player.MeleeAttack;
             _playerControls.PlayerMap.MeleeAttack.performed += MeleeAttackAnimation;
         }
         protected override void Update()
@@ -61,15 +61,17 @@ namespace Samurai
         protected override void OnMeleeAttackAnimationStarted_UnityEvent()
         {
             base.OnMeleeAttackAnimationStarted_UnityEvent();
-            _sheathedKatana.SetActive(false);
-            _attackKatana.SetActive(true);
+            Unit.UnitWeapon.CanShoot = false;
+            _sheathedKatana.enabled = false;
+            _attackKatana.enabled = true;
             _player.UnitWeapon.gameObject.SetActive(false);
         }
         protected override void OnMeleeAttackAnimationEnded_UnityEvent()
         {
             base.OnMeleeAttackAnimationEnded_UnityEvent();
-            _attackKatana.SetActive(false);
-            _sheathedKatana.SetActive(true);
+            Unit.UnitWeapon.CanShoot = true;
+            _attackKatana.enabled = false;
+            _sheathedKatana.enabled = true;
             _player.UnitWeapon.gameObject.SetActive(true);
         }
         protected override void OnMeleeAttackSlashAnimationStarted_UnityEvent()

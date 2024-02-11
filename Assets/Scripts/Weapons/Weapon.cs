@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEditor.Animations;
 using UnityEngine;
 namespace Samurai
@@ -6,13 +7,15 @@ namespace Samurai
     public abstract class Weapon : MonoBehaviour
     {
         [SerializeField]
-        protected int _numberOfBulletsForPlayer;
+        protected int _numberOfBulletsForPlayer = int.MaxValue;
         public int NumberOfBulletsForPlayer { get => _numberOfBulletsForPlayer; protected set => _numberOfBulletsForPlayer = value; }
 
         [SerializeField]
-        protected float AttackSpeed; //todo
-        [SerializeField]
+        protected float ShootingDelay;
 
+        public bool CanShoot { get; set; } = true; // todo incapsulation
+
+        [SerializeField]
         protected GameObject WeaponProjectilePrefab;
 
         [SerializeField]
@@ -23,11 +26,11 @@ namespace Samurai
             protected set => _isPickable = value;
         }
 
-        public abstract Vector3 WeaponPositionWhenPicked { get;}
-        public abstract Vector3 WeaponRotationWhenPicked { get;}
+        public abstract Vector3 WeaponPositionWhenPicked { get; }
+        public abstract Vector3 WeaponRotationWhenPicked { get; }
 
         public Unit Owner { get; protected set; }
-        
+
         protected ProjectileStatsStruct ProjectileStats;
         public ProjectileStatsStruct GetProjectileStats() => ProjectileStats;
 
@@ -39,12 +42,12 @@ namespace Samurai
         [SerializeField]
         protected AnimatorController _animController;
         public AnimatorController AnimController
-        { 
+        {
             get => _animController;
             protected set => _animController = value;
         }
-        
-        
+
+
         #region Unity_Methods
         protected virtual void Start()
         {
@@ -71,7 +74,17 @@ namespace Samurai
                 }
             }
         }
-
+        protected void SetShootingDelay(float delay)
+        {
+            if (!CanShoot) return;
+            StartCoroutine(ShootDelayCoroutine(delay));
+        }
+        protected IEnumerator ShootDelayCoroutine(float delay)
+        {
+            CanShoot = false;
+            yield return new WaitForSeconds(delay);
+            CanShoot = true;
+        }
         public SimpleHandle OnBulletsEnded;
     }
 }

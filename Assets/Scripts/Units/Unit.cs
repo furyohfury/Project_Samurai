@@ -28,6 +28,9 @@ namespace Samurai
         public Weapon UnitWeapon { get => _unitWeapon; protected set => _unitWeapon = value; }
 
         [SerializeField]
+        protected Transform WeaponSlot;
+
+        [SerializeField]
         protected float BlinkWhenDamagedTime = 0.1f;
 
 
@@ -39,7 +42,7 @@ namespace Samurai
         protected override void Start()
         {
             base.Start();
-            UnitWeapon = GetComponentInChildren<Weapon>();
+
         }
         protected virtual void Update()
         {
@@ -57,9 +60,6 @@ namespace Samurai
                 GetDamagedByMelee(weapon);
             }
         }
-
-        
-
         private void OnDestroy()
         {
             StopAllCoroutines();
@@ -69,6 +69,8 @@ namespace Samurai
         {
             CharController = GetComponent<CharacterController>();
             UnitInput = GetComponent<UnitInput>();
+            UnitWeapon = GetComponentInChildren<Weapon>();
+            if (WeaponSlot == null) WeaponSlot = transform.Find("WeaponSlot");
         }
 
 
@@ -85,16 +87,16 @@ namespace Samurai
 
         public virtual void UnitShoot()
         {
-            if (!UnitInput.CanShoot) return;
+            if (!UnitWeapon.CanShoot) return;
             UnitWeapon.Shoot();
         }
 
 
-        public void GetDamagedByProjectile(Projectile proj) 
+        public void GetDamagedByProjectile(Projectile proj)
         {
             // if ((proj.Owner as Player != null && this as Enemy != null) || (proj.Owner as Enemy != null && this as Player != null))
             if ((proj.CurrentColor != this.CurrentColor) && (this.GetType() != proj.Owner.GetType()) && (this as Enemy == null || proj.Owner as Enemy == null))
-            {                
+            {
                 GetDamaged(proj.GetProjectileStats().Damage);
 
                 var defProj = proj as DefaultPlayerWeaponProjectile;

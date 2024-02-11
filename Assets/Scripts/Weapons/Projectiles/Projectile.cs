@@ -36,7 +36,7 @@ namespace Samurai
         }
         protected virtual void OnTriggerEnter(Collider other)
         {
-            if (other.TryGetComponent(out MeleeWeapon weapon) && weapon.Owner != Owner)
+            if (other.TryGetComponent(out MeleeWeapon weapon) && weapon.Owner.GetType() == typeof(Player))
             {
                 Destroy(this.gameObject);
             }

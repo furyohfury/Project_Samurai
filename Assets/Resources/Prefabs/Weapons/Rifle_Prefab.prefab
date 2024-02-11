@@ -112,7 +112,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _numberOfBulletsForPlayer: 20
-  AttackSpeed: 0
+  ShootingDelay: 0.2
   WeaponProjectilePrefab: {fileID: 8827768608434931341, guid: 3bccae5e596adfe428a80979030e8fc9, type: 3}
   _isPickable: 1
   PlayerProjectileStats:

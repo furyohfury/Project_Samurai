@@ -12,12 +12,30 @@ namespace Samurai
 
         protected Animator UnitAnimator;
 
-        public bool CanShoot { get; protected set; } = true;
+        
         public bool CanHit { get; protected set; } = true;
 
         protected Unit Unit;
 
         public bool CanMove { get; protected set; } = true;
+
+        public bool Attacking
+        {
+            get => Attacking;
+            protected set
+            {
+                if (value == true)
+                {
+                    CanHit = false;
+                    CanMove = false;
+                }
+                else
+                {
+                    CanHit = true;
+                    CanMove = true;
+                }
+            }
+        }
 
         [SerializeField]
         protected Collider MeleeAttackHitbox;
@@ -52,12 +70,13 @@ namespace Samurai
         #endregion
         protected virtual void UnitShootAnimation(CallbackContext _)
         {
-            if (CanShoot)
+            if (Unit.UnitWeapon.CanShoot)
             {
                 UnitAnimator.SetTrigger("Shoot");
                 Unit.UnitShoot();
             }
         }
+        
         public virtual void UnitInputDie()
         {
             UnitAnimator.SetTrigger("Die");
@@ -73,25 +92,21 @@ namespace Samurai
         }
 
         #region UnityAnimationEvents
-        protected virtual void OnShootAnimationStarted_UnityEvent()
+        /* protected virtual void OnShootAnimationStarted_UnityEvent()
         {
-            CanShoot = false;
+            Unit.UnitWeapon.CanShoot = false;
         }
         protected virtual void OnShootAnimationEnded_UnityEvent()
         {
-            CanShoot = true;
-        }
+            Unit.UnitWeapon.CanShoot = true;
+        } */
         protected virtual void OnMeleeAttackAnimationStarted_UnityEvent()
         {
-            CanMove = false;
-            CanShoot = false;
-            CanHit = false;
+            Attacking = true;
         }
         protected virtual void OnMeleeAttackAnimationEnded_UnityEvent()
         {
-            CanMove = true;
-            CanShoot = true;
-            CanHit = true;
+            Attacking = false;
         }
         protected virtual void OnMeleeAttackSlashAnimationStarted_UnityEvent()
         {
