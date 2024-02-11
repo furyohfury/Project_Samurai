@@ -39,6 +39,8 @@ namespace Samurai
             private set => _pickableWeapon = value;
         }
 
+        
+        
         [SerializeField, Tooltip("Time for slow-mo after parry")]
         private float _parrySlowmoTime;
         [SerializeField, Tooltip("Coefficient for timescale")]

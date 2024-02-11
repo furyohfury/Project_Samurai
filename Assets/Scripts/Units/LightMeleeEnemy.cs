@@ -5,6 +5,7 @@ namespace Samurai
 {
     public class LightMeleeEnemy : Enemy
     {
+        protected MeleeWeapon MeleeWeapon;
 
     }
 }

@@ -27,6 +27,8 @@ namespace Samurai
         protected Weapon _unitWeapon;
         public Weapon UnitWeapon { get => _unitWeapon; protected set => _unitWeapon = value; }
 
+        
+
         [SerializeField]
         protected Transform WeaponSlot;
 
