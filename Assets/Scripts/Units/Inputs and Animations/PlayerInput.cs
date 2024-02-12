@@ -41,11 +41,10 @@ namespace Samurai
             _playerControls.PlayerMap.MeleeAttack.performed += MeleeAttackAnimation;
         }
         protected override void Update()
-        {
-            // Moving
+        {            
             Vector2 movement = _playerControls.PlayerMap.Movement.ReadValue<Vector2>();
             MoveDirection = new Vector3(movement.x, 0, movement.y);
-            // Moving is after defining MD
+            // Moving animation happens after defining MD
             base.Update();
         }
         private void OnDisable()
@@ -54,7 +53,7 @@ namespace Samurai
             _playerControls.Disable();
         }
         #endregion
-        public void SetAnimatorController(AnimatorController controller)
+        public void SetAnimatorController(AnimatorController controller) // mb redo in controller layers
         {
             UnitAnimator.runtimeAnimatorController = controller;
         }

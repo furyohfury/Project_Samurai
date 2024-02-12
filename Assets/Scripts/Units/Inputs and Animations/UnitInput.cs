@@ -56,6 +56,11 @@ namespace Samurai
         }
         protected virtual void Update()
         {
+            MovementAnimation();
+
+        }
+        protected void MovementAnimation()
+        {
             if (MoveDirection != Vector3.zero)
             {
                 UnitAnimator.SetBool("Moving", true);
@@ -65,7 +70,6 @@ namespace Samurai
                 TestShit = animVector;
             }
             else UnitAnimator.SetBool("Moving", false);
-
         }
         #endregion
         protected virtual void UnitShootAnimation(CallbackContext _)
