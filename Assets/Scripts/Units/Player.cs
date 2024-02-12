@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Pool;
@@ -8,39 +9,34 @@ using static UnityEngine.InputSystem.InputAction;
 namespace Samurai
 {
     [RequireComponent(typeof(PlayerInput))]
-    public class Player : Unit
+    public class Player : Unit, IAttackRange, IAttackMelee
     {
         public Vector3 TestShit;
 
+        [SerializeField]
+        private RangeWeapon _rangeWeapon;
+        public RangeWeapon RangeWeapon { get => _rangeWeapon; private set => _rangeWeapon = value; }
 
-        private Camera _camera;
+        private Camera _camera; // redo w/ zenject
         private float _cameraOffset;
-
-
-        /* [SerializeField]
-        private PlayerWeapon _weapon;
-        public PlayerWeapon Weapon
-        {
-            get => _weapon;
-            set => _weapon = value;
-        } */
-
 
         [Inject]
         private DefaultPlayerGunPool _defaultGunPool;
         private DefaultPlayerWeapon _defaultPlayerWeapon;
 
-        
 
-        private Weapon _pickableWeapon;
-        public Weapon PickableWeapon
+
+        private RangeWeapon _pickableWeapon;
+        public RangeWeapon PickableWeapon
         {
             get => _pickableWeapon;
             private set => _pickableWeapon = value;
         }
 
-        
-        
+        [SerializeField]
+        private MeleeWeapon _meleeWeapon;
+        public MeleeWeapon MeleeWeapon { get => _meleeWeapon; private set => _meleeWeapon = value; }
+
         [SerializeField, Tooltip("Time for slow-mo after parry")]
         private float _parrySlowmoTime;
         [SerializeField, Tooltip("Coefficient for timescale")]
@@ -52,6 +48,8 @@ namespace Samurai
         {
             base.Awake();
             UnitInput = GetComponent<PlayerInput>();
+            RangeWeapon = GetComponentInChildren<RangeWeapon>();
+            MeleeWeapon = GetComponentInChildren<MeleeWeapon>();
         }
         protected override void Start()
         {
@@ -67,7 +65,7 @@ namespace Samurai
         protected override void OnTriggerEnter(Collider other)
         {
             base.OnTriggerEnter(other);
-            if (other.TryGetComponent(out Weapon weapon) && weapon.IsPickable && weapon.Owner == null)
+            if (other.TryGetComponent(out RangeWeapon weapon) && weapon.IsPickable && weapon.Owner == null)
             {
                 PickableWeapon = weapon;
             }
@@ -75,7 +73,7 @@ namespace Samurai
         private void OnTriggerExit(Collider other)
         {
             // if (other.TryGetComponent(out Weapon weapon) && weapon.IsPickable && weapon.Owner == null)
-            if (PickableWeapon != null && other.transform == PickableWeapon.transform && UnitWeapon != PickableWeapon)
+            if (PickableWeapon != null && other.transform == PickableWeapon.transform && RangeWeapon != PickableWeapon)
             {
                 PickableWeapon = null;
             }
@@ -83,8 +81,22 @@ namespace Samurai
         #endregion
         protected override void GetDamagedByMelee(MeleeWeapon weapon)
         {
-            base.GetDamagedByMelee(weapon);
+            if ((weapon.Owner as Enemy != null))
+            {
+                if (!MeleeWeapon.Parrying) GetDamaged(weapon.Damage);
+                else //Parry by player
+                {
+                    StartCoroutine(ParryingCoroutine());
+                }
+            }
         }
+        private IEnumerator ParryingCoroutine()
+        {
+            Time.timeScale = _slowMoMultiplier;
+            yield return new WaitForSeconds(_parrySlowmoTime);
+            Time.timeScale = 1;
+        }
+
         public override void ChangeColor(PhaseColor color)
         {
             base.ChangeColor(color);
@@ -108,41 +120,46 @@ namespace Samurai
             Instantiate(Resources.Load<GameObject>("UI/GameOverScreen"));
         }
         #region Guns
-        public override void UnitShoot()
+        public void Shoot()
         {
-            base.UnitShoot();
+            RangeWeapon.Shoot();
         }
-        
+
         public void EquipPickableWeapon(CallbackContext _)
         {
             if (PickableWeapon == null) return;
 
-            UnitWeapon = PickableWeapon;
+            RangeWeapon = PickableWeapon;
             // Throw away empty gun
-            UnitWeapon.OnBulletsEnded += UnequipPickableWeapon;
+            RangeWeapon.OnBulletsEnded += UnequipPickableWeapon;
 
             _defaultPlayerWeapon.gameObject.SetActive(false);
-            UnitWeapon.transform.parent = WeaponSlot;
+            RangeWeapon.transform.parent = WeaponSlot;
 
-            UnitWeapon.transform.SetLocalPositionAndRotation(UnitWeapon.WeaponPositionWhenPicked, Quaternion.Euler(UnitWeapon.WeaponRotationWhenPicked));
+            RangeWeapon.transform.SetLocalPositionAndRotation(RangeWeapon.WeaponPositionWhenPicked, Quaternion.Euler(RangeWeapon.WeaponRotationWhenPicked));
 
-            ((PlayerInput)UnitInput).SetAnimatorController(UnitWeapon.AnimController);
-            UnitWeapon.Equipped(this);
+            ((PlayerInput)UnitInput).SetAnimatorController(RangeWeapon.AnimController);
+            RangeWeapon.Equipped(this);
             PickableWeapon = null;
         }
         public void UnequipPickableWeapon()
         {
-            Destroy(UnitWeapon.gameObject);
+            Destroy(RangeWeapon.gameObject);
             _defaultPlayerWeapon.gameObject.SetActive(true);
-            UnitWeapon = _defaultPlayerWeapon;
+            RangeWeapon = _defaultPlayerWeapon;
             ((PlayerInput)UnitInput).SetAnimatorController(_defaultPlayerWeapon.AnimController);
-            _defaultPlayerWeapon.Equipped(this);            
+            _defaultPlayerWeapon.Equipped(this);
         }
         #endregion
         #region Melee
-        public override void MeleeAttack(CallbackContext _)
+        /* public override void MeleeAttack(CallbackContext _)
         {
             base.MeleeAttack(_);
+        } */
+
+        public void MeleeAttack()
+        {
+
         }
         #endregion
         public event ChangeColorHandle OnPlayerSwapColor;

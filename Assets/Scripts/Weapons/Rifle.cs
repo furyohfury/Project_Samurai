@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 namespace Samurai
 {
-    public class Rifle : Weapon
+    public class Rifle : RangeWeapon
     {
         public override Vector3 WeaponPositionWhenPicked => new Vector3(0, 0, 0);
 

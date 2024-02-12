@@ -17,7 +17,7 @@ namespace Samurai
             base.Start();
             EnemyPool.EnemyList.Add(this);
             transform.parent = EnemyPool.transform;
-            if (UnitWeapon != null)UnitWeapon.transform.SetLocalPositionAndRotation(UnitWeapon.WeaponPositionWhenPicked, Quaternion.Euler(UnitWeapon.WeaponRotationWhenPicked));
+            
             
         }
         

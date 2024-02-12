@@ -1,7 +1,7 @@
 using UnityEngine;
 namespace Samurai
 {
-    public class Shotgun : Weapon
+    public class Shotgun : RangeWeapon
     {
         [SerializeField]
         private int _numberOfShells;

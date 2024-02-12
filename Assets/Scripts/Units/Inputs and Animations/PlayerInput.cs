@@ -11,7 +11,7 @@ using static UnityEngine.InputSystem.InputAction;
 namespace Samurai
 {
     [RequireComponent(typeof(Player))]
-    public class PlayerInput : UnitInput
+    public class PlayerInput : UnitInput, IAttackRange, IAttackMelee, IInputRange, IInputMelee
     {
         [Inject]
         private Player _player;
@@ -20,11 +20,60 @@ namespace Samurai
         private MeshRenderer _attackKatana;
         [SerializeField]
         private MeshRenderer _sheathedKatana;
+
+        [SerializeField]
+        private RangeWeapon _rangeWeapon;
+        public RangeWeapon RangeWeapon { get => _rangeWeapon; private set => _rangeWeapon = value; }
+        public bool CanShoot { get; private set; } = true;
+
+
+        [SerializeField]
+        private MeleeWeapon _meleeWeapon;
+        public MeleeWeapon MeleeWeapon { get => _meleeWeapon; private set => _meleeWeapon = value; }
+        public bool CanHit { get; private set; } = true;
+
+        [SerializeField]
+        private Collider _meleeAttackHitbox; // todo mb udalit field
+        public Collider MeleeAttackHitbox
+        {
+            get => _meleeAttackHitbox;
+            set
+            {
+                _meleeAttackHitbox = value;
+            }
+        }
+
+        private bool _inMeleeAttack = false;
+        public bool InMeleeAttack
+        {
+            get => _inMeleeAttack;
+            private set
+            {
+                if (value == true)
+                {
+                    _inMeleeAttack = true;
+                    (Unit as IAttackRange).RangeWeapon.CanShoot = false;
+                    CanMove = false;
+                    CanHit = false;
+                }
+                else
+                {
+                    _inMeleeAttack = false;
+                    (Unit as IAttackRange).RangeWeapon.CanShoot = true;
+                    CanMove = true;
+                    CanHit = true;
+                }                
+            }            
+        }
+
         #region Unity_methods
         protected override void Awake()
         {
             base.Awake();
             _playerControls = new();
+            if (RangeWeapon == null) RangeWeapon = GetComponentInChildren<RangeWeapon>();
+            if (MeleeWeapon == null) MeleeWeapon = GetComponentInChildren<MeleeWeapon>();
+            if (MeleeAttackHitbox == null) MeleeAttackHitbox = MeleeWeapon.GetComponentInChildren<Collider>();
         }
         protected override void Start()
         {
@@ -33,15 +82,15 @@ namespace Samurai
         private void OnEnable()
         {
             _playerControls.Enable();
-            _playerControls.PlayerMap.Shoot.performed += UnitShootAnimation;
+            _playerControls.PlayerMap.Shoot.performed += Shoot;
             _playerControls.PlayerMap.BlueColor.performed += (cb) => _player.ChangeColor(PhaseColor.Blue);
             _playerControls.PlayerMap.RedColor.performed += (cb) => _player.ChangeColor(PhaseColor.Red);
             _playerControls.PlayerMap.PickWeapon.performed += _player.EquipPickableWeapon;
             // _playerControls.PlayerMap.MeleeAttack.performed += _player.MeleeAttack;
-            _playerControls.PlayerMap.MeleeAttack.performed += MeleeAttackAnimation;
+            _playerControls.PlayerMap.MeleeAttack.performed += MeleeAttack;
         }
         protected override void Update()
-        {            
+        {
             Vector2 movement = _playerControls.PlayerMap.Movement.ReadValue<Vector2>();
             MoveDirection = new Vector3(movement.x, 0, movement.y);
             // Moving animation happens after defining MD
@@ -49,38 +98,59 @@ namespace Samurai
         }
         private void OnDisable()
         {
-            _playerControls.PlayerMap.Shoot.performed -= UnitShootAnimation;
+            _playerControls.PlayerMap.Shoot.performed -= Shoot;
             _playerControls.Disable();
         }
         #endregion
         public void SetAnimatorController(AnimatorController controller) // mb redo in controller layers
         {
             UnitAnimator.runtimeAnimatorController = controller;
-        }
-        protected override void OnMeleeAttackAnimationStarted_UnityEvent()
+        }        
+        public void OnShootAnimationStarted_UnityEvent() { }
+        public void OnShootAnimationEnded_UnityEvent() { }
+
+        public void Shoot(CallbackContext _) => Shoot();
+        public void Shoot()
         {
-            base.OnMeleeAttackAnimationStarted_UnityEvent();
-            Unit.UnitWeapon.CanShoot = false;
+            if (this.CanShoot && (Unit as IAttackRange).RangeWeapon.CanShoot)
+            {
+                UnitAnimator.SetTrigger("Shoot");
+                (Unit as IAttackRange).Shoot();
+            }
+        }
+
+        public void MeleeAttack(CallbackContext _) => MeleeAttack();
+        public void MeleeAttack()
+        {
+            if (CanHit) UnitAnimator.SetTrigger("MeleeAttack");
+
+        }
+
+
+        public void OnMeleeAttackAnimationStarted_UnityEvent()
+        {
+            InMeleeAttack = true;
+
             _sheathedKatana.enabled = false;
             _attackKatana.enabled = true;
-            _player.UnitWeapon.gameObject.SetActive(false);
+            _player.RangeWeapon.gameObject.SetActive(false);
         }
-        protected override void OnMeleeAttackAnimationEnded_UnityEvent()
+        public void OnMeleeAttackAnimationEnded_UnityEvent()
         {
-            base.OnMeleeAttackAnimationEnded_UnityEvent();
-            Unit.UnitWeapon.CanShoot = true;
+            InMeleeAttack = false;
+
             _attackKatana.enabled = false;
             _sheathedKatana.enabled = true;
-            _player.UnitWeapon.gameObject.SetActive(true);
+            _player.RangeWeapon.gameObject.SetActive(true);
         }
-        protected override void OnMeleeAttackSlashAnimationStarted_UnityEvent()
+        public void OnMeleeAttackSlashAnimationStarted_UnityEvent()
         {
-            base.OnMeleeAttackSlashAnimationStarted_UnityEvent();
+            MeleeAttackHitbox.enabled = true;            
         }
-        protected override void OnMeleeAttackSlashAnimationEnded_UnityEvent()
+        public void OnMeleeAttackSlashAnimationEnded_UnityEvent()
         {
-            base.OnMeleeAttackSlashAnimationEnded_UnityEvent();
-
+            MeleeAttackHitbox.enabled = false;
+            MeleeWeapon.Parrying = false;
         }
     }
 }

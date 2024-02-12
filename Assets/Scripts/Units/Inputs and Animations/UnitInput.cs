@@ -13,13 +13,13 @@ namespace Samurai
         protected Animator UnitAnimator;
 
         
-        public bool CanHit { get; protected set; } = true;
+        // public bool CanHit { get; protected set; } = true;
 
         protected Unit Unit;
 
         public bool CanMove { get; protected set; } = true;
 
-        public bool Attacking
+        /* public bool Attacking
         {
             get => Attacking;
             protected set
@@ -35,10 +35,10 @@ namespace Samurai
                     CanMove = true;
                 }
             }
-        }
+        } */
 
-        [SerializeField]
-        protected Collider MeleeAttackHitbox;
+        // [SerializeField]
+        // protected Collider MeleeAttackHitbox;
 
         //TestShit
         public Vector3 TestShit;
@@ -47,8 +47,7 @@ namespace Samurai
         #region Unity_Methods
         protected virtual void Awake()
         {
-            UnitAnimator = GetComponent<Animator>();
-            Unit = GetComponent<Unit>();
+            Bindings();
         }
         protected virtual void Start()
         {
@@ -57,7 +56,11 @@ namespace Samurai
         protected virtual void Update()
         {
             MovementAnimation();
-
+        }
+        protected virtual void Bindings()
+        {
+            UnitAnimator = GetComponent<Animator>();
+            Unit = GetComponent<Unit>();
         }
         protected void MovementAnimation()
         {
@@ -72,28 +75,28 @@ namespace Samurai
             else UnitAnimator.SetBool("Moving", false);
         }
         #endregion
-        protected virtual void UnitShootAnimation(CallbackContext _)
+        /* protected virtual void UnitShootAnimation(CallbackContext _)
         {
             if (Unit.UnitWeapon.CanShoot)
             {
                 UnitAnimator.SetTrigger("Shoot");
                 Unit.UnitShoot();
             }
-        }
+        } */
         
         public virtual void UnitInputDie()
         {
             UnitAnimator.SetTrigger("Die");
         }
-        public void UnitDieAnimationEnded_UnityEvent() //bind w/ death animation
+        public void UnitDieAnimationEnded_UnityEvent() //bind w/ all death animation
         {
             Unit.Die();
         }
 
-        protected void MeleeAttackAnimation(CallbackContext context)
+        /* protected void MeleeAttackAnimation(CallbackContext context)
         {
             if (CanHit) UnitAnimator.SetTrigger("MeleeAttack");
-        }
+        } */
 
         #region UnityAnimationEvents
         /* protected virtual void OnShootAnimationStarted_UnityEvent()
@@ -104,7 +107,7 @@ namespace Samurai
         {
             Unit.UnitWeapon.CanShoot = true;
         } */
-        protected virtual void OnMeleeAttackAnimationStarted_UnityEvent()
+        /* protected virtual void OnMeleeAttackAnimationStarted_UnityEvent()
         {
             Attacking = true;
         }
@@ -119,7 +122,7 @@ namespace Samurai
         protected virtual void OnMeleeAttackSlashAnimationEnded_UnityEvent()
         {
             MeleeAttackHitbox.enabled = false;
-        }
+        } */
         #endregion
     }
 }

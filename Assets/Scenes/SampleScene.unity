@@ -225,14 +225,15 @@ MonoBehaviour:
     - {fileID: 2100000, guid: 6fc962880b38ad24d86428442fce17f6, type: 2}
     - {fileID: 2100000, guid: 99719b2fa31b3184c9d117ba958214a6, type: 2}
   UnitStats:
-    HP: 5
+    HP: 20
     MoveSpeed: 5
-  _unitWeapon: {fileID: 0}
   WeaponSlot: {fileID: 1198088356}
   BlinkWhenDamagedTime: 0.1
   TestShit: {x: 0, y: 0, z: 0}
-  _parrySlowmoTime: 0
-  _slowMoMultiplier: 0
+  _rangeWeapon: {fileID: 0}
+  _meleeWeapon: {fileID: 0}
+  _parrySlowmoTime: 5
+  _slowMoMultiplier: 0.8
 --- !u!143 &25276846
 CharacterController:
   m_ObjectHideFlags: 0
@@ -263,10 +264,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 021159201c5c87745a2201473e983a85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MeleeAttackHitbox: {fileID: 116218653}
   TestShit: {x: 0, y: 0, z: 0}
   _attackKatana: {fileID: 1627564576}
   _sheathedKatana: {fileID: 1836738409}
+  _rangeWeapon: {fileID: 0}
+  _meleeWeapon: {fileID: 0}
+  _meleeAttackHitbox: {fileID: 116218653}
 --- !u!1 &48903829 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8827768608434931341, guid: 3bccae5e596adfe428a80979030e8fc9, type: 3}
@@ -457,7 +460,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4eb4b507ff52e40f58f68c2065e32636, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  manageVisibility: 1
+  manageVisibility: 0
 --- !u!64 &116218653
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -787,7 +790,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8d9dcfb7a5050d47b804a91b52b9150, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _damage: 5
+  _damage: 1
+  _parrying: 0
   Owner: {fileID: 0}
 --- !u!54 &116218660
 Rigidbody:
@@ -5346,7 +5350,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d39dee4238be38140a93a6c7388bad85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MeleeAttackHitbox: {fileID: 0}
   TestShit: {x: 0, y: 0, z: 0}
 --- !u!114 &654798173
 MonoBehaviour:
@@ -5395,7 +5398,6 @@ MonoBehaviour:
   UnitStats:
     HP: 5
     MoveSpeed: 5
-  _unitWeapon: {fileID: 0}
   WeaponSlot: {fileID: 0}
   BlinkWhenDamagedTime: 0.1
 --- !u!143 &654798174
@@ -5422,7 +5424,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh143294
+  m_Name: pb_Mesh27056
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -7094,7 +7096,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8d9dcfb7a5050d47b804a91b52b9150, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _damage: 10
+  _damage: 1
+  _parrying: 0
   Owner: {fileID: 0}
 --- !u!114 &1109150760
 MonoBehaviour:
@@ -7108,7 +7111,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4eb4b507ff52e40f58f68c2065e32636, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  manageVisibility: 1
+  manageVisibility: 0
 --- !u!64 &1109150761
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -11941,8 +11944,8 @@ GameObject:
   - component: {fileID: 1494592554}
   - component: {fileID: 1494592553}
   - component: {fileID: 1494592552}
-  - component: {fileID: 1494592551}
-  - component: {fileID: 1494592550}
+  - component: {fileID: 1494592556}
+  - component: {fileID: 1494592557}
   - component: {fileID: 1494592555}
   m_Layer: 0
   m_Name: HMEnemy
@@ -11951,16 +11954,95 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1494592550
+--- !u!143 &1494592552
+CharacterController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1494592549}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Height: 2
+  m_Radius: 0.5
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 1.01, z: 0}
+--- !u!95 &1494592553
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1494592549}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: 320b1c2af77554f99a1658df4a6d3d5c, type: 3}
+  m_Controller: {fileID: 9100000, guid: 4dbca558622eca545b70d7ae54eefca1, type: 2}
+  m_CullingMode: 1
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!4 &1494592554
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1494592549}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 2.85, y: 0.036, z: -8.565}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 488184046}
+  - {fileID: 503005020}
+  - {fileID: 1109150758}
+  m_Father: {fileID: 0}
+  m_RootOrder: 16
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!195 &1494592555
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1494592549}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
+--- !u!114 &1494592556
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1494592549}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5c427c2a3a47c92428ed3eaad0d5376f, type: 3}
+  m_Script: {fileID: 11500000, guid: a658c0526db80974da71a122c09020e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _currentColor: 0
@@ -11996,104 +12078,24 @@ MonoBehaviour:
     - {fileID: 2100000, guid: 6fc962880b38ad24d86428442fce17f6, type: 2}
     - {fileID: 2100000, guid: 99719b2fa31b3184c9d117ba958214a6, type: 2}
   UnitStats:
-    HP: 3
-    MoveSpeed: 3
-  _unitWeapon: {fileID: 0}
+    HP: 10
+    MoveSpeed: 1
   WeaponSlot: {fileID: 2146086232}
   BlinkWhenDamagedTime: 0.1
---- !u!114 &1494592551
+--- !u!114 &1494592557
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1494592549}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d39dee4238be38140a93a6c7388bad85, type: 3}
+  m_Script: {fileID: 11500000, guid: 4f44cccd5dc66a94b9fea21c420949b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MeleeAttackHitbox: {fileID: 1109150761}
   TestShit: {x: 0, y: 0, z: 0}
---- !u!143 &1494592552
-CharacterController:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1494592549}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Height: 2
-  m_Radius: 0.5
-  m_SlopeLimit: 45
-  m_StepOffset: 0.3
-  m_SkinWidth: 0.08
-  m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!95 &1494592553
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1494592549}
-  m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: 320b1c2af77554f99a1658df4a6d3d5c, type: 3}
-  m_Controller: {fileID: 9100000, guid: 4dbca558622eca545b70d7ae54eefca1, type: 2}
-  m_CullingMode: 1
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
---- !u!4 &1494592554
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1494592549}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.85, y: 0.099999666, z: -8.565}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 488184046}
-  - {fileID: 503005020}
-  - {fileID: 1109150758}
-  m_Father: {fileID: 0}
-  m_RootOrder: 16
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!195 &1494592555
-NavMeshAgent:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1494592549}
-  m_Enabled: 0
-  m_AgentTypeID: 0
-  m_Radius: 0.5
-  m_Speed: 3.5
-  m_Acceleration: 8
-  avoidancePriority: 50
-  m_AngularSpeed: 120
-  m_StoppingDistance: 0
-  m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 1
-  m_AutoRepath: 1
-  m_Height: 2
-  m_BaseOffset: 0
-  m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
+  _meleeWeapon: {fileID: 0}
 --- !u!1 &1502773899
 GameObject:
   m_ObjectHideFlags: 0
@@ -12173,7 +12175,6 @@ MonoBehaviour:
   UnitStats:
     HP: 5
     MoveSpeed: 5
-  _unitWeapon: {fileID: 0}
   WeaponSlot: {fileID: 0}
   BlinkWhenDamagedTime: 0.1
 --- !u!143 &1511773586
@@ -12206,7 +12207,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d39dee4238be38140a93a6c7388bad85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MeleeAttackHitbox: {fileID: 0}
   TestShit: {x: 0, y: 0, z: 0}
 --- !u!4 &1519754149 stripped
 Transform:
@@ -12317,7 +12317,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh143888
+  m_Name: pb_Mesh27652
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -16507,6 +16507,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _damage: 5
+  _parrying: 0
   Owner: {fileID: 0}
 --- !u!114 &1853930320
 MonoBehaviour:
@@ -20028,7 +20029,6 @@ MonoBehaviour:
   UnitStats:
     HP: 3
     MoveSpeed: 3
-  _unitWeapon: {fileID: 0}
   WeaponSlot: {fileID: 246623663}
   BlinkWhenDamagedTime: 0.1
 --- !u!114 &6246874146993524553
@@ -20043,7 +20043,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d39dee4238be38140a93a6c7388bad85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MeleeAttackHitbox: {fileID: 1853930318}
   TestShit: {x: 0, y: 0, z: 0}
 --- !u!143 &6246874146993524554
 CharacterController:

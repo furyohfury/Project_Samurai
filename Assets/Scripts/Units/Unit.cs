@@ -23,9 +23,9 @@ namespace Samurai
         [Inject]
         protected DefaultPlayerGunPool DefPlayerGunPool;
 
-        [SerializeField]
-        protected Weapon _unitWeapon;
-        public Weapon UnitWeapon { get => _unitWeapon; protected set => _unitWeapon = value; }
+        /* [SerializeField]
+        protected RangeWeapon _unitWeapon;
+        public RangeWeapon UnitWeapon { get => _unitWeapon; protected set => _unitWeapon = value; } */
 
         
 
@@ -71,7 +71,7 @@ namespace Samurai
         {
             CharController = GetComponent<CharacterController>();
             UnitInput = GetComponent<UnitInput>();
-            UnitWeapon = GetComponentInChildren<Weapon>();
+            // UnitWeapon = GetComponentInChildren<RangeWeapon>();
             if (WeaponSlot == null) WeaponSlot = transform.Find("WeaponSlot");
         }
 
@@ -87,11 +87,11 @@ namespace Samurai
         }
 
 
-        public virtual void UnitShoot()
+        /* public virtual void UnitShoot()
         {
             if (!UnitWeapon.CanShoot) return;
             UnitWeapon.Shoot();
-        }
+        } */
 
 
         public void GetDamagedByProjectile(Projectile proj)
@@ -109,7 +109,7 @@ namespace Samurai
         }
         protected virtual void GetDamagedByMelee(MeleeWeapon weapon)
         {
-            if ((this.GetType() != weapon.Owner.GetType()) && (this as Enemy == null || weapon.Owner as Enemy == null))
+            if ((this.GetType() != weapon.Owner.GetType()) && (this as Enemy == null || weapon.Owner as Enemy == null) && !weapon.Parrying)
             {
                 GetDamaged(weapon.Damage);
             }

@@ -2,7 +2,7 @@ using UnityEngine;
 using Zenject;
 namespace Samurai
 {
-    public class DefaultPlayerWeapon : Weapon
+    public class DefaultPlayerWeapon : RangeWeapon
     {        
         [Inject]
         private readonly DefaultPlayerGunPool _pool;
@@ -17,7 +17,7 @@ namespace Samurai
             if (_pool == null) Debug.LogError($"Pool not found by {this.GetType()} component on {gameObject}");
         }
         public override void Shoot()
-        {            
+        {
             Projectile proj = _pool.Pool.Get();
             proj.SetProjectileStatsOnShoot(Owner);
             proj.transform.position = this.transform.position + this.transform.forward * 0.1f;
