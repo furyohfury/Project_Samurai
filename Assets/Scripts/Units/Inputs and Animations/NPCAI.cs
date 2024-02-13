@@ -1,4 +1,7 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 namespace Samurai
 {
     [RequireComponent(typeof(EnemyInput), typeof(Enemy))]
@@ -60,8 +63,10 @@ namespace Samurai
             if (PatrollingPoints != null && PatrollingPoints.Length > 1)
             {
                 // Level patrolling points with NPC
-                foreach(var patrolPoint in PatrollingPoints) patrolPoint.y = this.transform.position.y;
-
+                for (var i = 0; i < PatrollingPoints.Length; i++)
+                {
+                    PatrollingPoints[i].y = transform.position.y;
+                }
                 AIState = AIStateType.Patrolling;
                 StartPoint = this.transform.position;
             }
@@ -72,16 +77,8 @@ namespace Samurai
                 PatrollingPoints = new Vector3[0];
             }
         }
-        
-        protected UpdateState(AIStateType stateType)
-        {
-            switch(stateType)
-            {
-                //autorealize in VS
 
-
-            }
-        }
+        protected abstract void UpdateState(AIStateType stateType);
         protected void IdleCycle()
         {
 
@@ -95,12 +92,12 @@ namespace Samurai
             if (distance < ArrivalDistance)
             {
                 CurrentPatrollingPointIndex = (CurrentPatrollingPointIndex + 1) % PatrollingPoints.Length;
-                if (PatrollingDelayCoroutine) != null Debug.LogWarning("Patrolling points are too close. Intersecting arrival distance");
-                PatrollingDelayCoroutine = StartCoroutine(PatrollingIdleDelay());
+                if (PatrollingDelayCoroutine != null) Debug.LogWarning("Patrolling points are too close. Intersecting arrival distance");
+                PatrollingDelayCoroutine = StartCoroutine(PatrollingIdleDelayCor());
             }
             if (PatrollingDelayCoroutine == null) Target = PatrollingPoints[CurrentPatrollingPointIndex];
         }
-        protected IEnumerator PatrollingIdleDelay()
+        protected IEnumerator PatrollingIdleDelayCor()
         {
             yield return new WaitForSeconds(PatrollingIdleDelay + Random.Range(-PatrollingIdleRandomStep, PatrollingIdleRandomStep));
             PatrollingDelayCoroutine = null;
@@ -115,7 +112,8 @@ namespace Samurai
         }
         protected void AttackCycle()
         {
-
+            OnAttack?.Invoke();
         }
+        public event SimpleHandle OnAttack;
     }
 }

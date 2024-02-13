@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace Samurai
 {
+    [RequireComponent(typeof(NPCAIMelee))]
     public class MeleeUnitInput : EnemyInput, IAttackMelee, IInputMelee
     {
         [SerializeField]
@@ -38,6 +39,8 @@ namespace Samurai
 
         public Collider MeleeAttackHitbox { get; private set; }
 
+        
+
         #region UnityMethods
         protected override void Awake()
         {
@@ -45,12 +48,18 @@ namespace Samurai
             MeleeWeapon = GetComponentInChildren<MeleeWeapon>();
             MeleeAttackHitbox = MeleeWeapon.GetComponentInChildren<Collider>();
         }
+        private void OnEnable()
+        {
+            NPCAI.OnAttack += MeleeAttack;
+        }
         protected override void Update()
         {
             base.Update();
-            if (Vector3.Distance(this.transform.position, EnemyAgent.destination) < 1)
+
+            //todo delete temporary cringe
+            if (Vector3.Distance(this.transform.position, Agent.destination) < 1)
             {
-                EnemyAgent.destination = transform.position;
+                Agent.destination = transform.position;
                 MeleeAttack();
             }
         }

@@ -232,8 +232,6 @@ MonoBehaviour:
   TestShit: {x: 0, y: 0, z: 0}
   _rangeWeapon: {fileID: 0}
   _meleeWeapon: {fileID: 0}
-  _parrySlowmoTime: 5
-  _slowMoMultiplier: 0.8
 --- !u!143 &25276846
 CharacterController:
   m_ObjectHideFlags: 0
@@ -792,6 +790,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _damage: 1
   _parrying: 0
+  _parrySlowmoTime: 1
+  _slowMoMultiplier: 0.1
   Owner: {fileID: 0}
 --- !u!54 &116218660
 Rigidbody:
@@ -5424,7 +5424,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh27056
+  m_Name: pb_Mesh28282
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -7098,6 +7098,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _damage: 1
   _parrying: 0
+  _parrySlowmoTime: 0
+  _slowMoMultiplier: 0
   Owner: {fileID: 0}
 --- !u!114 &1109150760
 MonoBehaviour:
@@ -12096,6 +12098,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TestShit: {x: 0, y: 0, z: 0}
   _meleeWeapon: {fileID: 0}
+  _meleeAttackCooldown: 3
 --- !u!1 &1502773899
 GameObject:
   m_ObjectHideFlags: 0
@@ -16508,6 +16511,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _damage: 5
   _parrying: 0
+  _parrySlowmoTime: 0
+  _slowMoMultiplier: 0
   Owner: {fileID: 0}
 --- !u!114 &1853930320
 MonoBehaviour:

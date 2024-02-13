@@ -37,10 +37,10 @@ namespace Samurai
         private MeleeWeapon _meleeWeapon;
         public MeleeWeapon MeleeWeapon { get => _meleeWeapon; private set => _meleeWeapon = value; }
 
-        [SerializeField, Tooltip("Time for slow-mo after parry")]
+        /* [SerializeField, Tooltip("Time for slow-mo after parry")]
         private float _parrySlowmoTime;
         [SerializeField, Tooltip("Coefficient for timescale")]
-        private float _slowMoMultiplier;
+        private float _slowMoMultiplier; */
 
 
         #region Unity_Methods
@@ -84,18 +84,18 @@ namespace Samurai
             if ((weapon.Owner as Enemy != null))
             {
                 if (!this.MeleeWeapon.Parrying) GetDamaged(weapon.Damage);
-                else //Parry by player
+                else //Parry by player todo fix
                 {
-                    StartCoroutine(ParryingCoroutine());
+                    // StartCoroutine(ParryingCoroutine());
                 }
             }
         }
-        private IEnumerator ParryingCoroutine()
+        /* private IEnumerator ParryingCoroutine()
         {
             Time.timeScale = _slowMoMultiplier;
             yield return new WaitForSeconds(_parrySlowmoTime);
             Time.timeScale = 1;
-        }
+        } */
 
         public override void ChangeColor(PhaseColor color)
         {
