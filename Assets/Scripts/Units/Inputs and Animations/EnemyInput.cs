@@ -4,22 +4,28 @@ using Zenject;
 
 namespace Samurai
 {
-    [RequireComponent(typeof(Enemy))]
+    [RequireComponent(typeof(Enemy), typeof(NPCAI))]
     public class EnemyInput : UnitInput
     {
-        protected NavMeshAgent EnemyAgent;
+        public NavMeshAgent Agent {get; private set;}
         [Inject]
         protected Player Player;
+        protected NPCAI NPCAI;
+        
         protected override void Awake()
         {
             base.Awake();
-            EnemyAgent = GetComponent<NavMeshAgent>();
+            Agent = GetComponent<NavMeshAgent>();
+            NPCAI = GetComponent<NPCAI>();
         }
         protected override void Update()
-        {            
-            EnemyAgent.destination = Player.transform.position;
-            MoveDirection = Vector3.ClampMagnitude(EnemyAgent.velocity,1);
+        {                        
+            MoveDirection = Vector3.ClampMagnitude(Agent.velocity,1);
             base.Update();
+        }
+        public void SetAgentTarget(Vector3 target)
+        {
+            Agent.destination = target;
         }
     }
 }

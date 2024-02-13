@@ -21,6 +21,7 @@ namespace Samurai
     }
     public interface IInputMelee
     {
+        float MeleeAttackCooldown {get;}
         bool CanHit { get;}
         bool InMeleeAttack { get; }
         Collider MeleeAttackHitbox { get;}

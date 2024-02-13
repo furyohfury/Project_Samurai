@@ -83,7 +83,7 @@ namespace Samurai
         {
             if ((weapon.Owner as Enemy != null))
             {
-                if (!MeleeWeapon.Parrying) GetDamaged(weapon.Damage);
+                if (!this.MeleeWeapon.Parrying) GetDamaged(weapon.Damage);
                 else //Parry by player
                 {
                     StartCoroutine(ParryingCoroutine());

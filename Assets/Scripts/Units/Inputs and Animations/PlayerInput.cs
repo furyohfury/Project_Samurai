@@ -31,6 +31,9 @@ namespace Samurai
         private MeleeWeapon _meleeWeapon;
         public MeleeWeapon MeleeWeapon { get => _meleeWeapon; private set => _meleeWeapon = value; }
         public bool CanHit { get; private set; } = true;
+        private float _meleeAttackCooldown = 8;
+        public float MeleeAttackCooldown {get => _meleeAttackCooldown; private set => _meleeAttackCooldown = value;}
+        
 
         [SerializeField]
         private Collider _meleeAttackHitbox; // todo mb udalit field
@@ -99,6 +102,8 @@ namespace Samurai
         private void OnDisable()
         {
             _playerControls.PlayerMap.Shoot.performed -= Shoot;
+            _playerControls.PlayerMap.PickWeapon.performed -= _player.EquipPickableWeapon;
+            _playerControls.PlayerMap.MeleeAttack.performed -= MeleeAttack;
             _playerControls.Disable();
         }
         #endregion
@@ -122,11 +127,21 @@ namespace Samurai
         public void MeleeAttack(CallbackContext _) => MeleeAttack();
         public void MeleeAttack()
         {
-            if (CanHit) UnitAnimator.SetTrigger("MeleeAttack");
-
+            if (CanHit) 
+            {
+                UnitAnimator.SetTrigger("MeleeAttack");
+                InMeleeAttack = true;
+                StartCoroutine(MeleeAttackCD());
+            }
+        }
+        private IEnumerator MeleeAttackCD()
+        {
+            CanHit = false;
+            yield return new WaitForSeconds(MeleeAttackCooldown);
+            CanHit = true;
         }
 
-
+#region UnityEvents
         public void OnMeleeAttackAnimationStarted_UnityEvent()
         {
             InMeleeAttack = true;
@@ -152,5 +167,6 @@ namespace Samurai
             MeleeAttackHitbox.enabled = false;
             MeleeWeapon.Parrying = false;
         }
+        #endregion
     }
 }

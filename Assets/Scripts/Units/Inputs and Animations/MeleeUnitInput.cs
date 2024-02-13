@@ -10,6 +10,10 @@ namespace Samurai
         public MeleeWeapon MeleeWeapon { get => _meleeWeapon; private set => _meleeWeapon = value; }
 
         public bool CanHit { get; private set; } = true;
+        [SerializeField]
+        private float _meleeAttackCooldown = 3;
+        public float MeleeAttackCooldown {get => _meleeAttackCooldown; private set => _meleeAttackCooldown = value;}
+
         // Ne naebatsya s exit time v animatore
         private bool _inMeleeAttack = false;
         public bool InMeleeAttack
@@ -58,13 +62,19 @@ namespace Samurai
             {
                 UnitAnimator.SetTrigger("MeleeAttack");
                 InMeleeAttack = true;
+                StartCoroutine(MeleeAttackCD());
             }            
+        }
+        private IEnumerator MeleeAttackCD()
+        {
+            CanHit = false;
+            yield return new WaitForSeconds(MeleeAttackCooldown);
+            CanHit = true;
         }
         #region UnityEvents
         public void OnMeleeAttackAnimationStarted_UnityEvent()
         {
             // InMeleeAttack = true;
-
         }
         public void OnMeleeAttackAnimationEnded_UnityEvent()
         {
@@ -77,6 +87,7 @@ namespace Samurai
         public void OnMeleeAttackSlashAnimationEnded_UnityEvent()
         {
             MeleeAttackHitbox.enabled = false;
+            MeleeWeapon.Parrying = false;
         }
         #endregion
     }

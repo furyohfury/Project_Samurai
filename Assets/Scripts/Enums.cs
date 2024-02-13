@@ -14,4 +14,11 @@ namespace Samurai
         SniperRifle = 1,
         DefaultPistol = 10
     }    
+    public enum AIStateType
+    {
+        Idle,
+        Patrolling,
+        Pursuit,
+        Flee
+    }
 }
