@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using UnityEditor;
 using UnityEngine;
 
 namespace Samurai
@@ -40,7 +41,7 @@ namespace Samurai
 
         public Collider MeleeAttackHitbox { get; private set; }
 
-        
+        private bool Hit;
 
         #region UnityMethods
         protected override void Awake()
@@ -51,11 +52,16 @@ namespace Samurai
         }
         private void OnEnable()
         {
-            NPCAI.OnAttack += MeleeAttack;
+            NPCAI.OnAttack += () => Hit = true;
+        }
+        protected override void Start()
+        {
+            base.Start();
+            StartCoroutine(MeleeAttackBoxCoroutine());
         }
         private void OnDisable()
         {
-            NPCAI.OnAttack -= MeleeAttack;
+            // NPCAI.OnAttack -= MeleeAttack;
         }
         protected override void Update()
         {
@@ -69,7 +75,18 @@ namespace Samurai
             } */
         }
         #endregion
-
+        private IEnumerator MeleeAttackBoxCoroutine()
+        {
+            while (true)
+            {
+                if (Hit)
+                {
+                    MeleeAttack();
+                    Hit = false;
+                }
+                yield return null;
+            }            
+        }
         public void MeleeAttack()
         {
             if (CanHit && _meleeAttackCDCor == null)
