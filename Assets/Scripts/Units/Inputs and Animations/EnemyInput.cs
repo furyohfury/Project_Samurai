@@ -11,18 +11,36 @@ namespace Samurai
         [Inject]
         protected Player Player;
         protected NPCAI NPCAI;
-        
+        #region UnityMethods
         protected override void Awake()
         {
             base.Awake();
-            Agent = GetComponent<NavMeshAgent>();
-            NPCAI = GetComponent<NPCAI>();
+            if (Agent == null) Agent = GetComponent<NavMeshAgent>();
+            if (NPCAI == null) NPCAI = GetComponent<NPCAI>();
+            
+        }
+        protected override void Start()
+        {
+            base.Start();
+            Agent.speed = Unit.GetUnitStats().MoveSpeed;
         }
         protected override void Update()
         {                        
-            MoveDirection = Vector3.ClampMagnitude(Agent.velocity,1);
+            
             base.Update();
         }
+        protected override void FixedUpdate()
+        {
+            Agent.destination = NPCAI.Target;
+            MoveDirection = Vector3.ClampMagnitude(Agent.velocity, 1);
+            base.FixedUpdate();
+        }
+        protected void OnValidate()
+        {
+            
+        }
+        #endregion
+
         public void SetAgentTarget(Vector3 target)
         {
             Agent.destination = target;

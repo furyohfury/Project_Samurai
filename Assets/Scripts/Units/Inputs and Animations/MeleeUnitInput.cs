@@ -14,6 +14,7 @@ namespace Samurai
         [SerializeField]
         private float _meleeAttackCooldown = 3;
         public float MeleeAttackCooldown {get => _meleeAttackCooldown; private set => _meleeAttackCooldown = value;}
+        private Coroutine _meleeAttackCDCor;
 
         // Ne naebatsya s exit time v animatore
         private bool _inMeleeAttack = false;
@@ -52,26 +53,30 @@ namespace Samurai
         {
             NPCAI.OnAttack += MeleeAttack;
         }
+        private void OnDisable()
+        {
+            NPCAI.OnAttack -= MeleeAttack;
+        }
         protected override void Update()
         {
             base.Update();
 
             //todo delete temporary cringe
-            if (Vector3.Distance(this.transform.position, Agent.destination) < 1)
+            /* if (Vector3.Distance(this.transform.position, Agent.destination) < 1)
             {
                 Agent.destination = transform.position;
                 MeleeAttack();
-            }
+            } */
         }
         #endregion
 
         public void MeleeAttack()
         {
-            if (CanHit)
+            if (CanHit && _meleeAttackCDCor == null)
             {
                 UnitAnimator.SetTrigger("MeleeAttack");
                 InMeleeAttack = true;
-                StartCoroutine(MeleeAttackCD());
+                _meleeAttackCDCor = StartCoroutine(MeleeAttackCD());
             }            
         }
         private IEnumerator MeleeAttackCD()
@@ -79,6 +84,7 @@ namespace Samurai
             CanHit = false;
             yield return new WaitForSeconds(MeleeAttackCooldown);
             CanHit = true;
+            _meleeAttackCDCor = null;
         }
         #region UnityEvents
         public void OnMeleeAttackAnimationStarted_UnityEvent()

@@ -9,34 +9,37 @@ namespace Samurai
     {
         [Inject]
         protected Player Player;
+        protected Vector3 PlayerPosition;
+        protected Vector3 NPCPosition;
 
-        public Vector3 Target {get; protected set;}
-        
+
+        public Vector3 Target { get; protected set; }
+
         // Spotting        
         protected bool SpottedPlayer = false;
         [SerializeField]
-        protected float _playerSpotRange;
+        protected float PlayerSpotRange;
         protected bool PlayerIsInSpotRange
         {
-            get 
+            get
             {
-                Vector3 distanceToPlayer = Player.transform.position - this.transform.position;
-                return distanceToPlayer.sqrMagnitude < _playerSpotRange * _playerSpotRange;
+                Vector3 distanceToPlayer = PlayerPosition - NPCPosition;
+                return distanceToPlayer.sqrMagnitude < PlayerSpotRange * PlayerSpotRange;
             }
         }
 
         //Attacking
         [SerializeField]
-        protected float _attackRange;
+        protected float AttackRange;
         protected bool PlayerIsInAttackRange
         {
-            get 
+            get
             {
-                Vector3 distanceToPlayer = Player.transform.position - this.transform.position;
-                return distanceToPlayer.sqrMagnitude < _attackRange * _attackRange;
+                Vector3 distanceToPlayer = PlayerPosition - NPCPosition;
+                return distanceToPlayer.sqrMagnitude < AttackRange * AttackRange;
             }
-        }        
-        
+        }
+
         //Patrolling
         protected Vector3 StartPoint;
         protected int CurrentPatrollingPointIndex;
@@ -48,18 +51,23 @@ namespace Samurai
         protected Vector3[] PatrollingPoints;
         protected float ArrivalDistance;
 
-        
-        protected AIStateType AIState;
         [SerializeField]
-        protected float _logicUpdateTime;
-#region UnityMethods
-        protected virtual void Start()
+        protected AIStateType AIState = AIStateType.Idle;
+        [SerializeField]
+        protected float LogicUpdateTime;
+        #region UnityMethods
+        protected virtual void Awake()
         {
-            // StartingIdlePatrolLogic();
+            PlayerPosition = Player.transform.position;
+            NPCPosition = this.transform.position;
         }
-
-#endregion
-        protected void StartingIdlePatrolLogic()
+        protected void FixedUpdate()
+        {
+            PlayerPosition = Player.transform.position;
+            NPCPosition = this.transform.position;
+        }
+        #endregion
+        public void StartingIdlePatrolLogic()
         {
             if (PatrollingPoints != null && PatrollingPoints.Length > 1)
             {
@@ -69,29 +77,46 @@ namespace Samurai
                     PatrollingPoints[i].y = transform.position.y;
                 }
                 AIState = AIStateType.Patrolling;
-                StartPoint = this.transform.position;
+                StartPoint = NPCPosition;
             }
-            else 
+            else
             {
                 AIState = AIStateType.Idle;
-                StartPoint = this.transform.position;
+                StartPoint = NPCPosition;
                 PatrollingPoints = new Vector3[0];
             }
         }
-        protected abstract void CheckState();
+        // protected abstract void CheckState();
         protected virtual void ActionByState()
         {
-            //switch
+            switch (AIState)
+            {
+                case AIStateType.Idle:
+                    IdleAction();
+                    break;
+                case AIStateType.Patrolling:
+                    PatrollingAction();
+                    break;
+                case AIStateType.Pursuit:
+                    PursuitAction();
+                    break;
+                case AIStateType.Flee:
+                    FleeAction();
+                    break;
+                case AIStateType.Attack:
+                    AttackAction();
+                    break;
+            }
         }
         protected void IdleAction()
         {
-
+            Target = NPCPosition;
         }
         protected void PatrollingAction()
         {
             var point = PatrollingPoints[CurrentPatrollingPointIndex];
-            point.y = this.transform.position.y;
-            var distance = (this.transform.position - point).sqrMagnitude;
+            point.y = NPCPosition.y;
+            var distance = (NPCPosition - point).sqrMagnitude;
 
             if (distance < ArrivalDistance)
             {
@@ -108,11 +133,11 @@ namespace Samurai
         }
         protected void PursuitAction()
         {
-            Target = Player.transform.position;
+            Target = PlayerPosition;
         }
         protected void FleeAction()
         {
-            Target = this.transform.position + Vector3.ClampMagnitude(this.transform.position - Player.transform.position, 5);
+            Target = NPCPosition + Vector3.ClampMagnitude(NPCPosition - PlayerPosition, 5);
         }
         protected void AttackAction()
         {
@@ -120,17 +145,24 @@ namespace Samurai
         }
 
 
-        protected override void GeneralAICycle()
+        public void GeneralAICycle()
         {
             if (SpottedPlayer) BattleCycle();
-            else
-            {
-                SpottedPlayer = PlayerIsInSpotRange;
-            }
+            else SpottedPlayer = PlayerIsInSpotRange;
             ActionByState();
         }
         protected abstract void BattleCycle();
 
         public event SimpleHandle OnAttack;
+
+        #region Gizmos
+        protected void OnDrawGizmos()
+        {
+            Gizmos.color = new Color(1, 1, 0, 0.2f);
+            Gizmos.DrawSphere(transform.position, PlayerSpotRange);
+            Gizmos.color = new Color(1, 0, 0, 0.2f);
+            Gizmos.DrawSphere(transform.position, AttackRange);
+        }
+        #endregion
     }
 }

@@ -7,11 +7,27 @@ namespace Samurai
     public class NPCAIMelee : NPCAI
     {
         [SerializeField]
-        private float _fleeingChanceAfterParried = 0.7;
+        private float _fleeingChanceAfterParried = 0.7f;
         [SerializeField]
         private float _fleeTimeAfterParried = 5;
         private Coroutine _fleeAfterParriedCoroutine;
 
+        private MeleeWeapon MeleeWeapon;
+        #region UnityMethods
+        protected override void Awake()
+        {
+            base.Awake();
+            MeleeWeapon = GetComponentInChildren<MeleeWeapon>();
+        }
+        private void OnEnable()
+        {
+            MeleeWeapon.OnParry += Parried;
+        }
+        private void OnDisable()
+        {
+            MeleeWeapon.OnParry -= Parried;
+        }
+        #endregion
         protected override void BattleCycle()
         {
             if (_fleeAfterParriedCoroutine != null) return;

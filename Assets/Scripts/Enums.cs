@@ -19,6 +19,7 @@ namespace Samurai
         Idle,
         Patrolling,
         Pursuit,
-        Flee
+        Flee,
+        Attack
     }
 }

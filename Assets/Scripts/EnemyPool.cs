@@ -6,6 +6,6 @@ namespace Samurai
 {
     public class EnemyPool : MonoBehaviour
     {
-        public List<Enemy> EnemyList = new();
+        public LinkedList<Enemy> EnemyList = new();
     }
 }

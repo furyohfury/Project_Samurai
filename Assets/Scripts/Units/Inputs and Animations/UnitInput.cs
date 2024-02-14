@@ -55,6 +55,10 @@ namespace Samurai
         }
         protected virtual void Update()
         {
+            
+        }
+        protected virtual void FixedUpdate()
+        {
             MovementAnimation();
         }
         protected virtual void Bindings()

@@ -33,13 +33,14 @@ namespace Samurai
             if (other.TryGetComponent(out MeleeWeapon mw) && (this.GetType() != mw.Owner.GetType()) && (Owner as Enemy == null || mw.Owner as Enemy == null))
             {
                 Parrying = true;
-                if (Owner as Player != null) StartCoroutine(ParryingCoroutine());
+                OnParry?.Invoke();
+                if (Owner as Player != null) StartCoroutine(ParryingCoroutine()); // add to some player component
             }
         }
         private IEnumerator ParryingCoroutine()
         {
             Time.timeScale = _slowMoMultiplier;
-            yield return new WaitForSeconds(_parrySlowmoTime);
+            yield return new WaitForSeconds(_parrySlowmoTime * _slowMoMultiplier);
             Time.timeScale = 1;
         }
         private void OnTriggerStay(Collider other)
@@ -52,6 +53,7 @@ namespace Samurai
             {
                 Parrying = false;
             }
-        }        
+        }
+        public event SimpleHandle OnParry;
     }
 }

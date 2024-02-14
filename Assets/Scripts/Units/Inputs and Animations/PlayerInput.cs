@@ -94,10 +94,15 @@ namespace Samurai
         }
         protected override void Update()
         {
+            
+            base.Update();
+        }
+        protected override void FixedUpdate()
+        {
             Vector2 movement = _playerControls.PlayerMap.Movement.ReadValue<Vector2>();
             MoveDirection = new Vector3(movement.x, 0, movement.y);
             // Moving animation happens after defining MD
-            base.Update();
+            base.FixedUpdate();
         }
         private void OnDisable()
         {
