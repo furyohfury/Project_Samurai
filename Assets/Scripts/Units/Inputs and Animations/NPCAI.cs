@@ -12,7 +12,8 @@ namespace Samurai
 
         public Vector3 Target {get; protected set;}
         
-        // Spotting
+        // Spotting        
+        protected bool SpottedPlayer = false;
         [SerializeField]
         protected float _playerSpotRange;
         protected bool PlayerIsInSpotRange
@@ -54,7 +55,7 @@ namespace Samurai
 #region UnityMethods
         protected virtual void Start()
         {
-            StartingIdlePatrolLogic();
+            // StartingIdlePatrolLogic();
         }
 
 #endregion
@@ -62,7 +63,7 @@ namespace Samurai
         {
             if (PatrollingPoints != null && PatrollingPoints.Length > 1)
             {
-                // Level patrolling points with NPC
+                // Level height of patrolling points with NPC
                 for (var i = 0; i < PatrollingPoints.Length; i++)
                 {
                     PatrollingPoints[i].y = transform.position.y;
@@ -77,13 +78,16 @@ namespace Samurai
                 PatrollingPoints = new Vector3[0];
             }
         }
-
-        protected abstract void UpdateState(AIStateType stateType);
-        protected void IdleCycle()
+        protected abstract void CheckState();
+        protected virtual void ActionByState()
+        {
+            //switch
+        }
+        protected void IdleAction()
         {
 
         }
-        protected void PatrollingCycle()
+        protected void PatrollingAction()
         {
             var point = PatrollingPoints[CurrentPatrollingPointIndex];
             point.y = this.transform.position.y;
@@ -102,18 +106,31 @@ namespace Samurai
             yield return new WaitForSeconds(PatrollingIdleDelay + Random.Range(-PatrollingIdleRandomStep, PatrollingIdleRandomStep));
             PatrollingDelayCoroutine = null;
         }
-        protected void PursuitCycle()
+        protected void PursuitAction()
         {
             Target = Player.transform.position;
         }
-        protected void FleeCycle()
+        protected void FleeAction()
         {
             Target = this.transform.position + Vector3.ClampMagnitude(this.transform.position - Player.transform.position, 5);
         }
-        protected void AttackCycle()
+        protected void AttackAction()
         {
             OnAttack?.Invoke();
         }
+
+
+        protected override void GeneralAICycle()
+        {
+            if (SpottedPlayer) BattleCycle();
+            else
+            {
+                SpottedPlayer = PlayerIsInSpotRange;
+            }
+            ActionByState();
+        }
+        protected abstract void BattleCycle();
+
         public event SimpleHandle OnAttack;
     }
 }

@@ -48,8 +48,12 @@ namespace Samurai
         }
         protected virtual void Update()
         {
-            Movement();
+            
 
+        }
+        protected virtual void FixedUpdate()
+        {
+            Movement();
         }
         protected virtual void OnTriggerEnter(Collider other)
         {
@@ -81,8 +85,8 @@ namespace Samurai
             // Walking
             if (UnitInput.MoveDirection != Vector3.zero && UnitInput.CanMove)
             {
-                if (CharController.isGrounded) CharController.Move(UnitStats.MoveSpeed * Time.deltaTime * new Vector3(UnitInput.MoveDirection.x, 0, UnitInput.MoveDirection.z));
-                else CharController.Move(Time.deltaTime * (UnitStats.MoveSpeed * new Vector3(UnitInput.MoveDirection.x, 0, UnitInput.MoveDirection.z) + 9.8f * Vector3.down));
+                if (CharController.isGrounded) CharController.Move(UnitStats.MoveSpeed * Time.fixedDeltaTime * new Vector3(UnitInput.MoveDirection.x, 0, UnitInput.MoveDirection.z));
+                else CharController.Move(Time.fixedDeltaTime * (UnitStats.MoveSpeed * new Vector3(UnitInput.MoveDirection.x, 0, UnitInput.MoveDirection.z) + 9.8f * Vector3.down));
             }
         }
 

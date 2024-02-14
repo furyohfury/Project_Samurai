@@ -15,13 +15,16 @@ namespace Samurai
         protected override void Start()
         {
             base.Start();
-            EnemyPool.EnemyList.Add(this);
-            transform.parent = EnemyPool.transform;
+            
             
             
         }
-        
-        protected void OnDestroy()
+        protected virtual void OnEnable()
+        {
+            EnemyPool.EnemyList.Add(this);
+            transform.parent = EnemyPool.transform;
+        }
+        protected virtual void OnDisable()
         {
             EnemyPool.EnemyList.Remove(this);
         }
@@ -30,7 +33,6 @@ namespace Samurai
         {
             base.Die();
             Destroy(gameObject);
-            //todo remove from pools
             //todo What to do with projectiles where he's owner
         }
         
