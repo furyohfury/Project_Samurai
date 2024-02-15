@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEditor;
 using UnityEngine;
 using Zenject;
@@ -18,7 +19,6 @@ namespace Samurai
         private void Start()
         {
             FixedDT = Time.fixedDeltaTime;
-            _cancellationTokenSource = new();
 
 #if UNITY_EDITOR
             EditorApplication.playModeStateChanged += StopAsyncLogic;
@@ -28,7 +28,8 @@ namespace Samurai
                 enemy.AI.StartingIdlePatrolLogic();
             }
 
-            Debug.Log(Thread.CurrentThread.ManagedThreadId);
+            _cancellationTokenSource = new();
+            _token = _cancellationTokenSource.Token;
             AILogicManagement();
 
         }
@@ -41,12 +42,17 @@ namespace Samurai
 #if UNITY_EDITOR      
         public void StopAsyncLogic(PlayModeStateChange state)
         {
-            if (state == PlayModeStateChange.ExitingPlayMode) _cancellationTokenSource.Cancel();
+            if (state == PlayModeStateChange.ExitingPlayMode)
+            {
+                _cancellationTokenSource.Cancel();
+                Debug.Log("Stopped async AI Logic");
+            }
         }
         [ContextMenu("Stop async shit")]
         public void StopAsyncLogic()
         {
             _cancellationTokenSource.Cancel();
+            Debug.Log("Stopped async AI Logic");
         }
 #endif
         private async void AILogicManagement()
@@ -61,16 +67,17 @@ namespace Samurai
                 Thread.Sleep(Time.fixedDeltaTime * 1000);
             }
             ); //end of task */
-            await Task.Run(async () =>
+            await Task.Run(() =>
             {
                 while (true)
                 {
+                    if (_token.IsCancellationRequested) return;
+
                     foreach (var enemy in EnemyPool.EnemyList.ToList())
                     {
                         enemy.AI.GeneralAICycle();
                     }
                     Task.Delay((int)(FixedDT * 1000));
-                    Debug.Log(Thread.CurrentThread.ManagedThreadId);
                 }
             }, _token); // end of task
         }

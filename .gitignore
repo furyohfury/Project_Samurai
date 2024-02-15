@@ -17,9 +17,9 @@
 /[Aa]ssets/Ultimate Animation Collection/
 /[Aa]ssets/Sci-fi Pistol/
 /[Aa]ssets/Animations/
-/[Aa]ssets/Mech_Constructor_LtMed
-/[Aa]ssets/UnityTechnologies
-/[Aa]ssets/1.Fantasy Hammer
+/[Aa]ssets/Mech_Constructor_LtMed/
+/[Aa]ssets/UnityTechnologies/
+/[Aa]ssets/1.Fantasy Hammer/
 
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data
@@ -62,7 +62,7 @@ ExportedObj/
 *.pidb.meta
 *.pdb.meta
 *.mdb.meta
-*.meta
+# *.meta
 
 # Unity3D generated file on crash reports
 sysinfo.txt
