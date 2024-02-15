@@ -57,7 +57,6 @@ namespace Samurai
         protected override void Start()
         {
             base.Start();
-            StartCoroutine(MeleeAttackBoxCoroutine());
         }
         private void OnDisable()
         {
@@ -72,6 +71,7 @@ namespace Samurai
         {
             if (CanHit && _meleeAttackCDCor == null)
             {
+                this.transform.LookAt(Player.transform.position);
                 UnitAnimator.SetTrigger("MeleeAttack");
                 InMeleeAttack = true;
                 _meleeAttackCDCor = StartCoroutine(MeleeAttackCD());
