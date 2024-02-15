@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -30,7 +31,7 @@ namespace Samurai
 
             _cancellationTokenSource = new();
             _token = _cancellationTokenSource.Token;
-            AILogicManagement();
+            StartCoroutine(AILogicManagement());
 
         }
         private void OnDisable()
@@ -55,31 +56,19 @@ namespace Samurai
             Debug.Log("Stopped async AI Logic");
         }
 #endif
-        private async void AILogicManagement()
+        private IEnumerator AILogicManagement()
         {
-            /* await => Task.Run(() => 
+
+
             while (true)
             {
+
                 foreach (var enemy in EnemyPool.EnemyList.ToList())
                 {
-                    enemy.GeneralAICycle(); // blyat
+                    enemy.AI.GeneralAICycle();
                 }
-                Thread.Sleep(Time.fixedDeltaTime * 1000);
+                yield return new WaitForFixedUpdate();
             }
-            ); //end of task */
-            await Task.Run(() =>
-            {
-                while (true)
-                {
-                    if (_token.IsCancellationRequested) return;
-
-                    foreach (var enemy in EnemyPool.EnemyList.ToList())
-                    {
-                        enemy.AI.GeneralAICycle();
-                    }
-                    Task.Delay((int)(FixedDT * 1000));
-                }
-            }, _token); // end of task
         }
     }
 }

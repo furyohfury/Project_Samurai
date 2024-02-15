@@ -9,8 +9,6 @@ namespace Samurai
     {
         [Inject]
         protected Player Player;
-        protected Vector3 PlayerPosition;
-        protected Vector3 NPCPosition;
 
 
         public Vector3 Target { get; protected set; }
@@ -23,7 +21,7 @@ namespace Samurai
         {
             get
             {
-                Vector3 distanceToPlayer = PlayerPosition - NPCPosition;
+                Vector3 distanceToPlayer = Player.transform.position - this.transform.position;
                 return distanceToPlayer.sqrMagnitude < PlayerSpotRange * PlayerSpotRange;
             }
         }
@@ -35,7 +33,7 @@ namespace Samurai
         {
             get
             {
-                Vector3 distanceToPlayer = PlayerPosition - NPCPosition;
+                Vector3 distanceToPlayer = Player.transform.position - this.transform.position;
                 return distanceToPlayer.sqrMagnitude < AttackRange * AttackRange;
             }
         }
@@ -58,13 +56,13 @@ namespace Samurai
         #region UnityMethods
         protected virtual void Awake()
         {
-            PlayerPosition = Player.transform.position;
-            NPCPosition = this.transform.position;
+            Player.transform.position = Player.transform.position;
+            this.transform.position = this.transform.position;
         }
         protected void FixedUpdate()
         {
-            PlayerPosition = Player.transform.position;
-            NPCPosition = this.transform.position;
+            Player.transform.position = Player.transform.position;
+            this.transform.position = this.transform.position;
         }
         #endregion
         public void StartingIdlePatrolLogic()
@@ -77,12 +75,12 @@ namespace Samurai
                     PatrollingPoints[i].y = transform.position.y;
                 }
                 AIState = AIStateType.Patrolling;
-                StartPoint = NPCPosition;
+                StartPoint = this.transform.position;
             }
             else
             {
                 AIState = AIStateType.Idle;
-                StartPoint = NPCPosition;
+                StartPoint = this.transform.position;
                 PatrollingPoints = new Vector3[0];
             }
         }
@@ -110,13 +108,13 @@ namespace Samurai
         }
         protected void IdleAction()
         {
-            Target = NPCPosition;
+            Target = this.transform.position;
         }
         protected void PatrollingAction()
         {
             var point = PatrollingPoints[CurrentPatrollingPointIndex];
-            point.y = NPCPosition.y;
-            var distance = (NPCPosition - point).sqrMagnitude;
+            point.y = this.transform.position.y;
+            var distance = (this.transform.position - point).sqrMagnitude;
 
             if (distance < ArrivalDistance)
             {
@@ -133,11 +131,11 @@ namespace Samurai
         }
         protected void PursuitAction()
         {
-            Target = PlayerPosition;
+            Target = Player.transform.position;
         }
         protected void FleeAction()
         {
-            Target = NPCPosition + Vector3.ClampMagnitude(NPCPosition - PlayerPosition, 5);
+            Target = this.transform.position + Vector3.ClampMagnitude(this.transform.position - Player.transform.position, 5);
         }
         protected void AttackAction()
         {

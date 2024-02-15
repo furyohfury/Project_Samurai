@@ -52,7 +52,7 @@ namespace Samurai
         }
         private void OnEnable()
         {
-            NPCAI.OnAttack += () => Hit = true;
+            NPCAI.OnAttack += MeleeAttack;
         }
         protected override void Start()
         {
@@ -66,27 +66,8 @@ namespace Samurai
         protected override void Update()
         {
             base.Update();
-
-            //todo delete temporary cringe
-            /* if (Vector3.Distance(this.transform.position, Agent.destination) < 1)
-            {
-                Agent.destination = transform.position;
-                MeleeAttack();
-            } */
         }
         #endregion
-        private IEnumerator MeleeAttackBoxCoroutine()
-        {
-            while (true)
-            {
-                if (Hit)
-                {
-                    MeleeAttack();
-                    Hit = false;
-                }
-                yield return null;
-            }            
-        }
         public void MeleeAttack()
         {
             if (CanHit && _meleeAttackCDCor == null)
