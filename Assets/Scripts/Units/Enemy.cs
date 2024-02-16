@@ -10,6 +10,8 @@ namespace Samurai
         protected EnemyPool EnemyPool;
         public NPCAI AI { get; protected set; }
 
+        
+
         #region Unity_Methods
         protected override void Awake()
         {
@@ -32,10 +34,11 @@ namespace Samurai
         #endregion
         public override void Die()
         {
-            base.Die();
+            
             Destroy(gameObject);
             //todo What to do with projectiles where he's owner
         }
+        
 
     }
 }

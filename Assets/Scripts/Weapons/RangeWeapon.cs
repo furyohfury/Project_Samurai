@@ -49,12 +49,24 @@ namespace Samurai
 
 
         #region Unity_Methods
-        protected virtual void Start()
+        protected virtual void OnEnable()
         {
             Equipped(GetComponentInParent<Unit>());
+            if (Owner as LightRangeEnemy != null) (Owner as LightRangeEnemy).OnDroppedWeapon += Dropped;
+            if (Owner as HeavyRangeEnemy != null) (Owner as HeavyRangeEnemy).OnDroppedWeapon += Dropped;
+        }
+        protected virtual void Start()
+        {
+            
+        }
+        protected virtual void OnDisable()
+        {
+            if (Owner as LightRangeEnemy != null) (Owner as LightRangeEnemy).OnDroppedWeapon -= Dropped;
+            if (Owner as HeavyRangeEnemy != null) (Owner as HeavyRangeEnemy).OnDroppedWeapon -= Dropped;
         }
         #endregion
         public abstract void Shoot();
+
         public virtual void Equipped(Unit owner)
         {
             if (owner == null) return;
@@ -85,6 +97,12 @@ namespace Samurai
             yield return new WaitForSeconds(delay);
             CanShoot = true;
         }
+        protected void Dropped()
+        {
+
+        }
+
+
         public SimpleHandle OnBulletsEnded;
     }
 }

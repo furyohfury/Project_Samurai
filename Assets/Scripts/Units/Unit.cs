@@ -127,10 +127,7 @@ namespace Samurai
             // If when getting damage didnt change color
             if (CurrentColor == curColor) ChangeColorVisual(curColor);
         }
-        public virtual void Die()
-        {
-            Debug.Log($"{gameObject.name} died");
-        }
+        public abstract void Die();
 
         public virtual void MeleeAttack(CallbackContext _)
         {
