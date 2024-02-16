@@ -37,6 +37,7 @@ namespace Samurai
         private MeleeWeapon _meleeWeapon;
         public MeleeWeapon MeleeWeapon { get => _meleeWeapon; private set => _meleeWeapon = value; }      
 
+
         #region Unity_Methods
         protected override void Awake()
         {
@@ -81,6 +82,8 @@ namespace Samurai
             }
         }
         #endregion
+
+
         protected override void GetDamagedByMelee(MeleeWeapon weapon)
         {
             if ((weapon.Owner as Enemy != null) && (!this.MeleeWeapon.Parrying))
@@ -119,7 +122,7 @@ namespace Samurai
             Time.timeScale = 0;
             Instantiate(Resources.Load<GameObject>("UI/GameOverScreen"));
         }
-        #region Guns
+        #region Range
         public void Shoot()
         {
             RangeWeapon.Shoot();
@@ -151,6 +154,7 @@ namespace Samurai
             _defaultPlayerWeapon.Equipped(this);
         }
         #endregion
+
         #region Melee       
         private Coroutine _parryCor;
         [SerializeField, Tooltip("Time for slow-mo after parry")]
@@ -170,6 +174,7 @@ namespace Samurai
         }
         
         #endregion
+
         public event ChangeColorHandle OnPlayerSwapColor;
     }
 }

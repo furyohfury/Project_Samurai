@@ -17,6 +17,7 @@ namespace Samurai
         
         protected virtual void Start()
         {
+            if (MaterialColorsDict  == null) SetDefaultMaterialDictionary();
             // For painting unit at spawn
             ChangeColor(CurrentColor);
         }

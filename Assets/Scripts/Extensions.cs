@@ -6,12 +6,6 @@ namespace Samurai
 
     public delegate void ChangeColorHandle(PhaseColor color);
 
-    /* public interface IChangeColor
-    {
-        void ChangeColor();
-        void ChangeColor(PhaseColor color);
-    } */
-
     [System.Serializable]
     public class MaterialColorDictionary : SerializableDictionaryBase<PhaseColor, Material> { }
 }

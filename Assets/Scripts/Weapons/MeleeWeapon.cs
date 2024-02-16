@@ -30,7 +30,9 @@ namespace Samurai
         }
         private void OnTriggerEnter(Collider other)
         {
-            if (other.TryGetComponent(out MeleeWeapon mw) && (this.GetType() != mw.Owner.GetType()) && (Owner as Enemy == null || mw.Owner as Enemy == null))
+            if (other.TryGetComponent(out MeleeWeapon mw) && 
+                (this.GetType() != mw.Owner.GetType()) 
+                    && (Owner as Enemy == null || mw.Owner as Enemy == null))
             {
                 Parrying = true;
                 OnParry?.Invoke();
@@ -38,7 +40,9 @@ namespace Samurai
         }        
         private void OnTriggerExit(Collider other)
         {
-            if (Parrying && other.TryGetComponent(out MeleeWeapon mw) && (this.GetType() != mw.Owner.GetType()) && (Owner as Enemy == null || mw.Owner as Enemy == null))
+            if (Parrying && other.TryGetComponent(out MeleeWeapon mw) 
+                    && (this.GetType() != mw.Owner.GetType()) 
+                        && (Owner as Enemy == null || mw.Owner as Enemy == null))
             {
                 Parrying = false;
             }

@@ -15,7 +15,6 @@ namespace Samurai
         [SerializeField]
         private float _meleeAttackCooldown = 3;
         public float MeleeAttackCooldown {get => _meleeAttackCooldown; private set => _meleeAttackCooldown = value;}
-        private Coroutine _meleeAttackCDCor;
 
         // Ne naebatsya s exit time v animatore
         private bool _inMeleeAttack = false;
@@ -41,8 +40,6 @@ namespace Samurai
 
         public Collider MeleeAttackHitbox { get; private set; }
 
-        private bool Hit;
-
         #region UnityMethods
         protected override void Awake()
         {
@@ -54,27 +51,21 @@ namespace Samurai
         {
             NPCAI.OnAttack += MeleeAttack;
         }
-        protected override void Start()
-        {
-            base.Start();
-        }
         private void OnDisable()
         {
-            // NPCAI.OnAttack -= MeleeAttack;
-        }
-        protected override void Update()
-        {
-            base.Update();
+            NPCAI.OnAttack -= MeleeAttack;
         }
         #endregion
+
+
         public void MeleeAttack()
         {
-            if (CanHit && _meleeAttackCDCor == null)
+            if (CanHit)
             {
-                this.transform.LookAt(Player.transform.position);
+                this.transform.LookAt(new Vector3(Player.transform.position.x, this.transform.position.y, Player.transform.position.z));
                 UnitAnimator.SetTrigger("MeleeAttack");
                 InMeleeAttack = true;
-                _meleeAttackCDCor = StartCoroutine(MeleeAttackCD()); // todo Dont need in theory
+                StartCoroutine(MeleeAttackCD());
             }            
         }
         private IEnumerator MeleeAttackCD()
@@ -82,8 +73,9 @@ namespace Samurai
             CanHit = false;
             yield return new WaitForSeconds(MeleeAttackCooldown);
             CanHit = true;
-            _meleeAttackCDCor = null;
         }
+
+
         #region UnityEvents
         public void OnMeleeAttackAnimationStarted_UnityEvent()
         {
