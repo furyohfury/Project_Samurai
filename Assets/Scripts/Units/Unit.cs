@@ -80,7 +80,7 @@ namespace Samurai
         }
 
 
-        protected void Movement()
+        protected virtual void Movement()
         {
             // Walking
             if (UnitInput.MoveDirection != Vector3.zero && UnitInput.CanMove)
@@ -89,14 +89,6 @@ namespace Samurai
                 else CharController.Move(Time.fixedDeltaTime * (UnitStats.MoveSpeed * new Vector3(UnitInput.MoveDirection.x, 0, UnitInput.MoveDirection.z) + 9.8f * Vector3.down));
             }
         }
-
-
-        /* public virtual void UnitShoot()
-        {
-            if (!UnitWeapon.CanShoot) return;
-            UnitWeapon.Shoot();
-        } */
-
 
         public void GetDamagedByProjectile(Projectile proj)
         {
@@ -113,7 +105,7 @@ namespace Samurai
         }
         protected virtual void GetDamagedByMelee(MeleeWeapon weapon)
         {
-            if ((this.GetType() != weapon.Owner.GetType()) && (this as Enemy == null || weapon.Owner as Enemy == null) && !weapon.Parrying)
+            if ((this.GetType() != weapon.Owner.GetType()) && (this as Enemy == null || weapon.Owner as Enemy == null))
             {
                 GetDamaged(weapon.Damage);
             }

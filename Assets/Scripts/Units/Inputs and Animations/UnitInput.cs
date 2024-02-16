@@ -12,33 +12,9 @@ namespace Samurai
 
         protected Animator UnitAnimator;
 
-        
-        // public bool CanHit { get; protected set; } = true;
-
         protected Unit Unit;
 
         public bool CanMove { get; protected set; } = true;
-
-        /* public bool Attacking
-        {
-            get => Attacking;
-            protected set
-            {
-                if (value == true)
-                {
-                    CanHit = false;
-                    CanMove = false;
-                }
-                else
-                {
-                    CanHit = true;
-                    CanMove = true;
-                }
-            }
-        } */
-
-        // [SerializeField]
-        // protected Collider MeleeAttackHitbox;
 
         //TestShit
         public Vector3 TestShit;
@@ -74,19 +50,11 @@ namespace Samurai
                 Vector3 animVector = transform.InverseTransformVector(MoveDirection);
                 UnitAnimator.SetFloat("FMove", animVector.z);
                 UnitAnimator.SetFloat("SMove", animVector.x);
-                TestShit = animVector;
+                // TestShit = animVector;
             }
             else UnitAnimator.SetBool("Moving", false);
         }
         #endregion
-        /* protected virtual void UnitShootAnimation(CallbackContext _)
-        {
-            if (Unit.UnitWeapon.CanShoot)
-            {
-                UnitAnimator.SetTrigger("Shoot");
-                Unit.UnitShoot();
-            }
-        } */
         
         public virtual void UnitInputDie()
         {
@@ -96,37 +64,5 @@ namespace Samurai
         {
             Unit.Die();
         }
-
-        /* protected void MeleeAttackAnimation(CallbackContext context)
-        {
-            if (CanHit) UnitAnimator.SetTrigger("MeleeAttack");
-        } */
-
-        #region UnityAnimationEvents
-        /* protected virtual void OnShootAnimationStarted_UnityEvent()
-        {
-            Unit.UnitWeapon.CanShoot = false;
-        }
-        protected virtual void OnShootAnimationEnded_UnityEvent()
-        {
-            Unit.UnitWeapon.CanShoot = true;
-        } */
-        /* protected virtual void OnMeleeAttackAnimationStarted_UnityEvent()
-        {
-            Attacking = true;
-        }
-        protected virtual void OnMeleeAttackAnimationEnded_UnityEvent()
-        {
-            Attacking = false;
-        }
-        protected virtual void OnMeleeAttackSlashAnimationStarted_UnityEvent()
-        {
-            MeleeAttackHitbox.enabled = true;
-        }
-        protected virtual void OnMeleeAttackSlashAnimationEnded_UnityEvent()
-        {
-            MeleeAttackHitbox.enabled = false;
-        } */
-        #endregion
     }
 }
