@@ -77,7 +77,7 @@ namespace Samurai
         protected void SetShootingDelay(float delay)
         {
             if (!CanShoot) return;
-            StartCoroutine(ShootDelayCoroutine(delay));
+            StartCoroutine(ShootDelayCoroutine(Owner as Player == null ? delay : delay * Time.timeScale)); // Check if works
         }
         protected IEnumerator ShootDelayCoroutine(float delay)
         {
