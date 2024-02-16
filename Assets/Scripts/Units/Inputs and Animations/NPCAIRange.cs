@@ -4,29 +4,82 @@ using UnityEngine;
 
 namespace Samurai
 {
+    [RequireComponent(typeof(RangeUnitInput))]
     public class NPCAIRange : NPCAI
     {
         protected RangeWeapon RangeWeapon;
 
-        [SerializeField]
+        [SerializeField, Range(0, 100)]
         private int _hpPercentToTryFlee = 30;
-        [SerializeField, Range(0, 1)]
+        [SerializeField, Range(0, 1f)]
         private float _chanceToFlee = 0.5f;
+        [SerializeField, Range(0, 30f)]
+        private float _timeToFlee = 5f;
+        [SerializeField]
+        private float _timeBetweenFleeTries = 2f;
+
+        private bool _fleeing;
+        private bool _triedToFlee;
+
+        private Enemy _enemyComponent;
 
 #region UnityMethods
         protected override void Awake()
         {
             base.Awake();
             RangeWeapon = GetComponentInChildren<RangeWeapon>();
+            _enemyComponent = GetComponent<Enemy>(); // It would be better if AI didnt know about the enemy component but i dunno how to do that
         }
 #endregion
         protected override void BattleCycle()
         {
-            if (!PlayerIsInAttackRange) AIState = AIStateType.Pursuit;
+            // Pursuit if not in attack range
+            if (!PlayerIsInAttackRange) 
+            {
+                AIState = AIStateType.Pursuit;
+                return;
+            }
+
+            // Trying to flee if low HP
+            if (_enemyComponent.GetUnitStats().HP <= _enemyComponent.GetUnitStats().HP * _hpPercentToTryFlee / 100 &&
+                !_fleeing && !_triedToFlee)
+            {
+                if (Random.value < _chanceToFlee)
+                {
+                    StartCoroutine(FleeCoroutine());
+                    return;
+                }
+                else
+                {
+                    StartCoroutine(TriedToFlee());
+                    return;
+                }
+            }
+
+            // Is there an obstacle on the way
+            if (Physics.Raycast(transform.position, Player.transform.position, out RaycastHit hit, AttackRange, 1 << 9, ) && 
+                hit.TryGetComponent(out Obstacle) && Obstacle.CurrentColor != _enemyComponent.CurrentColor)
+            {
+                AIState = AIStateType.Pursuit;
+            }
             else
             {
-
+                AIState = AIStateType.Attack;
             }
-        }        
+
+        }
+        private IEnumerator FleeCoroutine()
+        {
+            AIState = AIStateType.Flee;
+            _fleeing = true;
+            yield return new WaitForSeconds(_timeToFlee);
+            _fleeing = false;
+        }
+        private IEnumerator TriedToFlee()
+        {
+            _triedToFlee = true;
+            yield return new WaitForSeconds(_timeBetweenFleeTries);
+            _triedToFlee = false;
+        }
     }
 }

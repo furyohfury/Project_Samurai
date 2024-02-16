@@ -9,10 +9,11 @@ namespace Samurai
         [SerializeField]
         private float _fleeingChanceAfterParried = 0.7f;
         [SerializeField]
-        private float _fleeTimeAfterParried = 5;
-        private Coroutine _fleeAfterParriedCoroutine;
+        private float _fleeTimeAfterParried = 5f;
+        private bool _parried;
 
         private MeleeWeapon MeleeWeapon;
+
         #region UnityMethods
         protected override void Awake()
         {
@@ -30,7 +31,7 @@ namespace Samurai
         #endregion
         protected override void BattleCycle()
         {
-            if (_fleeAfterParriedCoroutine != null) return;
+            if (_parried) return;
             if (!PlayerIsInAttackRange)
             {
                 AIState = AIStateType.Pursuit;
@@ -42,17 +43,15 @@ namespace Samurai
         }
         protected void Parried() // async or coroutine?
         {
-            _fleeAfterParriedCoroutine = StartCoroutine(ParriedCoroutine());
+            if (!_parried && Random.value < _fleeingChanceAfterParried) 
+            StartCoroutine(ParriedCoroutine());
         }
         private IEnumerator ParriedCoroutine()
-        {
-            // Flee if been parried
-            if (Random.value < _fleeingChanceAfterParried)
-            {
-                AIState = AIStateType.Flee;
-            }
+        {            
+            AIState = AIStateType.Flee;        
+            _parried = true;    
             yield return new WaitForSeconds(_fleeTimeAfterParried);
-            _fleeAfterParriedCoroutine = null;
+            _parried = false;
         }
         
     }
