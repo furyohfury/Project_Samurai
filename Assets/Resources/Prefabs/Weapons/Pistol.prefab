@@ -737,9 +737,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54c250e7626237444853b6227002bb6f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AttackSpeed: 0
+  _numberOfBulletsForPlayer: 2147483647
+  EnemyShootingDelay: 0
+  PlayerShootingDelay: 0.5
   WeaponProjectilePrefab: {fileID: 8827768608434931341, guid: 63d6fa4f5e22add409b31b44b4746215, type: 3}
-  Pickable: 0
+  _isPickable: 1
   PlayerProjectileStats:
     Damage: 2
     ProjectileSpeed: 4
@@ -748,6 +750,7 @@ MonoBehaviour:
     Damage: 1
     ProjectileSpeed: 2
     ProjectileScale: 1
+  _animController: {fileID: 0}
 --- !u!1 &4562552105092029558
 GameObject:
   m_ObjectHideFlags: 0

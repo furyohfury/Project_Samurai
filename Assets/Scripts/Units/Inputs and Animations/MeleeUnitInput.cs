@@ -59,7 +59,7 @@ namespace Samurai
 
 
         public void MeleeAttack()
-        {
+        {            
             if (CanHit)
             {
                 this.transform.LookAt(new Vector3(Player.transform.position.x, this.transform.position.y, Player.transform.position.z));

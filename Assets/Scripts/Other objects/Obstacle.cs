@@ -2,8 +2,8 @@ using UnityEngine;
 using Zenject;
 namespace Samurai
 {
-    [RequireComponent(typeof(RigidBody))]
-    public class Obstacle
+    [RequireComponent(typeof(Rigidbody))]
+    public class Obstacle : MonoBehaviour
     {
         [Inject]
         private DefaultPlayerGunPool _defaultPlayerGunPool;

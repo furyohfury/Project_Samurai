@@ -14,11 +14,14 @@ namespace Samurai
 
         private MeleeWeapon MeleeWeapon;
 
+        private Enemy _enemyComponent;
+
         #region UnityMethods
         protected override void Awake()
         {
             base.Awake();
             MeleeWeapon = GetComponentInChildren<MeleeWeapon>();
+            _enemyComponent = GetComponent<Enemy>();
         }
         private void OnEnable()
         {
@@ -36,23 +39,23 @@ namespace Samurai
             {
                 AIState = AIStateType.Pursuit;
             }
-            else 
+            else
             {
+                Target = this.transform.position;
                 AIState = AIStateType.Attack;
             }
         }
         protected void Parried() // async or coroutine?
         {
-            if (!_parried && Random.value < _fleeingChanceAfterParried) 
-            StartCoroutine(ParriedCoroutine());
+            if (!_parried && Random.value < _fleeingChanceAfterParried) StartCoroutine(ParriedCoroutine());
         }
         private IEnumerator ParriedCoroutine()
-        {            
-            AIState = AIStateType.Flee;        
-            _parried = true;    
+        {
+            AIState = AIStateType.Flee;
+            _parried = true;
             yield return new WaitForSeconds(_fleeTimeAfterParried);
             _parried = false;
         }
-        
+
     }
 }

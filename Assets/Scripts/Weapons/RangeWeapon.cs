@@ -11,7 +11,9 @@ namespace Samurai
         public int NumberOfBulletsForPlayer { get => _numberOfBulletsForPlayer; protected set => _numberOfBulletsForPlayer = value; }
 
         [SerializeField]
-        protected float ShootingDelay;
+        protected float EnemyShootingDelay;
+        [SerializeField]
+        protected float PlayerShootingDelay;
 
         public bool CanShoot { get; set; } = true; // todo incapsulation
 
@@ -28,6 +30,7 @@ namespace Samurai
 
         public abstract Vector3 WeaponPositionWhenPicked { get; }
         public abstract Vector3 WeaponRotationWhenPicked { get; }
+        protected Quaternion DefaultRotation = Quaternion.Euler(new Vector3(0, 0, 90));
 
         public Unit Owner { get; protected set; }
 
@@ -57,7 +60,7 @@ namespace Samurai
         }
         protected virtual void Start()
         {
-            
+
         }
         protected virtual void OnDisable()
         {
@@ -68,9 +71,9 @@ namespace Samurai
         public abstract void Shoot();
 
         public virtual void Equipped(Unit owner)
-        {
-            if (owner == null) return;
+        {            
             Owner = owner;
+            if (owner == null) return;
             if (owner.GetType() == typeof(Player)) ProjectileStats = PlayerProjectileStats;
             else ProjectileStats = EnemyProjectileStats;
         }
@@ -86,10 +89,10 @@ namespace Samurai
                 }
             }
         }
-        protected void SetShootingDelay(float delay)
+        protected void SetShootingDelay()
         {
             if (!CanShoot) return;
-            StartCoroutine(ShootDelayCoroutine(Owner as Player == null ? delay : delay * Time.timeScale)); // Check if works
+            StartCoroutine(ShootDelayCoroutine(Owner as Player == null ? EnemyShootingDelay : PlayerShootingDelay)); 
         }
         protected IEnumerator ShootDelayCoroutine(float delay)
         {
@@ -99,7 +102,8 @@ namespace Samurai
         }
         protected void Dropped()
         {
-
+            Owner = null;
+            this.transform.rotation = DefaultRotation;
         }
 
 

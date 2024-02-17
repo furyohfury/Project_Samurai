@@ -4,7 +4,6 @@ using UnityEngine;
 
 namespace Samurai
 {
-    [RequireComponent(typeof(RangeUnitInput))]
     public class NPCAIRange : NPCAI
     {
         protected RangeWeapon RangeWeapon;
@@ -56,14 +55,16 @@ namespace Samurai
                 }
             }
 
-            // Is there an obstacle on the way
-            if (Physics.Raycast(transform.position, Player.transform.position, out RaycastHit hit, AttackRange, 1 << 9, ) && 
-                hit.TryGetComponent(out Obstacle) && Obstacle.CurrentColor != _enemyComponent.CurrentColor)
+            // Is there an obstacle on the way. Obstacle layer is 6
+            if (Physics.Raycast(transform.position, Player.transform.position - transform.position, out RaycastHit hit, AttackRange, 1 << 6)
+                && (hit.transform.TryGetComponent(out Obstacle _)
+                    || (hit.transform.TryGetComponent(out ColorObstacle colObstacle) && colObstacle.CurrentColor != _enemyComponent.CurrentColor)))
             {
                 AIState = AIStateType.Pursuit;
             }
             else
             {
+                Target = this.transform.position;
                 AIState = AIStateType.Attack;
             }
 

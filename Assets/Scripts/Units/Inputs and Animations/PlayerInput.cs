@@ -130,6 +130,8 @@ namespace Samurai
             }
         }
 
+
+        #region Melee
         public void MeleeAttack(CallbackContext _) => MeleeAttack();
         public void MeleeAttack()
         {
@@ -146,8 +148,20 @@ namespace Samurai
             yield return new WaitForSeconds(MeleeAttackCooldown);
             CanHit = true;
         }
+        public void Parry()
+        {
+            InMeleeAttack = false;
+            _attackKatana.enabled = false;
+            _sheathedKatana.enabled = true;
+            _player.RangeWeapon.gameObject.SetActive(true);
+            MeleeAttackHitbox.enabled = false;
+            MeleeWeapon.Parrying = false;
+            UnitAnimator.SetTrigger("Parry");            
+        }
+        #endregion
 
-#region UnityEvents
+
+        #region UnityEvents
         public void OnMeleeAttackAnimationStarted_UnityEvent()
         {
             InMeleeAttack = true;

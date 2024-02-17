@@ -110,10 +110,17 @@ namespace Samurai
         protected override void Movement()
         {
             // Walking. Player moves ignoring timescale
-            if (UnitInput.MoveDirection != Vector3.zero && UnitInput.CanMove)
+            /* if (UnitInput.MoveDirection != Vector3.zero && UnitInput.CanMove)
             {
                 if (CharController.isGrounded) CharController.Move(UnitStats.MoveSpeed * Time.fixedDeltaTime * (1 / Time.timeScale) * new Vector3(UnitInput.MoveDirection.x, 0, UnitInput.MoveDirection.z));
                 else CharController.Move(Time.fixedDeltaTime * (1 / Time.timeScale) * (UnitStats.MoveSpeed * new Vector3(UnitInput.MoveDirection.x, 0, UnitInput.MoveDirection.z) + 9.8f * Vector3.down));
+            } */
+
+            // Walking
+            if (UnitInput.MoveDirection != Vector3.zero && UnitInput.CanMove)
+            {
+                if (CharController.isGrounded) CharController.Move(UnitStats.MoveSpeed * Time.fixedDeltaTime * new Vector3(UnitInput.MoveDirection.x, 0, UnitInput.MoveDirection.z));
+                else CharController.Move(Time.fixedDeltaTime * (UnitStats.MoveSpeed * new Vector3(UnitInput.MoveDirection.x, 0, UnitInput.MoveDirection.z) + 9.8f * Vector3.down));
             }
         }
         public override void Die()
@@ -131,8 +138,8 @@ namespace Samurai
         public void EquipPickableWeapon(CallbackContext _)
         {
             if (PickableWeapon == null) return;
-
             RangeWeapon = PickableWeapon;
+
             // Throw away empty gun
             RangeWeapon.OnBulletsEnded += UnequipPickableWeapon;
 
@@ -161,7 +168,7 @@ namespace Samurai
         private float _parrySlowmoTime;
         [SerializeField, Tooltip("Coefficient for timescale")]
         private float _slowMoMultiplier;
-        private Parrying()
+        private void Parrying()
         {
             if (_parryCor == null) _parryCor = StartCoroutine(ParryingCoroutine());
         }
@@ -170,9 +177,14 @@ namespace Samurai
             Time.timeScale = _slowMoMultiplier; // todo make player not slowed
             yield return new WaitForSeconds(_parrySlowmoTime * _slowMoMultiplier);
             Time.timeScale = 1;
-            _parryCor = null
+            _parryCor = null;
         }
-        
+
+        public void MeleeAttack()
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
 
         public event ChangeColorHandle OnPlayerSwapColor;

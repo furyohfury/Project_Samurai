@@ -5,18 +5,21 @@ namespace Samurai
     public class ColorObstacle: ColorObject
     {
         [Inject]
-        private Player Player;
+        private readonly Player Player;
         [Inject]
-        private DefaultPlayerGunPool _defaultPlayerGunPool;
+        private readonly DefaultPlayerGunPool _defaultPlayerGunPool;
+
+        [SerializeField]
+        private bool _switchesColorWithPlayer = false;
 
 
         private void OnEnable()
         {
-            Player.OnPlayerSwapColor += ChangeColor;
+            if (_switchesColorWithPlayer) Player.OnPlayerSwapColor += ChangeColor;
         }
         private void OnDisable()
         {
-            Player.OnPlayerSwapColor -= ChangeColor;
+            if (_switchesColorWithPlayer) Player.OnPlayerSwapColor -= ChangeColor;
         }        
         private void OnTriggerEnter(Collider other)
         {

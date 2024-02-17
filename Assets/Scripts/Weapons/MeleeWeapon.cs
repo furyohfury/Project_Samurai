@@ -17,10 +17,6 @@ namespace Samurai
         private bool _parrying = false;
         public bool Parrying { get => _parrying; set => _parrying = value; }
 
-        [SerializeField, Tooltip("Time for slow-mo after parry")]
-        private float _parrySlowmoTime;
-        [SerializeField, Tooltip("Coefficient for timescale")]
-        private float _slowMoMultiplier;
 
 
         public Unit Owner;

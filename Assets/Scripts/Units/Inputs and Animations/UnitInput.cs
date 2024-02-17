@@ -58,7 +58,7 @@ namespace Samurai
         
         public virtual void UnitInputDie()
         {
-            UnitAnimator.SetTrigger("Die");
+            UnitAnimator.SetTrigger("Die");            
         }
         public void UnitDieAnimationEnded_UnityEvent() //bind w/ all death animation
         {

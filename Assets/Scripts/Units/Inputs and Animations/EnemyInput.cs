@@ -22,6 +22,8 @@ namespace Samurai
         protected override void Start()
         {
             base.Start();
+
+            // Setting speed of agent according to unit ms
             Agent.speed = Unit.GetUnitStats().MoveSpeed;
         }
         protected override void Update()
@@ -40,6 +42,14 @@ namespace Samurai
             
         }
         #endregion
+
+        public override void UnitInputDie()
+        {
+            base.UnitInputDie();
+            GetComponent<NPCAI>().enabled = false;
+            GetComponent<Enemy>().enabled = false;
+            Agent.destination = this.transform.position;
+        }
 
         public void SetAgentTarget(Vector3 target)
         {

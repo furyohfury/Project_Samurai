@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 using Zenject;
 namespace Samurai
 {
-    [RequireComponent(typeof(EnemyInput), typeof(Enemy))]
+    [RequireComponent(typeof(NavMeshAgent))]
     public abstract class NPCAI : MonoBehaviour
     {
         [Inject]

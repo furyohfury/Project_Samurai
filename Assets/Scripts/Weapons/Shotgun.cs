@@ -23,7 +23,7 @@ namespace Samurai
                     0, this.transform.eulerAngles.y + Random.Range(-_shellAngleSpread, _shellAngleSpread), 0);
             }
             CheckIfEmpty();
-            SetShootingDelay(ShootingDelay);
+            SetShootingDelay();
         }
     }
 }
