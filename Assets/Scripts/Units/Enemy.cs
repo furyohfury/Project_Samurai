@@ -3,7 +3,7 @@ using UnityEngine.AI;
 using Zenject;
 namespace Samurai
 {
-    [RequireComponent(typeof(EnemyInput))]
+    [RequireComponent(typeof(EnemyInput), typeof(CapsuleCollider))]
     public abstract class Enemy : Unit
     {
         [Inject]

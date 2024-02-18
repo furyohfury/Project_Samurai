@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using MoreMountains.Feedbacks;
+using System.Collections;
 using UnityEditor;
 using UnityEngine;
 
@@ -16,6 +17,8 @@ namespace Samurai
         private float _meleeAttackCooldown = 3;
         public float MeleeAttackCooldown {get => _meleeAttackCooldown; private set => _meleeAttackCooldown = value;}
 
+        [SerializeField, Space]
+        private MMFeedbacks _meleeAttackFeedback;
         // Ne naebatsya s exit time v animatore
         private bool _inMeleeAttack = false;
         public bool InMeleeAttack
@@ -23,7 +26,7 @@ namespace Samurai
             get => _inMeleeAttack;
             private set
             {
-                if (value == true)
+                if (value)
                 {
                     _inMeleeAttack = true;
                     CanMove = false;
@@ -58,6 +61,11 @@ namespace Samurai
         #endregion
 
 
+        protected override void Movement()
+        {
+            
+        }
+
         public void MeleeAttack()
         {            
             if (CanHit)
@@ -88,6 +96,7 @@ namespace Samurai
         public void OnMeleeAttackSlashAnimationStarted_UnityEvent()
         {
             MeleeAttackHitbox.enabled = true;
+            _meleeAttackFeedback?.PlayFeedbacks();
         }
         public void OnMeleeAttackSlashAnimationEnded_UnityEvent()
         {

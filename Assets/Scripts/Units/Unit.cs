@@ -8,7 +8,6 @@ using static UnityEngine.InputSystem.InputAction;
 
 namespace Samurai
 {
-    [RequireComponent(typeof(CharacterController))]
     public abstract class Unit : ColorObject
     {
         [SerializeField]
@@ -18,7 +17,7 @@ namespace Samurai
             return UnitStats;
         }
 
-        protected CharacterController CharController;
+        
         protected UnitInput UnitInput;
         [Inject]
         protected DefaultPlayerGunPool DefPlayerGunPool;
@@ -44,7 +43,7 @@ namespace Samurai
         protected override void Start()
         {
             base.Start();
-
+            if (UnitStats.MaxHP <= 0) UnitStats.MaxHP = UnitStats.HP;
         }
         protected virtual void Update()
         {
@@ -53,7 +52,7 @@ namespace Samurai
         }
         protected virtual void FixedUpdate()
         {
-            Movement();
+            
         }
         protected virtual void OnTriggerEnter(Collider other)
         {
@@ -73,22 +72,14 @@ namespace Samurai
         #endregion
         protected void Bindings()
         {
-            CharController = GetComponent<CharacterController>();
+            
             UnitInput = GetComponent<UnitInput>();
             // UnitWeapon = GetComponentInChildren<RangeWeapon>();
             if (WeaponSlot == null) WeaponSlot = transform.Find("WeaponSlot");
         }
 
 
-        protected virtual void Movement()
-        {
-            // Walking
-            if (UnitInput.MoveDirection != Vector3.zero && UnitInput.CanMove)
-            {
-                if (CharController.isGrounded) CharController.Move(UnitStats.MoveSpeed * Time.fixedDeltaTime * new Vector3(UnitInput.MoveDirection.x, 0, UnitInput.MoveDirection.z));
-                else CharController.Move(Time.fixedDeltaTime * (UnitStats.MoveSpeed * new Vector3(UnitInput.MoveDirection.x, 0, UnitInput.MoveDirection.z) + 9.8f * Vector3.down));
-            }
-        }
+        
 
         public void GetDamagedByProjectile(Projectile proj)
         {
@@ -113,6 +104,9 @@ namespace Samurai
         protected void GetDamaged(int damage)
         {
             UnitStats.HP -= damage;
+
+            OnUnitHealthChanged?.Invoke();
+
             StartCoroutine(GotHitBlink());
             if (UnitStats.HP <= 0)
             {
@@ -133,5 +127,7 @@ namespace Samurai
         {
 
         }
+
+        public event SimpleHandle OnUnitHealthChanged;
     }
 }

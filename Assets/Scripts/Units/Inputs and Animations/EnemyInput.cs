@@ -7,17 +7,23 @@ namespace Samurai
     [RequireComponent(typeof(Enemy), typeof(NPCAI))]
     public class EnemyInput : UnitInput
     {
-        public NavMeshAgent Agent {get; private set;}
         [Inject]
         protected Player Player;
+
+
+        public NavMeshAgent Agent { get; private set; }        
         protected NPCAI NPCAI;
+        protected CapsuleCollider _collider;
+
+
         #region UnityMethods
         protected override void Awake()
         {
             base.Awake();
             if (Agent == null) Agent = GetComponent<NavMeshAgent>();
             if (NPCAI == null) NPCAI = GetComponent<NPCAI>();
-            
+            _collider = GetComponent<CapsuleCollider>();
+
         }
         protected override void Start()
         {
@@ -27,19 +33,23 @@ namespace Samurai
             Agent.speed = Unit.GetUnitStats().MoveSpeed;
         }
         protected override void Update()
-        {                        
-            
+        {
+
             base.Update();
         }
         protected override void FixedUpdate()
         {
-            Agent.destination = NPCAI.Target;
-            MoveDirection = Vector3.ClampMagnitude(Agent.velocity, 1);
+            if (CanMove)
+            {
+                Agent.destination = NPCAI.Target;
+                MoveDirection = Vector3.ClampMagnitude(Agent.velocity, 1);
+            }
+            else MoveDirection = this.transform.position;
             base.FixedUpdate();
         }
         protected void OnValidate()
         {
-            
+
         }
         #endregion
 
@@ -48,7 +58,11 @@ namespace Samurai
             base.UnitInputDie();
             GetComponent<NPCAI>().enabled = false;
             GetComponent<Enemy>().enabled = false;
-            Agent.destination = this.transform.position;
+            CanMove = false;
+            // Agent.destination = this.transform.position;
+            Agent.enabled = false;
+            _collider.enabled = false;
+            this.enabled = false;
         }
 
         public void SetAgentTarget(Vector3 target)

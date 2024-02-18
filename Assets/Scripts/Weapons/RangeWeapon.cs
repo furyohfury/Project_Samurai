@@ -1,3 +1,4 @@
+using MoreMountains.Feedbacks;
 using System.Collections;
 using UnityEditor.Animations;
 using UnityEngine;
@@ -49,6 +50,8 @@ namespace Samurai
             get => _animController;
             protected set => _animController = value;
         }
+        [SerializeField]
+        protected MMFeedbacks ShootingFeedbacks;
 
 
         #region Unity_Methods
@@ -104,6 +107,14 @@ namespace Samurai
         {
             Owner = null;
             this.transform.rotation = DefaultRotation;
+
+            // Raycast floor. Floor layer is 6
+            if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, 20f, 1 << 6))
+            {
+                transform.parent = null;
+                transform.position = hit.point;
+            }
+            else Destroy(gameObject);
         }
 
 

@@ -14,14 +14,16 @@ namespace Samurai
 
         private MeleeWeapon MeleeWeapon;
 
-        private Enemy _enemyComponent;
+        // private Enemy _enemyComponent;
+        // private MeleeUnitInput _input;
 
         #region UnityMethods
         protected override void Awake()
         {
             base.Awake();
             MeleeWeapon = GetComponentInChildren<MeleeWeapon>();
-            _enemyComponent = GetComponent<Enemy>();
+            // _enemyComponent = GetComponent<Enemy>();
+            // _input = GetComponent<MeleeUnitInput>();
         }
         private void OnEnable()
         {
@@ -37,7 +39,8 @@ namespace Samurai
             if (_parried) return;
             if (!PlayerIsInAttackRange)
             {
-                AIState = AIStateType.Pursuit;
+                //if (_input.CanMove)
+                    AIState = AIStateType.Pursuit;
             }
             else
             {

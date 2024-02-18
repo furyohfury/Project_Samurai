@@ -11,8 +11,8 @@ namespace Samurai
 
         [SerializeField, Range(0, 1f)]
         protected float ChanceToDropRangeWeapon;
-        [SerializeField]
-        private Transform LocationToDropWeapon;
+        // [SerializeField]
+        // private Transform LocationToDropWeapon;
         
 
         protected override void Awake()
@@ -27,8 +27,6 @@ namespace Samurai
         }
         protected void DropRangeWeapon()
         {
-            RangeWeapon.transform.position = LocationToDropWeapon.position;
-            RangeWeapon.transform.parent = null;
             OnDroppedWeapon?.Invoke();
         }
         public void Shoot()

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MoreMountains.Feedbacks;
+using System;
 using System.Collections;
 using UnityEditor;
 using UnityEditor.Animations;
@@ -16,12 +17,18 @@ namespace Samurai
         [Inject]
         private Player _player;
         private PlayerControls _playerControls;
-        [SerializeField]
+        private CharacterController _charController;
+
+        [SerializeField, Space]
         private MeshRenderer _attackKatana;
         [SerializeField]
         private MeshRenderer _sheathedKatana;
-
         [SerializeField]
+        private MMFeedbacks _parryFeedback;
+        [SerializeField]
+        private MMFeedbacks _meleeAttackFeedback;
+
+        [SerializeField, Space]
         private RangeWeapon _rangeWeapon;
         public RangeWeapon RangeWeapon { get => _rangeWeapon; private set => _rangeWeapon = value; }
         public bool CanShoot { get; private set; } = true;
@@ -31,9 +38,10 @@ namespace Samurai
         private MeleeWeapon _meleeWeapon;
         public MeleeWeapon MeleeWeapon { get => _meleeWeapon; private set => _meleeWeapon = value; }
         public bool CanHit { get; private set; } = true;
+        [SerializeField]
         private float _meleeAttackCooldown = 8;
-        public float MeleeAttackCooldown {get => _meleeAttackCooldown; private set => _meleeAttackCooldown = value;}
-        
+        public float MeleeAttackCooldown { get => _meleeAttackCooldown; private set => _meleeAttackCooldown = value; }
+
 
         [SerializeField]
         private Collider _meleeAttackHitbox; // todo mb udalit field
@@ -65,8 +73,8 @@ namespace Samurai
                     (Unit as IAttackRange).RangeWeapon.CanShoot = true;
                     CanMove = true;
                     CanHit = true;
-                }                
-            }            
+                }
+            }
         }
 
         #region Unity_methods
@@ -77,6 +85,7 @@ namespace Samurai
             if (RangeWeapon == null) RangeWeapon = GetComponentInChildren<RangeWeapon>();
             if (MeleeWeapon == null) MeleeWeapon = GetComponentInChildren<MeleeWeapon>();
             if (MeleeAttackHitbox == null) MeleeAttackHitbox = MeleeWeapon.GetComponentInChildren<Collider>();
+            _charController = GetComponent<CharacterController>();
         }
         protected override void Start()
         {
@@ -91,32 +100,47 @@ namespace Samurai
             _playerControls.PlayerMap.PickWeapon.performed += _player.EquipPickableWeapon;
             // _playerControls.PlayerMap.MeleeAttack.performed += _player.MeleeAttack;
             _playerControls.PlayerMap.MeleeAttack.performed += MeleeAttack;
+
+            MeleeWeapon.OnParry += Parry;
         }
         protected override void Update()
         {
-            
+
             base.Update();
         }
         protected override void FixedUpdate()
         {
             Vector2 movement = _playerControls.PlayerMap.Movement.ReadValue<Vector2>();
             MoveDirection = new Vector3(movement.x, 0, movement.y);
-            
+
             // Moving animation happens after defining MD
             base.FixedUpdate();
         }
         private void OnDisable()
         {
+            MeleeWeapon.OnParry -= Parry;
+
             _playerControls.PlayerMap.Shoot.performed -= Shoot;
             _playerControls.PlayerMap.PickWeapon.performed -= _player.EquipPickableWeapon;
             _playerControls.PlayerMap.MeleeAttack.performed -= MeleeAttack;
             _playerControls.Disable();
         }
         #endregion
+
+        protected override void Movement()
+        {
+            // Walking
+            if (MoveDirection != Vector3.zero && CanMove)
+            {
+                if (_charController.isGrounded) _charController.Move(Unit.GetUnitStats().MoveSpeed * Time.fixedDeltaTime * new Vector3(MoveDirection.x, 0, MoveDirection.z));
+                else _charController.Move(Time.fixedDeltaTime * (Unit.GetUnitStats().MoveSpeed * new Vector3(MoveDirection.x, 0, MoveDirection.z) + 9.8f * Vector3.down));
+            }
+        }
+
         public void SetAnimatorController(AnimatorController controller) // mb redo in controller layers
         {
             UnitAnimator.runtimeAnimatorController = controller;
-        }        
+        }
         public void OnShootAnimationStarted_UnityEvent() { }
         public void OnShootAnimationEnded_UnityEvent() { }
 
@@ -130,16 +154,18 @@ namespace Samurai
             }
         }
 
-
         #region Melee
         public void MeleeAttack(CallbackContext _) => MeleeAttack();
         public void MeleeAttack()
         {
-            if (CanHit) 
+            if (CanHit)
             {
                 UnitAnimator.SetTrigger("MeleeAttack");
+                
+
                 InMeleeAttack = true;
                 StartCoroutine(MeleeAttackCD());
+                OnPlayerAttacked?.Invoke();
             }
         }
         private IEnumerator MeleeAttackCD()
@@ -156,7 +182,8 @@ namespace Samurai
             _player.RangeWeapon.gameObject.SetActive(true);
             MeleeAttackHitbox.enabled = false;
             MeleeWeapon.Parrying = false;
-            UnitAnimator.SetTrigger("Parry");            
+            _parryFeedback?.PlayFeedbacks();
+            // UnitAnimator.SetTrigger("Parry");
         }
         #endregion
 
@@ -180,7 +207,8 @@ namespace Samurai
         }
         public void OnMeleeAttackSlashAnimationStarted_UnityEvent()
         {
-            MeleeAttackHitbox.enabled = true;            
+            MeleeAttackHitbox.enabled = true;
+            _meleeAttackFeedback?.PlayFeedbacks();
         }
         public void OnMeleeAttackSlashAnimationEnded_UnityEvent()
         {
@@ -188,5 +216,7 @@ namespace Samurai
             MeleeWeapon.Parrying = false;
         }
         #endregion
+
+        public event SimpleHandle OnPlayerAttacked;
     }
 }

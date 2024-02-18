@@ -22,6 +22,7 @@ namespace Samurai
                 proj.transform.eulerAngles = new Vector3(
                     0, this.transform.eulerAngles.y + Random.Range(-_shellAngleSpread, _shellAngleSpread), 0);
             }
+            ShootingFeedbacks?.PlayFeedbacks();
             CheckIfEmpty();
             SetShootingDelay();
         }

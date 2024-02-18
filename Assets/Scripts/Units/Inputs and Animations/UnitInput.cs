@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using UnityEditor;
 using UnityEngine;
 using static UnityEngine.InputSystem.InputAction;
 
@@ -10,6 +11,8 @@ namespace Samurai
         protected Vector3 _movement;
         public ref Vector3 MoveDirection => ref _movement;
 
+
+        // protected CharacterController CharController;
         protected Animator UnitAnimator;
 
         protected Unit Unit;
@@ -36,11 +39,14 @@ namespace Samurai
         protected virtual void FixedUpdate()
         {
             MovementAnimation();
+            Movement();
         }
+        #endregion
         protected virtual void Bindings()
         {
             UnitAnimator = GetComponent<Animator>();
             Unit = GetComponent<Unit>();
+            // CharController = GetComponent<CharacterController>();
         }
         protected void MovementAnimation()
         {
@@ -54,8 +60,17 @@ namespace Samurai
             }
             else UnitAnimator.SetBool("Moving", false);
         }
-        #endregion
+        protected virtual void Movement()
+        {
+            /* Walking
+            if (MoveDirection != Vector3.zero && CanMove)
+            {
+                if (CharController.isGrounded) CharController.Move(Unit.GetUnitStats().MoveSpeed * Time.fixedDeltaTime * new Vector3(MoveDirection.x, 0, MoveDirection.z));
+                else CharController.Move(Time.fixedDeltaTime * (Unit.GetUnitStats().MoveSpeed * new Vector3(MoveDirection.x, 0, MoveDirection.z) + 9.8f * Vector3.down));
+            } */
+        }
         
+
         public virtual void UnitInputDie()
         {
             UnitAnimator.SetTrigger("Die");            

@@ -12,9 +12,9 @@ namespace Samurai
         [SerializeField, Space]
         private float _burstDelayBetweenShots = 0.05f;
 
-        public override Vector3 WeaponPositionWhenPicked => new Vector3(0, 0, 0);
+        public override Vector3 WeaponPositionWhenPicked => new Vector3(0, 0, 0.03f);
 
-        public override Vector3 WeaponRotationWhenPicked => new Vector3(0, 90, 180);
+        public override Vector3 WeaponRotationWhenPicked => new Vector3(0, 60, 180);
 
         public override void Shoot()
         {
@@ -23,6 +23,7 @@ namespace Samurai
             proj.transform.position = this.transform.position + this.transform.forward * 0.1f;
             proj.transform.eulerAngles = new Vector3(0, Owner.transform.eulerAngles.y, 0);
             CheckIfEmpty();
+            ShootingFeedbacks?.PlayFeedbacks();
             SetShootingDelay();
         }
         public void ShootBurst()
@@ -41,6 +42,8 @@ namespace Samurai
                     0, Owner.transform.eulerAngles.y + Random.Range(-_burstShellAngleSpread, _burstShellAngleSpread), 0);
                 yield return new WaitForSeconds(_burstDelayBetweenShots);
             }
+            SetShootingDelay();
+
         }
     }
 }

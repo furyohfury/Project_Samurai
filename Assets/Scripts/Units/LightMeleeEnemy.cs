@@ -9,6 +9,11 @@ namespace Samurai
         private MeleeWeapon _meleeWeapon;
         public MeleeWeapon MeleeWeapon { get => _meleeWeapon; private set => _meleeWeapon = value; }
 
+        protected override void Awake()
+        {
+            base.Awake();
+            MeleeWeapon = GetComponentInChildren<MeleeWeapon>();
+        }
         public void MeleeAttack()
         {
             throw new System.NotImplementedException();

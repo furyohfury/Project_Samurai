@@ -48,13 +48,13 @@ namespace Samurai
         }
         protected void OnEnable()
         {
-            MeleeWeapon.OnParry += Parrying;
+            // MeleeWeapon.OnParry += Parrying;
         }
         protected override void Start()
         {
             base.Start();
             if (_camera == null) _camera = Camera.main;
-            _defaultPlayerWeapon = GetComponentInChildren<DefaultPlayerWeapon>();
+            _defaultPlayerWeapon = GetComponentInChildren<DefaultPlayerWeapon>(true);
         }
         protected override void Update()
         {
@@ -63,7 +63,7 @@ namespace Samurai
         }
         protected void OnDisable()
         {
-            MeleeWeapon.OnParry -= Parrying;
+            // MeleeWeapon.OnParry -= Parrying;
         }
         protected override void OnTriggerEnter(Collider other)
         {
@@ -107,22 +107,7 @@ namespace Samurai
             TestShit = cursorPosition;
             transform.LookAt(cursorPosition);
         }
-        protected override void Movement()
-        {
-            // Walking. Player moves ignoring timescale
-            /* if (UnitInput.MoveDirection != Vector3.zero && UnitInput.CanMove)
-            {
-                if (CharController.isGrounded) CharController.Move(UnitStats.MoveSpeed * Time.fixedDeltaTime * (1 / Time.timeScale) * new Vector3(UnitInput.MoveDirection.x, 0, UnitInput.MoveDirection.z));
-                else CharController.Move(Time.fixedDeltaTime * (1 / Time.timeScale) * (UnitStats.MoveSpeed * new Vector3(UnitInput.MoveDirection.x, 0, UnitInput.MoveDirection.z) + 9.8f * Vector3.down));
-            } */
-
-            // Walking
-            if (UnitInput.MoveDirection != Vector3.zero && UnitInput.CanMove)
-            {
-                if (CharController.isGrounded) CharController.Move(UnitStats.MoveSpeed * Time.fixedDeltaTime * new Vector3(UnitInput.MoveDirection.x, 0, UnitInput.MoveDirection.z));
-                else CharController.Move(Time.fixedDeltaTime * (UnitStats.MoveSpeed * new Vector3(UnitInput.MoveDirection.x, 0, UnitInput.MoveDirection.z) + 9.8f * Vector3.down));
-            }
-        }
+        
         public override void Die()
         {
             UnitInput.enabled = false;
@@ -133,6 +118,7 @@ namespace Samurai
         public void Shoot()
         {
             RangeWeapon.Shoot();
+            if (RangeWeapon.GetType() != typeof(DefaultPlayerWeapon)) OnPlayerShot?.Invoke();
         }
 
         public void EquipPickableWeapon(CallbackContext _)
@@ -148,22 +134,30 @@ namespace Samurai
 
             RangeWeapon.transform.SetLocalPositionAndRotation(RangeWeapon.WeaponPositionWhenPicked, Quaternion.Euler(RangeWeapon.WeaponRotationWhenPicked));
 
-            ((PlayerInput)UnitInput).SetAnimatorController(RangeWeapon.AnimController);
+            ((PlayerInput)UnitInput).SetAnimatorController((UnityEditor.Animations.AnimatorController)RangeWeapon.AnimController);
             RangeWeapon.Equipped(this);
             PickableWeapon = null;
+
+            if (Enum.TryParse(RangeWeapon.GetType().Name, true, out RangeWeaponEnum weapon))
+            {
+                OnPlayerChangedWeapon?.Invoke(weapon);
+            }
+            else Debug.LogWarning($"Player equipped weapon not in enum {typeof(RangeWeaponEnum)}");
         }
         public void UnequipPickableWeapon()
         {
-            Destroy(RangeWeapon.gameObject);
+            Destroy((UnityEngine.Object)RangeWeapon.gameObject);
             _defaultPlayerWeapon.gameObject.SetActive(true);
             RangeWeapon = _defaultPlayerWeapon;
             ((PlayerInput)UnitInput).SetAnimatorController(_defaultPlayerWeapon.AnimController);
             _defaultPlayerWeapon.Equipped(this);
+
+            OnPlayerChangedWeapon?.Invoke(RangeWeaponEnum.DefaultPlayerWeapon);
         }
         #endregion
 
         #region Melee       
-        private Coroutine _parryCor;
+        /* private Coroutine _parryCor;
         [SerializeField, Tooltip("Time for slow-mo after parry")]
         private float _parrySlowmoTime;
         [SerializeField, Tooltip("Coefficient for timescale")]
@@ -178,7 +172,7 @@ namespace Samurai
             yield return new WaitForSeconds(_parrySlowmoTime * _slowMoMultiplier);
             Time.timeScale = 1;
             _parryCor = null;
-        }
+        } */
 
         public void MeleeAttack()
         {
@@ -188,5 +182,7 @@ namespace Samurai
         #endregion
 
         public event ChangeColorHandle OnPlayerSwapColor;
+        public event RangeWeaponChangeHandle OnPlayerChangedWeapon;
+        public event SimpleHandle OnPlayerShot;
     }
 }

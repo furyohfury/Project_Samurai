@@ -8,11 +8,11 @@ namespace Samurai
         Green = 10,
         Default = 500
     }
-    public enum PlayerWeapon
+    public enum RangeWeaponEnum
     {
         Shotgun = 0,
-        SniperRifle = 1,
-        DefaultPistol = 10
+        Rifle = 1,
+        DefaultPlayerWeapon = 10
     }    
     public enum AIStateType
     {

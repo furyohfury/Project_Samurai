@@ -2,15 +2,15 @@ using UnityEngine;
 namespace Samurai
 {
     public class LightRangeEnemy : Enemy, IAttackRange
-    {           
+    {
         [SerializeField]
         private RangeWeapon _rangeWeapon;
         public RangeWeapon RangeWeapon { get => _rangeWeapon; private set => _rangeWeapon = value; }
 
         [SerializeField, Range(0, 1f)]
         protected float ChanceToDropRangeWeapon;
-        [SerializeField]
-        private Transform LocationToDropWeapon;
+        // [SerializeField]
+        // private Transform LocationToDropWeapon;
 
 
         protected override void Awake()
@@ -25,8 +25,7 @@ namespace Samurai
         }
         protected void DropRangeWeapon()
         {
-            RangeWeapon.transform.position = LocationToDropWeapon.position;
-            RangeWeapon.transform.parent = null;
+            //  RangeWeapon.transform.position = LocationToDropWeapon.position;            
             OnDroppedWeapon?.Invoke();
         }
 
