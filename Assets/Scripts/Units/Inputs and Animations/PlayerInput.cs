@@ -27,6 +27,8 @@ namespace Samurai
         private MMFeedbacks _parryFeedback;
         [SerializeField]
         private MMFeedbacks _meleeAttackFeedback;
+        [SerializeField]
+        private MMF_Player _stepsFeedback;
 
         [SerializeField, Space]
         private RangeWeapon _rangeWeapon;
@@ -39,7 +41,7 @@ namespace Samurai
         public MeleeWeapon MeleeWeapon { get => _meleeWeapon; private set => _meleeWeapon = value; }
         public bool CanHit { get; private set; } = true;
         [SerializeField]
-        private float _meleeAttackCooldown = 8;
+        private float _meleeAttackCooldown = 8f;
         public float MeleeAttackCooldown { get => _meleeAttackCooldown; private set => _meleeAttackCooldown = value; }
 
 
@@ -65,14 +67,14 @@ namespace Samurai
                     _inMeleeAttack = true;
                     (Unit as IAttackRange).RangeWeapon.CanShoot = false;
                     CanMove = false;
-                    CanHit = false;
+                    // CanHit = false;
                 }
                 else
                 {
                     _inMeleeAttack = false;
                     (Unit as IAttackRange).RangeWeapon.CanShoot = true;
                     CanMove = true;
-                    CanHit = true;
+                    // CanHit = true;
                 }
             }
         }
@@ -132,8 +134,13 @@ namespace Samurai
             // Walking
             if (MoveDirection != Vector3.zero && CanMove)
             {
-                if (_charController.isGrounded) _charController.Move(Unit.GetUnitStats().MoveSpeed * Time.fixedDeltaTime * new Vector3(MoveDirection.x, 0, MoveDirection.z));
+                if (!_stepsFeedback.IsPlaying) _stepsFeedback?.PlayFeedbacks();
+                if (_charController.isGrounded) _charController.Move(Unit.GetUnitStats().MoveSpeed / Time.timeScale * Time.fixedDeltaTime * new Vector3(MoveDirection.x, 0, MoveDirection.z));
                 else _charController.Move(Time.fixedDeltaTime * (Unit.GetUnitStats().MoveSpeed * new Vector3(MoveDirection.x, 0, MoveDirection.z) + 9.8f * Vector3.down));
+            }
+            else
+            {
+                _stepsFeedback?.StopFeedbacks();
             }
         }
 
@@ -161,7 +168,6 @@ namespace Samurai
             if (CanHit)
             {
                 UnitAnimator.SetTrigger("MeleeAttack");
-                
 
                 InMeleeAttack = true;
                 StartCoroutine(MeleeAttackCD());
@@ -174,6 +180,12 @@ namespace Samurai
             yield return new WaitForSeconds(MeleeAttackCooldown);
             CanHit = true;
         }
+
+        public Coroutine _parryCor;
+        [SerializeField, Tooltip("Time for slow-mo after parry")]
+        private float _parrySlowmoTime;
+        [SerializeField, Tooltip("Coefficient for timescale")]
+        private float _slowMoMultiplier;
         public void Parry()
         {
             InMeleeAttack = false;
@@ -184,6 +196,17 @@ namespace Samurai
             MeleeWeapon.Parrying = false;
             _parryFeedback?.PlayFeedbacks();
             // UnitAnimator.SetTrigger("Parry");
+
+            _parryCor ??= StartCoroutine(ParryingCoroutine());
+        }
+        private IEnumerator ParryingCoroutine()
+        {
+            Time.timeScale = _slowMoMultiplier;
+            UnitAnimator.updateMode = AnimatorUpdateMode.UnscaledTime;
+            yield return new WaitForSecondsRealtime(_parrySlowmoTime);
+            Time.timeScale = 1;
+            UnitAnimator.updateMode = AnimatorUpdateMode.Normal;
+            _parryCor = null;
         }
         #endregion
 

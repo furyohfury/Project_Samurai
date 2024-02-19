@@ -32,7 +32,7 @@ namespace Samurai
             _hpSlider.value = _player.GetUnitStats().HP / _player.GetUnitStats().MaxHP;
             PlayerChangedColor(_player.CurrentColor);
             RangeWeaponChanged(Enum.Parse<RangeWeaponEnum>(_player.RangeWeapon.GetType().Name, true));
-
+            MeleeWeaponUIInit();
         }
         private void OnDisable()
         {
@@ -104,13 +104,24 @@ namespace Samurai
         [SerializeField, Space]
         private Image _meleeWeaponImage;
         [SerializeField]
-        private MMFeedbacks _meleeWeaponCDFeedback;
+        private MMF_Player _meleeWeaponCDFeedback;
+        private MMF_ImageFill _meleeWeaponImageFillFeedback;
+        private MMF_Pause _meleeWeaponPauseFeedback;
 
+        private void MeleeWeaponUIInit()
+        {
+            _meleeWeaponImageFillFeedback = _meleeWeaponCDFeedback.GetFeedbackOfType<MMF_ImageFill>();            
+            _meleeWeaponPauseFeedback = _meleeWeaponCDFeedback.GetFeedbackOfType<MMF_Pause>();
+            _meleeWeaponImageFillFeedback.Duration = _playerInput.MeleeAttackCooldown;
+            _meleeWeaponImageFillFeedback.FeedbackDuration = _playerInput.MeleeAttackCooldown;
+            _meleeWeaponPauseFeedback.PauseDuration = _playerInput.MeleeAttackCooldown;
+            _meleeWeaponImageFillFeedback.ResetFeedback();
+        }
         public void MeleeWeaponCD()
         {
-            MMFeedback mf = _meleeWeaponCDFeedback.Feedbacks[0]; //todo fix
-            mf.FeedbackDuration = _playerInput.MeleeAttackCooldown;
-            mf.Play(_meleeWeaponCDFeedback.transform.position);
+            
+            // _meleeWeaponPauseFeedback.PauseDuration = _playerInput.MeleeAttackCooldown;
+            _meleeWeaponCDFeedback?.PlayFeedbacks();
         }
         #endregion
     }

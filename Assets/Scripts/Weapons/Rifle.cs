@@ -1,3 +1,4 @@
+using MoreMountains.Feedbacks;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,6 +12,9 @@ namespace Samurai
         private float _burstShellAngleSpread = 5;
         [SerializeField, Space]
         private float _burstDelayBetweenShots = 0.05f;
+
+        [SerializeField]
+        private MMF_Player _burstShootFeedback;
 
         public override Vector3 WeaponPositionWhenPicked => new Vector3(0, 0, 0.03f);
 
@@ -33,6 +37,7 @@ namespace Samurai
         private IEnumerator ShootBurstCor()
         {            
             SetShootingDelay();
+            _burstShootFeedback?.PlayFeedbacks();
             for (var i = 0; i < _burstNumberOfShells; i++)
             {
                 var proj = Instantiate(WeaponProjectilePrefab);

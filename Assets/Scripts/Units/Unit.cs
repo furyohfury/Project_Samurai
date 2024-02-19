@@ -101,11 +101,12 @@ namespace Samurai
                 GetDamaged(weapon.Damage);
             }
         }
-        protected void GetDamaged(int damage)
+        protected virtual void GetDamaged(int damage)
         {
             UnitStats.HP -= damage;
 
             OnUnitHealthChanged?.Invoke();
+            
 
             StartCoroutine(GotHitBlink());
             if (UnitStats.HP <= 0)

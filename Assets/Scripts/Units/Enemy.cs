@@ -1,3 +1,4 @@
+using MoreMountains.Tools;
 using UnityEngine;
 using UnityEngine.AI;
 using Zenject;
@@ -10,6 +11,8 @@ namespace Samurai
         protected EnemyPool EnemyPool;
         public NPCAI AI { get; protected set; }
 
+        protected MMHealthBar HPBar;
+
 
 
         #region Unity_Methods
@@ -17,10 +20,12 @@ namespace Samurai
         {
             base.Awake();
             AI = GetComponent<NPCAI>();
+            HPBar = GetComponent<MMHealthBar>();
         }
         protected override void Start()
         {
             base.Start();
+            HPBar.UpdateBar(UnitStats.HP, 0f, UnitStats.MaxHP, true);
         }
         protected virtual void OnEnable()
         {
@@ -32,6 +37,13 @@ namespace Samurai
             EnemyPool.EnemyList.Remove(this);
         }
         #endregion
+
+        protected override void GetDamaged(int damage)
+        {
+            HPBar.UpdateBar(UnitStats.HP - damage, 0f, UnitStats.MaxHP, true);
+            base.GetDamaged(damage);
+        }
+
         public override void Die()
         {
             Destroy(gameObject);

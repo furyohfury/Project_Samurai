@@ -86,7 +86,7 @@ namespace Samurai
 
         protected override void GetDamagedByMelee(MeleeWeapon weapon)
         {
-            if ((weapon.Owner as Enemy != null) && (!this.MeleeWeapon.Parrying))
+            if ((weapon.Owner as Enemy != null) && !this.MeleeWeapon.Parrying && (UnitInput as PlayerInput)._parryCor == null)
             {
                 GetDamaged(weapon.Damage);
             }

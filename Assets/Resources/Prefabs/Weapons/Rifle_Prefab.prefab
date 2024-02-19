@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4577274194954386840}
   - component: {fileID: 7016881143052718787}
   m_Layer: 0
-  m_Name: ShootFeedback
+  m_Name: ShootBurstFeedback
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -24,8 +24,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3356463228998556979}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.12700003, z: 0.555}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0, y: 0.137, z: 0.549}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -198,7 +198,7 @@ MonoBehaviour:
         RemapRangeFalloff: {x: 0, y: 1}
         Owner: {fileID: 7016881143052718787}
         DebugActive: 0
-        Sfx: {fileID: 8300000, guid: fa2c895540e967449b09e6d61065c1dd, type: 3}
+        Sfx: {fileID: 8300000, guid: 58b1587a61923234fb55a85153012656, type: 3}
         RandomSfx: []
         TestPlayButton:
           ButtonText: Debug Play Sound
@@ -208,8 +208,8 @@ MonoBehaviour:
         PoolSize: 10
         UseLegacyEventsMode: 0
         StopSoundOnFeedbackStop: 1
-        MinVolume: 1
-        MaxVolume: 1
+        MinVolume: 0.67
+        MaxVolume: 0.73
         MinPitch: 1
         MaxPitch: 1
         SfxAudioMixerGroup: {fileID: 0}
@@ -365,9 +365,346 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4577274194954386840}
+  - {fileID: 4072705944567401833}
   m_Father: {fileID: 7084902129715469802}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &6956760080060786006
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4072705944567401833}
+  - component: {fileID: 6799667699689623394}
+  m_Layer: 0
+  m_Name: ShootFeedback
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4072705944567401833
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6956760080060786006}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0, y: 0.137, z: 0.549}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2909012804957513202}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6799667699689623394
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6956760080060786006}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6da43522623d4704e979466dc7650b65, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Feedbacks: []
+  InitializationMode: 2
+  AutoInitialization: 1
+  SafeMode: 3
+  Direction: 0
+  AutoChangeDirectionOnEnd: 0
+  AutoPlayOnStart: 0
+  AutoPlayOnEnable: 0
+  ForceTimescaleMode: 0
+  ForcedTimescaleMode: 1
+  DurationMultiplier: 1
+  RandomizeDuration: 0
+  RandomDurationMultiplier: {x: 0.5, y: 1.5}
+  DisplayFullDurationDetails: 0
+  PlayerTimescaleMode: 1
+  OnlyPlayIfWithinRange: 0
+  RangeCenter: {fileID: 0}
+  RangeDistance: 5
+  UseRangeFalloff: 0
+  RangeFalloff:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  RemapRangeFalloff: {x: 0, y: 1}
+  IgnoreRangeEvents: 0
+  CooldownDuration: 0
+  InitialDelay: 0
+  CanPlay: 1
+  CanPlayWhileAlreadyPlaying: 1
+  ChanceToPlay: 100
+  FeedbacksIntensity: 1
+  Events:
+    TriggerMMFeedbacksEvents: 0
+    TriggerUnityEvents: 1
+    OnPlay:
+      m_PersistentCalls:
+        m_Calls: []
+    OnPause:
+      m_PersistentCalls:
+        m_Calls: []
+    OnResume:
+      m_PersistentCalls:
+        m_Calls: []
+    OnRevert:
+      m_PersistentCalls:
+        m_Calls: []
+    OnComplete:
+      m_PersistentCalls:
+        m_Calls: []
+    OnRestoreInitialValues:
+      m_PersistentCalls:
+        m_Calls: []
+    OnSkipToTheEnd:
+      m_PersistentCalls:
+        m_Calls: []
+  DebugActive: 0
+  FeedbacksList:
+  - rid: 6763064580906680327
+  - rid: 6763064580906680328
+  KeepPlayModeChanges: 0
+  PerformanceMode: 0
+  StopFeedbacksOnDisable: 0
+  PlayCount: 0
+  references:
+    version: 2
+    RefIds:
+    - rid: 6763064580906680327
+      type: {class: MMF_Sound, ns: MoreMountains.Feedbacks, asm: MoreMountains.Feedbacks.MMTools}
+      data:
+        Active: 1
+        UniqueID: 1786910281
+        Label: Sound
+        ChannelMode: 0
+        Channel: 0
+        MMChannelDefinition: {fileID: 0}
+        Chance: 100
+        DisplayColor: {r: 0, g: 0, b: 0, a: 1}
+        Timing:
+          TimescaleMode: 0
+          ExcludeFromHoldingPauses: 0
+          ContributeToTotalDuration: 1
+          InitialDelay: 0
+          CooldownDuration: 0
+          InterruptsOnStop: 1
+          NumberOfRepeats: 0
+          RepeatForever: 0
+          DelayBetweenRepeats: 1
+          MMFeedbacksDirectionCondition: 0
+          PlayDirection: 0
+          ConstantIntensity: 0
+          UseIntensityInterval: 0
+          IntensityIntervalMin: 0
+          IntensityIntervalMax: 0
+          Sequence: {fileID: 0}
+          TrackID: 0
+          Quantized: 0
+          TargetBPM: 120
+        AutomatedTargetAcquisition:
+          Mode: 0
+          ChildIndex: 0
+        RandomizeOutput: 0
+        RandomMultiplier: {x: 0.8, y: 1}
+        RandomizeDuration: 0
+        RandomDurationMultiplier: {x: 0.5, y: 2}
+        UseRange: 0
+        RangeDistance: 5
+        UseRangeFalloff: 0
+        RangeFalloff:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 1
+            value: 0
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        RemapRangeFalloff: {x: 0, y: 1}
+        Owner: {fileID: 6799667699689623394}
+        DebugActive: 0
+        Sfx: {fileID: 8300000, guid: fa2c895540e967449b09e6d61065c1dd, type: 3}
+        RandomSfx: []
+        TestPlayButton:
+          ButtonText: Debug Play Sound
+        TestStopButton:
+          ButtonText: Debug Stop Sound
+        PlayMethod: 1
+        PoolSize: 10
+        UseLegacyEventsMode: 0
+        StopSoundOnFeedbackStop: 1
+        MinVolume: 0.67
+        MaxVolume: 0.73
+        MinPitch: 1
+        MaxPitch: 1
+        SfxAudioMixerGroup: {fileID: 0}
+        Priority: 128
+        PanStereo: 0
+        SpatialBlend: 0
+        DopplerLevel: 1
+        Spread: 0
+        RolloffMode: 0
+        MinDistance: 1
+        MaxDistance: 500
+        UseCustomRolloffCurve: 0
+        CustomRolloffCurve:
+          serializedVersion: 2
+          m_Curve: []
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        UseSpatialBlendCurve: 0
+        SpatialBlendCurve:
+          serializedVersion: 2
+          m_Curve: []
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        UseReverbZoneMixCurve: 0
+        ReverbZoneMixCurve:
+          serializedVersion: 2
+          m_Curve: []
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        UseSpreadCurve: 0
+        SpreadCurve:
+          serializedVersion: 2
+          m_Curve: []
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+    - rid: 6763064580906680328
+      type: {class: MMF_ParticlesInstantiation, ns: MoreMountains.Feedbacks, asm: MoreMountains.Feedbacks}
+      data:
+        Active: 1
+        UniqueID: -886375904
+        Label: Particles Instantiation
+        ChannelMode: 0
+        Channel: 0
+        MMChannelDefinition: {fileID: 0}
+        Chance: 100
+        DisplayColor: {r: 0, g: 0, b: 0, a: 1}
+        Timing:
+          TimescaleMode: 0
+          ExcludeFromHoldingPauses: 0
+          ContributeToTotalDuration: 1
+          InitialDelay: 0
+          CooldownDuration: 0
+          InterruptsOnStop: 1
+          NumberOfRepeats: 0
+          RepeatForever: 0
+          DelayBetweenRepeats: 1
+          MMFeedbacksDirectionCondition: 0
+          PlayDirection: 0
+          ConstantIntensity: 0
+          UseIntensityInterval: 0
+          IntensityIntervalMin: 0
+          IntensityIntervalMax: 0
+          Sequence: {fileID: 0}
+          TrackID: 0
+          Quantized: 0
+          TargetBPM: 120
+        AutomatedTargetAcquisition:
+          Mode: 0
+          ChildIndex: 0
+        RandomizeOutput: 0
+        RandomMultiplier: {x: 0.8, y: 1}
+        RandomizeDuration: 0
+        RandomDurationMultiplier: {x: 0.5, y: 2}
+        UseRange: 0
+        RangeDistance: 5
+        UseRangeFalloff: 0
+        RangeFalloff:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 1
+            value: 0
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        RemapRangeFalloff: {x: 0, y: 1}
+        Owner: {fileID: 6799667699689623394}
+        DebugActive: 0
+        Mode: 0
+        ObjectPoolSize: 5
+        MutualizePools: 0
+        ParentTransform: {fileID: 0}
+        CachedRecycle: 1
+        ParticlesPrefab: {fileID: 19813786, guid: a31b4268a2024374292379127f03b3c6, type: 3}
+        RandomParticlePrefabs: []
+        ForceSetActiveOnPlay: 0
+        StopOnReset: 0
+        DeclaredDuration: 0
+        PositionMode: 0
+        InstantiateParticlesPosition: {fileID: 0}
+        TargetWorldPosition: {x: 0, y: 0, z: 0}
+        Offset: {x: 0, y: 0, z: 0}
+        NestParticles: 1
+        ApplyRotation: 1
+        ApplyScale: 0
+        ForceSimulationSpeed: 0
+        ForcedSimulationSpeed: {x: 0.1, y: 1}
 --- !u!1 &7084902129715823050
 GameObject:
   m_ObjectHideFlags: 0
@@ -483,7 +820,7 @@ MonoBehaviour:
   _numberOfBulletsForPlayer: 20
   EnemyShootingDelay: 5
   PlayerShootingDelay: 0.2
-  WeaponProjectilePrefab: {fileID: 8827768608434931341, guid: 3bccae5e596adfe428a80979030e8fc9, type: 3}
+  WeaponProjectilePrefab: {fileID: 8827768608434931341, guid: db4c1f67955e92942bd8dd725a88bb63, type: 3}
   _isPickable: 1
   PlayerProjectileStats:
     Damage: 5
@@ -494,7 +831,8 @@ MonoBehaviour:
     ProjectileSpeed: 5
     ProjectileScale: 1
   _animController: {fileID: 9100000, guid: fe36962ced391a54e811a68ee110eddb, type: 2}
-  ShootingFeedbacks: {fileID: 7016881143052718787}
+  ShootingFeedbacks: {fileID: 6799667699689623394}
   _burstNumberOfShells: 5
   _burstShellAngleSpread: 5
   _burstDelayBetweenShots: 0.05
+  _burstShootFeedback: {fileID: 7016881143052718787}
