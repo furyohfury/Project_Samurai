@@ -14,7 +14,7 @@ namespace Samurai
         [SerializeField]
         private float _divider = 300;
         [SerializeField]
-        private float _limiter = 200;
+        private float _limiter = 450;
         private Vector2 _res;
 
 
@@ -29,7 +29,7 @@ namespace Samurai
             var cameraOffset = centerOffset.sqrMagnitude > _limiter * _limiter ? centerOffset : Vector2.zero;
             cameraOffset = Vector3.ClampMagnitude(cameraOffset, cameraOffset.magnitude - _limiter) / _divider;
 
-            transform.position = _player.transform.position + _offset + cameraOffset;
+            transform.position = _player.transform.position + _offset + new Vector3(cameraOffset.x, 0, cameraOffset.y);
 
         }
 #endregion

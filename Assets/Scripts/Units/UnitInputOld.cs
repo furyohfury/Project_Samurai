@@ -1,12 +1,7 @@
-﻿using System.Collections;
-using UnityEditor;
 using UnityEngine;
-using static UnityEngine.InputSystem.InputAction;
-
 namespace Samurai
 {
-    [RequireComponent(typeof(Unit), typeof(Animator))]
-    public abstract class UnitInput : MonoBehaviour
+    public class UnitIncom
     {
         protected Vector3 _movement;
         public ref Vector3 MoveDirection => ref _movement;
@@ -34,7 +29,7 @@ namespace Samurai
         }
         protected virtual void Update()
         {
-            
+
         }
         protected virtual void FixedUpdate()
         {
@@ -69,11 +64,11 @@ namespace Samurai
                 else CharController.Move(Time.fixedDeltaTime * (Unit.GetUnitStats().MoveSpeed * new Vector3(MoveDirection.x, 0, MoveDirection.z) + 9.8f * Vector3.down));
             } */
         }
-        
+
 
         public virtual void UnitInputDie()
         {
-            UnitAnimator.SetTrigger("Die");            
+            UnitAnimator.SetTrigger("Die");
         }
         public void UnitDieAnimationEnded_UnityEvent() //bind w/ all death animation
         {

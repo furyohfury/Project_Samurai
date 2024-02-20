@@ -11772,7 +11772,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _offset: {x: 0, y: 10, z: -6}
   _divider: 100
-  _limiter: 200
+  _limiter: 450
 --- !u!114 &1616527494
 MonoBehaviour:
   m_ObjectHideFlags: 0

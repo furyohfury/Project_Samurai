@@ -1,3 +1,4 @@
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 namespace Samurai
@@ -33,11 +34,11 @@ namespace Samurai
         }
         public void ExitPressed_UnityEvent()
         {
-            #if UNITY_EDITOR
-             EditorApplication.ExitPlaymode();
-            #else
+#if UNITY_EDITOR
+            EditorApplication.ExitPlaymode();
+#else
             Application.Quit();
-            #endif            
+#endif
         }
     }
 }

@@ -1,15 +1,20 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
-using Zenject.SpaceFighter;
 using static UnityEngine.InputSystem.InputAction;
 
 namespace Samurai
 {
-    public abstract class Unit : ColorObject
+    public abstract class Unit : MonoBehaviour
     {
+        protected UnitVisuals UnitVisuals;
+
+        [Inject]
+        protected DefaultPlayerGunPool DefPlayerGunPool;
+
+        public PhaseColor CurrentColor { get; protected set; } = PhaseColor.Default;
+        public void SetCurrentColor(PhaseColor color) => CurrentColor = color;
+
         [SerializeField]
         protected UnitStatsStruct UnitStats;
         public UnitStatsStruct GetUnitStats()
@@ -17,117 +22,61 @@ namespace Samurai
             return UnitStats;
         }
 
-        
-        protected UnitInput UnitInput;
-        [Inject]
-        protected DefaultPlayerGunPool DefPlayerGunPool;
-
-        /* [SerializeField]
-        protected RangeWeapon _unitWeapon;
-        public RangeWeapon UnitWeapon { get => _unitWeapon; protected set => _unitWeapon = value; } */
-
-        
-
-        [SerializeField]
-        protected Transform WeaponSlot;
-
-        [SerializeField]
-        protected float BlinkWhenDamagedTime = 0.1f;
-
-
-        #region Unity_Methods
-        protected virtual void Awake()
-        {
-            Bindings();
-        }
-        protected override void Start()
-        {
-            base.Start();
-            if (UnitStats.MaxHP <= 0) UnitStats.MaxHP = UnitStats.HP;
-        }
-        protected virtual void Update()
-        {
-            
-
-        }
-        protected virtual void FixedUpdate()
-        {
-            
-        }
-        protected virtual void OnTriggerEnter(Collider other)
-        {
-            if (other.TryGetComponent(out Projectile proj))
-            {
-                GetDamagedByProjectile(proj);
-            }
-            else if (other.TryGetComponent(out MeleeWeapon weapon))
-            {
-                GetDamagedByMelee(weapon);
-            }
-        }
-        private void OnDestroy()
-        {
-            StopAllCoroutines();
-        }
-        #endregion
-        protected void Bindings()
-        {
-            
-            UnitInput = GetComponent<UnitInput>();
-            // UnitWeapon = GetComponentInChildren<RangeWeapon>();
-            if (WeaponSlot == null) WeaponSlot = transform.Find("WeaponSlot");
-        }
-
-
-        
-
+        #region Damaged
         public void GetDamagedByProjectile(Projectile proj)
         {
-            // if ((proj.Owner as Player != null && this as Enemy != null) || (proj.Owner as Enemy != null && this as Player != null))
             if ((proj.CurrentColor != this.CurrentColor) && (this.GetType() != proj.Owner.GetType()) && (this as Enemy == null || proj.Owner as Enemy == null))
             {
-                GetDamaged(proj.GetProjectileStats().Damage);
+                ChangeHP(-proj.GetProjectileStats().Damage);
 
                 var defProj = proj as DefaultPlayerWeaponProjectile;
                 if (defProj != null) DefPlayerGunPool.Pool.Release(defProj);
                 else Destroy(proj.gameObject);
             }
-
         }
-        protected virtual void GetDamagedByMelee(MeleeWeapon weapon)
+
+        /// <summary>
+        /// Rewrite for parryable units
+        /// </summary>
+        /// <param name="weapon"></param>
+        public virtual void GetDamagedByMelee(MeleeWeapon weapon)
         {
             if ((this.GetType() != weapon.Owner.GetType()) && (this as Enemy == null || weapon.Owner as Enemy == null))
             {
-                GetDamaged(weapon.Damage);
+                ChangeHP(-weapon.Damage);
             }
         }
-        protected virtual void GetDamaged(int damage)
+
+        public virtual void ChangeHP(int delta)
         {
-            UnitStats.HP -= damage;
+            UnitStats.HP += delta;
 
+            // For hpbar
             OnUnitHealthChanged?.Invoke();
-            
 
-            StartCoroutine(GotHitBlink());
             if (UnitStats.HP <= 0)
             {
-                UnitInput.UnitInputDie();
+                UnitVisuals.Die();
             }
         }
-        protected IEnumerator GotHitBlink()
-        {
-            PhaseColor curColor = CurrentColor;
-            ChangeColorVisual(PhaseColor.Damaged);
-            yield return new WaitForSeconds(0.1f);
-            // If when getting damage didnt change color
-            if (CurrentColor == curColor) ChangeColorVisual(curColor);
-        }
-        public abstract void Die();
+        #endregion
 
-        public virtual void MeleeAttack(CallbackContext _)
-        {
 
+        #region Death
+        public void Die()
+        {
+            UnitVisuals.Die();
         }
+        /// <summary>
+        /// Needs different logic for player and enemy
+        /// </summary>
+        /// <returns></returns>
+        protected virtual IEnumerator DieAwait()
+        {
+            yield return new WaitUntil(() => UnitVisuals.DeathAnimationEnded);
+            // logic
+        }
+        #endregion
 
         public event SimpleHandle OnUnitHealthChanged;
     }
