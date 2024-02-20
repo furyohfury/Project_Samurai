@@ -17,20 +17,23 @@ namespace Samurai
         private float _limiter = 200;
         private Vector2 _res;
 
+
+#region UnityMethods
         private void Start()
         {
             SetResolution();
         }
         private void Update()
         {
-            var mouse = Mouse.current.position.ReadValue();
-            // todo think on math.
-            var xOffset = mouse.x - _res.x / 2 > _limiter ? mouse.x - _res.x / 2 - _limiter : 0;
-            var yOffset = mouse.y - _res.y / 2 > _limiter ? mouse.y - _res.y / 2 - _limiter : 0;
+            var centerOffset = Mouse.current.position.ReadValue() - _res/2;
+            var cameraOffset = centerOffset.sqrMagnitude > _limiter * _limiter ? centerOffset : Vector2.zero;
+            cameraOffset = Vector3.ClampMagnitude(cameraOffset, cameraOffset.magnitude - _limiter) / _divider;
 
-            transform.position = _player.transform.position + _offset + new Vector3(xOffset, 0, yOffset) / _divider;
+            transform.position = _player.transform.position + _offset + cameraOffset;
 
         }
+#endregion
+
 
         private void SetResolution()
         {
