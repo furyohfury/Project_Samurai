@@ -12,7 +12,7 @@ namespace Samurai
         public override Vector3 WeaponRotationWhenPicked { get => new Vector3(145, -90, 0); }
 
         
-        public override void Shoot()
+        public override void RangeAttack()
         {
             for (var i = 0; i < _numberOfShells; i++)
             {

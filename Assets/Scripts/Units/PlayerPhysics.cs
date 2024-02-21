@@ -1,7 +1,8 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 using Zenject;
 namespace Samurai
-{    
+{
     public class PlayerPhysics : UnitPhysics
     {
         private CharacterController _charController;
@@ -14,14 +15,14 @@ namespace Samurai
         #region UnityMethods
         protected override void OnTriggerEnter(Collider other)
         {
-            base.OnTriggerEnter();
-            EquipPickableRangeWeapon();
+            base.OnTriggerEnter(other);
+            EquipPickableRangeWeapon(other);
         }
         protected void FixedUpdate()
         {
             FaceCursor();
         }
-#endregion     
+        #endregion
 
 
         protected override void Bindings()
@@ -29,7 +30,7 @@ namespace Samurai
             base.Bindings();
             _charController = GetComponent<CharacterController>();
         }
-        
+
         private void FaceCursor()
         {
             // Facing cursor
@@ -41,18 +42,18 @@ namespace Samurai
         }
 
         #region Movement
-        protected override void Movement(Vector3 direction)
+        public override void Movement(Vector3 direction)
         {
             if (_charController.isGrounded) _charController.Move(Unit.GetUnitStats().MoveSpeed / Time.timeScale * Time.fixedDeltaTime * new Vector3(direction.x, 0, direction.z));
-                else _charController.Move(Time.fixedDeltaTime * (Unit.GetUnitStats().MoveSpeed * new Vector3(direction.x, 0, direction.z) + 9.8f * Vector3.down));
+            else _charController.Move(Time.fixedDeltaTime * (Unit.GetUnitStats().MoveSpeed * new Vector3(direction.x, 0, direction.z) + 9.8f * Vector3.down));
         }
         #endregion
-            
+
 
         #region PickableWeapon
-        public void EquipPickableRangeWeapon()
+        public void EquipPickableRangeWeapon(Collider other)
         {
-            if (other.TryGetComponent(out RangeWeapon rweapon) && weapon.IsPickable && weapon.Owner == null)
+            if (other.TryGetComponent(out RangeWeapon rweapon) && rweapon.IsPickable && rweapon.Owner == null)
             {
                 (Unit as Player).SetPlayerPickableWeapon(rweapon);
             }
@@ -60,3 +61,4 @@ namespace Samurai
         #endregion
 
     }
+}

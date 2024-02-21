@@ -1,3 +1,4 @@
+using MoreMountains.Feedbacks;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,8 +9,8 @@ namespace Samurai
     {
         protected Unit Unit;
 
-        protected Animator UnitAnimator;        
-        
+        protected Animator UnitAnimator;
+
         [SerializeField]
         protected MMF_Player StepsFeedback;
 
@@ -45,7 +46,7 @@ namespace Samurai
                 UnitAnimator.SetBool("Moving", true);
                 Vector3 animVector = transform.InverseTransformVector(direction);
                 UnitAnimator.SetFloat("SMove", animVector.x);
-                UnitAnimator.SetFloat("FMove", animVector.z);      
+                UnitAnimator.SetFloat("FMove", animVector.z);
                 if (!StepsFeedback.IsPlaying) StepsFeedback?.PlayFeedbacks();
             }
             else StepsFeedback?.StopFeedbacks();

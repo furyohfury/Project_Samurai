@@ -19,7 +19,7 @@ namespace Samurai
         public void SetProjectileStatsOnShoot(Unit owner)
         {
             Owner = owner;
-            ProjectileStats = (owner as IAttackRange).RangeWeapon.GetProjectileStats();
+            ProjectileStats = (owner as IRangeWeapon).RangeWeapon.GetProjectileStats();
             transform.localScale *= ProjectileStats.ProjectileScale;
             ChangeCurrentColor(owner.CurrentColor);
         }        

@@ -10,12 +10,6 @@ namespace Samurai
 {
     public class Tests : MonoBehaviour
     {
-        [SerializeField, Range(0,1f)]
-        private float _timescale = 1;
-        private bool _setTimeScale = false;
-        private void Update()
-        {
-            Time.timeScale = _timescale;
-        }
+        
     }
 }

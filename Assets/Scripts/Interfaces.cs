@@ -42,6 +42,14 @@ namespace Samurai
     public interface IMeleeAttack
     {
         void MeleeAttack();
-        void InMeleeAttack();
+    }
+    public interface IRangeWeapon
+    {
+        RangeWeapon RangeWeapon { get; }
+    }
+    public interface IMeleeWeapon
+    {
+        MeleeWeapon MeleeWeapon { get; }
+        void InMeleeAttack(bool v);
     }
 }

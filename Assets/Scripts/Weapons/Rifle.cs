@@ -20,7 +20,7 @@ namespace Samurai
 
         public override Vector3 WeaponRotationWhenPicked => new Vector3(0, 60, 180);
 
-        public override void Shoot()
+        public override void RangeAttack()
         {
             var proj = Instantiate(WeaponProjectilePrefab);
             proj.GetComponent<Projectile>().SetProjectileStatsOnShoot(Owner);

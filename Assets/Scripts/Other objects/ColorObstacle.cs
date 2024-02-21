@@ -15,11 +15,11 @@ namespace Samurai
 
         private void OnEnable()
         {
-            if (_switchesColorWithPlayer) Player.OnPlayerSwapColor += ChangeColor;
+            if (_switchesColorWithPlayer) (Player.UnitVisuals as PlayerVisuals).OnPlayerSwapColor += ChangeColor;
         }
         private void OnDisable()
         {
-            if (_switchesColorWithPlayer) Player.OnPlayerSwapColor -= ChangeColor;
+            if (_switchesColorWithPlayer) (Player.UnitVisuals as PlayerVisuals).OnPlayerSwapColor -= ChangeColor;
         }        
         private void OnTriggerEnter(Collider other)
         {

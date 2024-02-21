@@ -16,7 +16,7 @@ namespace Samurai
             base.Start();
             if (_pool == null) Debug.LogError($"Pool not found by {this.GetType()} component on {gameObject}");
         }
-        public override void Shoot()
+        public override void RangeAttack()
         {
             Projectile proj = _pool.Pool.Get();
             proj.SetProjectileStatsOnShoot(Owner);

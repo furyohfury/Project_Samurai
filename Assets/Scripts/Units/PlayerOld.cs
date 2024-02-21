@@ -8,8 +8,8 @@ using Zenject;
 using static UnityEngine.InputSystem.InputAction;
 namespace Samurai
 {
-    [RequireComponent(typeof(PlayerInput))]
-    public class Player : Unit, IAttackRange, IAttackMelee
+    /* [RequireComponent(typeof(PlayerInput))]
+    public class PlayerOld : Unit, IAttackRange, IAttackMelee
     {
         public Vector3 TestShit;
 
@@ -117,7 +117,7 @@ namespace Samurai
         #region Range
         public void Shoot()
         {
-            RangeWeapon.Shoot();
+            RangeWeapon.RangeAttack();
             if (RangeWeapon.GetType() != typeof(DefaultPlayerWeapon)) OnPlayerShot?.Invoke();
         }
 
@@ -156,23 +156,7 @@ namespace Samurai
         }
         #endregion
 
-        #region Melee       
-        /* private Coroutine _parryCor;
-        [SerializeField, Tooltip("Time for slow-mo after parry")]
-        private float _parrySlowmoTime;
-        [SerializeField, Tooltip("Coefficient for timescale")]
-        private float _slowMoMultiplier;
-        private void Parrying()
-        {
-            if (_parryCor == null) _parryCor = StartCoroutine(ParryingCoroutine());
-        }
-        private IEnumerator ParryingCoroutine()
-        {
-            Time.timeScale = _slowMoMultiplier; // todo make player not slowed
-            yield return new WaitForSeconds(_parrySlowmoTime * _slowMoMultiplier);
-            Time.timeScale = 1;
-            _parryCor = null;
-        } */
+        
 
         public void MeleeAttack()
         {
@@ -184,5 +168,5 @@ namespace Samurai
         public event ChangeColorHandle OnPlayerSwapColor;
         public event RangeWeaponChangeHandle OnPlayerChangedWeapon;
         public event SimpleHandle OnPlayerShot;
-    }
+    } */
 }

@@ -7,7 +7,9 @@ namespace Samurai
 {
     public abstract class Unit : MonoBehaviour
     {
-        protected UnitVisuals UnitVisuals;
+        public UnitVisuals UnitVisuals { get; private set; }
+        public UnitPhysics UnitPhysics { get; private set; }
+        public UnitInput UnitInput { get; private set; }
 
         [Inject]
         protected DefaultPlayerGunPool DefPlayerGunPool;
@@ -22,7 +24,7 @@ namespace Samurai
             return UnitStats;
         }
 
-        public bool CanMove {get; set;} = true;
+        public bool CanMove { get; set; } = true;
 
 
         #region UnityMethods
@@ -38,6 +40,8 @@ namespace Samurai
         protected virtual void Bindings()
         {
             UnitVisuals = GetComponent<UnitVisuals>();
+            UnitPhysics = GetComponent<UnitPhysics>();
+            UnitInput = GetComponent<UnitInput>();
         }
 
         #region Damaged
@@ -45,7 +49,7 @@ namespace Samurai
         {
             if ((proj.CurrentColor != this.CurrentColor) && (this.GetType() != proj.Owner.GetType()) && (this as Enemy == null || proj.Owner as Enemy == null))
             {
-                UnitVisuals.GetDamagedByProjectile();                
+                UnitVisuals.GetDamagedByProjectile();
 
                 ChangeHP(-proj.GetProjectileStats().Damage);
 
@@ -68,7 +72,7 @@ namespace Samurai
             }
         }
 
-        public virtual void ChangeHP(int delta)
+        protected virtual void ChangeHP(int delta)
         {
             UnitStats.HP += delta;
 

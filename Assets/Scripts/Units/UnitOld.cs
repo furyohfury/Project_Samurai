@@ -1,9 +1,9 @@
 using UnityEngine;
 namespace Samurai
 {
-    public class UnityGeneral : ColorObject
+    public class UnitOld : ColorObject
     {
-        [SerializeField]
+        /* [SerializeField]
         protected UnitStatsStruct UnitStats;
         public UnitStatsStruct GetUnitStats()
         {
@@ -15,9 +15,6 @@ namespace Samurai
         [Inject]
         protected DefaultPlayerGunPool DefPlayerGunPool;
 
-        /* [SerializeField]
-        protected RangeWeapon _unitWeapon;
-        public RangeWeapon UnitWeapon { get => _unitWeapon; protected set => _unitWeapon = value; } */
 
 
 
@@ -122,6 +119,6 @@ namespace Samurai
 
         }
 
-        public event SimpleHandle OnUnitHealthChanged;
+        public event SimpleHandle OnUnitHealthChanged; */
     }
 }

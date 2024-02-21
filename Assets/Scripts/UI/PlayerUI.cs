@@ -21,11 +21,11 @@ namespace Samurai
         #region UnityMethods
         private void OnEnable()
         {
-            _player.OnPlayerSwapColor += PlayerChangedColor;
+            (_player.UnitVisuals as PlayerVisuals).OnPlayerSwapColor += PlayerChangedColor;
             _player.OnUnitHealthChanged += HealthChanged;
             _player.OnPlayerChangedWeapon += RangeWeaponChanged;
             _player.OnPlayerShot += RangeWeaponNumberOfBulletsChanged;
-            _playerInput.OnPlayerAttacked += MeleeWeaponCD;
+            _player.OnPlayerMeleeHit += MeleeWeaponCD;
         }
         private void Start()
         {
@@ -36,11 +36,11 @@ namespace Samurai
         }
         private void OnDisable()
         {
-            _player.OnPlayerSwapColor -= PlayerChangedColor;
+            (_player.UnitVisuals as PlayerVisuals).OnPlayerSwapColor -= PlayerChangedColor;
             _player.OnUnitHealthChanged -= HealthChanged;
             _player.OnPlayerChangedWeapon -= RangeWeaponChanged;
             _player.OnPlayerShot -= RangeWeaponNumberOfBulletsChanged;
-            _playerInput.OnPlayerAttacked -= MeleeWeaponCD;
+            _player.OnPlayerMeleeHit -= MeleeWeaponCD;
         }
 
         public void PlayerChangedColor(PhaseColor color)
@@ -112,9 +112,9 @@ namespace Samurai
         {
             _meleeWeaponImageFillFeedback = _meleeWeaponCDFeedback.GetFeedbackOfType<MMF_ImageFill>();            
             _meleeWeaponPauseFeedback = _meleeWeaponCDFeedback.GetFeedbackOfType<MMF_Pause>();
-            _meleeWeaponImageFillFeedback.Duration = _playerInput.MeleeAttackCooldown;
-            _meleeWeaponImageFillFeedback.FeedbackDuration = _playerInput.MeleeAttackCooldown;
-            _meleeWeaponPauseFeedback.PauseDuration = _playerInput.MeleeAttackCooldown;
+            _meleeWeaponImageFillFeedback.Duration = _player.MeleeAttackCooldown;
+            _meleeWeaponImageFillFeedback.FeedbackDuration = _player.MeleeAttackCooldown;
+            _meleeWeaponPauseFeedback.PauseDuration = _player.MeleeAttackCooldown;
             _meleeWeaponImageFillFeedback.ResetFeedback();
         }
         public void MeleeWeaponCD()

@@ -8,8 +8,10 @@ namespace Samurai
     [RequireComponent(typeof(Unit))]
     public abstract class UnitInput : MonoBehaviour
     {
-        protected Unit Unit;     
-        
+        protected Unit Unit;
+        protected UnitVisuals UnitVisuals;
+        protected UnitPhysics UnitPhysics;
+
 
         #region UnityMethods
         protected virtual void Awake()
@@ -21,13 +23,15 @@ namespace Samurai
         protected virtual void Bindings()
         {
             Unit = GetComponent<Unit>();
+            UnitVisuals = GetComponent<UnitVisuals>();
+            UnitPhysics = GetComponent<UnitPhysics>();
         }
 
-        
+
         #region Movement
         public abstract void Movement();
         #endregion
 
-        
+
     }
 }

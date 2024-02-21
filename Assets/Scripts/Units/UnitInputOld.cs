@@ -1,9 +1,9 @@
 using UnityEngine;
 namespace Samurai
 {
-    public class UnitIncom
+    public class UnitInputOLD : MonoBehaviour
     {
-        protected Vector3 _movement;
+        /* protected Vector3 _movement;
         public ref Vector3 MoveDirection => ref _movement;
 
 
@@ -57,12 +57,7 @@ namespace Samurai
         }
         protected virtual void Movement()
         {
-            /* Walking
-            if (MoveDirection != Vector3.zero && CanMove)
-            {
-                if (CharController.isGrounded) CharController.Move(Unit.GetUnitStats().MoveSpeed * Time.fixedDeltaTime * new Vector3(MoveDirection.x, 0, MoveDirection.z));
-                else CharController.Move(Time.fixedDeltaTime * (Unit.GetUnitStats().MoveSpeed * new Vector3(MoveDirection.x, 0, MoveDirection.z) + 9.8f * Vector3.down));
-            } */
+            
         }
 
 
@@ -73,6 +68,6 @@ namespace Samurai
         public void UnitDieAnimationEnded_UnityEvent() //bind w/ all death animation
         {
             Unit.Die();
-        }
+        } */
     }
 }

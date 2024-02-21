@@ -11,8 +11,8 @@ using static UnityEngine.InputSystem.InputAction;
 
 namespace Samurai
 {
-    [RequireComponent(typeof(Player))]
-    public class PlayerInput : UnitInput, IAttackRange, IAttackMelee, IInputRange, IInputMelee
+    /* [RequireComponent(typeof(Player))]
+    public class PlayerInputOLD : UnitInput, IAttackRange, IAttackMelee, IInputRange, IInputMelee
     {
         [Inject]
         private Player _player;
@@ -241,5 +241,5 @@ namespace Samurai
         #endregion
 
         public event SimpleHandle OnPlayerAttacked;
-    }
+    } */
 }

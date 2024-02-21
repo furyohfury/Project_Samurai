@@ -18,7 +18,7 @@ namespace Samurai
         {
             foreach (var enemy in EnemyPool.EnemyList)
             {
-                enemy.AI.StartingIdlePatrolLogic();
+                // enemy.AI.StartingIdlePatrolLogic();
             }
 
             StartCoroutine(AILogicManagement());
@@ -30,7 +30,7 @@ namespace Samurai
             {
                 foreach (var enemy in EnemyPool.EnemyList.ToList())
                 {
-                    enemy.AI.GeneralAICycle();
+                    // enemy.AI.GeneralAICycle();
                 }
                 yield return new WaitForFixedUpdate();
             }

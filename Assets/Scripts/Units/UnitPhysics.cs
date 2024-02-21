@@ -6,7 +6,7 @@ namespace Samurai
         protected Unit Unit;
         protected UnitVisuals UnitVisuals;
 
-        
+
 
         #region UnityMethods
         protected virtual void Awake()
@@ -16,7 +16,7 @@ namespace Samurai
         protected virtual void OnTriggerEnter(Collider other)
         {
             if (other.TryGetComponent(out Projectile proj)) GetDamagedByProjectile(proj);
-            else if other.TryGetComponent(out MeleeWeapon mweapon) GetDamagedByMelee(mweapon);
+            else if (other.TryGetComponent(out MeleeWeapon mweapon)) GetDamagedByMelee(mweapon);
         }
         #endregion
 
