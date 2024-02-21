@@ -6,6 +6,7 @@ namespace Samurai
         protected Unit Unit;
         protected UnitVisuals UnitVisuals;
 
+        
 
         #region UnityMethods
         protected virtual void Awake()

@@ -6,7 +6,7 @@ namespace Samurai
     public interface IAttackRange
     {
         RangeWeapon RangeWeapon { get; }
-        void Shoot();
+        void RangeAttack();
     }
     public interface IAttackMelee
     {
@@ -30,5 +30,9 @@ namespace Samurai
 
         void OnMeleeAttackSlashAnimationStarted_UnityEvent();
         void OnMeleeAttackSlashAnimationEnded_UnityEvent();
+    }
+    public interface IAttack
+    {
+        void Attack();
     }
 }

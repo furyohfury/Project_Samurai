@@ -87,16 +87,17 @@ namespace Samurai
             StartCoroutine(DieAwait());
         }
         /// <summary>
-        /// Needs different logic for player and enemy
+        /// Gets processed by managers
         /// </summary>
         /// <returns></returns>
-        protected virtual IEnumerator DieAwait()
+        protected IEnumerator DieAwait()
         {
             yield return new WaitUntil(() => UnitVisuals.DeathAnimationEnded);
-            // logic
+            OnUnitDied?.Invoke(this);
         }
         #endregion
 
         public event SimpleHandle OnUnitHealthChanged;
+        public event UnitHandle OnUnitDied;
     }
 }
