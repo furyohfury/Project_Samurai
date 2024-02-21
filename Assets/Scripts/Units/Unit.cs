@@ -22,6 +22,8 @@ namespace Samurai
             return UnitStats;
         }
 
+        public bool CanMove {get; set;} = true;
+
 
         #region UnityMethods
         protected virtual void Awake()
@@ -30,6 +32,9 @@ namespace Samurai
         }
         #endregion
 
+        /// <summary>
+        /// To Awake
+        /// </summary>
         protected virtual void Bindings()
         {
             UnitVisuals = GetComponent<UnitVisuals>();
@@ -89,7 +94,6 @@ namespace Samurai
         /// <summary>
         /// Gets processed by managers
         /// </summary>
-        /// <returns></returns>
         protected IEnumerator DieAwait()
         {
             yield return new WaitUntil(() => UnitVisuals.DeathAnimationEnded);

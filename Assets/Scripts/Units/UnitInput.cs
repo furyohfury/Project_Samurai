@@ -9,7 +9,7 @@ namespace Samurai
     public abstract class UnitInput : MonoBehaviour
     {
         protected Unit Unit;     
-        public bool CanMove {get; private set;} = true;
+        
 
         #region UnityMethods
         protected virtual void Awake()

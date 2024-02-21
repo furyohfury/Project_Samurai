@@ -35,8 +35,13 @@ namespace Samurai
         void Attack();
     }
 
-    public interface RangeAttack
+    public interface IRangeAttack
     {
         void RangeAttack();
+    }
+    public interface IMeleeAttack
+    {
+        void MeleeAttack();
+        void InMeleeAttack();
     }
 }

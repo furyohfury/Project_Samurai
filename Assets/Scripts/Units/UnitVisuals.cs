@@ -40,7 +40,7 @@ namespace Samurai
         #region Movement
         public virtual void Movement(Vector3 direction)
         {
-            if (direction != Vector3.zero)
+            if (Unit.CanMove && direction != Vector3.zero)
             {
                 UnitAnimator.SetBool("Moving", true);
                 Vector3 animVector = transform.InverseTransformVector(direction);

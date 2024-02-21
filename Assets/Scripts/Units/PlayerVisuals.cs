@@ -2,7 +2,8 @@ using UnityEngine;
 namespace Samurai
 {    
     public class PlayerVisuals : UnitVisuals, IRangeAttack
-    {
+    {      
+
         #region PickableWeapon
         // private RangeWeaponEnum _currentAnimationLayer = RangeWeaponEnum.DefaultPlayerWeapon;
 
@@ -41,4 +42,47 @@ namespace Samurai
         }
         #endregion
         
+
+        #region MeleeAttack
+        public void MeleeAttack()
+        {
+            UnitAnimator.SetTrigger("MeleeAttack");
+        }
+
+        [SerializeField, Space]
+        private MeshRenderer _sheathedKatana;
+        [SerializeField]
+        private MeshRenderer _attackKatana;
+
+        public void OnMeleeAttackAnimationStarted_UnityEvent()
+        {   
+            (Unit as IMeleeAttack).InMeleeAttack(true);         
+            
+            _sheathedKatana.enabled = false;
+            _attackKatana.enabled = true;
+            _player.RangeWeapon.gameObject.SetActive(false);
+        }
+        public void OnMeleeAttackAnimationEnded_UnityEvent()
+        {
+            (Unit as IMeleeAttack).InMeleeAttack(false);
+
+            _attackKatana.enabled = false;
+            _sheathedKatana.enabled = true;
+            _player.RangeWeapon.gameObject.SetActive(true);
+        }
+
+
+        [SerializeField]
+        private float _slowMoMultiplier = 0.5f;
+        [SerializeField]
+        private float _parrySlowmoTime = 3f;
+        public void Parry()
+        {
+            Time.timeScale = _slowMoMultiplier;
+            UnitAnimator.updateMode = AnimatorUpdateMode.UnscaledTime;
+            yield return new WaitForSecondsRealtime(_parrySlowmoTime);
+            Time.timeScale = 1;
+            UnitAnimator.updateMode = AnimatorUpdateMode.Normal;
+        }
+        #endregion
     }

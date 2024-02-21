@@ -13,6 +13,11 @@ namespace Samurai
         {
             Bindings();
         }
+        protected virtual void OnTriggerEnter(Collider other)
+        {
+            if (other.TryGetComponent(out Projectile proj)) GetDamagedByProjectile(proj);
+            else if other.TryGetComponent(out MeleeWeapon mweapon) GetDamagedByMelee(mweapon);
+        }
         #endregion
 
         protected virtual void Bindings()
@@ -23,20 +28,21 @@ namespace Samurai
 
 
         #region Movement
-        public abstract void Movement(Vector3 direction);
+        public virtual void Movement(Vector3 direction)
+        {
+            if (!Unit.CanMove) return;
+        }
         #endregion
 
 
         #region Damaged
-        public void GetDamagedByProjectile(Projectile proj) //todo add to ontriggerenter
+        public void GetDamagedByProjectile(Projectile proj)
         {
             Unit.GetDamagedByProjectile(proj);
-            UnitVisuals.GetDamagedByProjectile();
         }
-        public virtual void GetDamagedByMelee(MeleeWeapon weapon)
+        public virtual void GetDamagedByMelee(MeleeWeapon mweapon)
         {
-            Unit.GetDamagedByMelee(weapon);
-            UnitVisuals.GetDamagedByMelee();
+            Unit.GetDamagedByMelee(mweapon);
         }
         #endregion
     }

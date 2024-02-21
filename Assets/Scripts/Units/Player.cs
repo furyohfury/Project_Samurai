@@ -5,22 +5,33 @@ namespace Samurai
     {      
         private DefaultPlayerWeapon _defaultPlayerWeapon;
 
+        [SerializeField]
+        private RangeWeapon _rangeWeapon;
+        public RangeWeapon RangeWeapon { get => _rangeWeapon; private set => _rangeWeapon = value; }       
+        public bool CanShoot { get; set; } = true;
+
         #region UnityMethods
         protected void Start()
         {
-            RangeWeapon = _
-            EquipRangeWeapon()
+            EquipRangeWeapon(_defaultPlayerWeapon);
+        }
+        #endregion
+
+        #region GetDamaged
+        public virtual void GetDamagedByMelee(MeleeWeapon weapon)
+        {
+            if (!Parried && (this.GetType() != weapon.Owner.GetType()) && (this as Enemy == null || weapon.Owner as Enemy == null))
+            {
+                UnitVisuals.GetDamagedByMelee();
+                ChangeHP(-weapon.Damage);
+            }
         }
         #endregion
 
         #region RangeAttack
-        [SerializeField, Space]
-        private RangeWeapon _rangeWeapon;
-        public RangeWeapon RangeWeapon { get => _rangeWeapon; private set => _rangeWeapon = value; }
-
         public void RangeAttack()
         {
-            if (RangeWeapon.CanShoot) 
+            if (CanShoot && RangeWeapon.CanShoot) 
             {
                 RangeWeapon.RangeAttack();
                 (UnitVisuals as IRangeAttack).RangeAttack();
@@ -74,6 +85,52 @@ namespace Samurai
             Destroy(RangeWeapon.gameObject);
             _defaultPlayerWeapon.gameObject.SetActive(true);
             EquipRangeWeapon(_defaultPlayerWeapon);
+        }
+        #endregion
+
+
+        #region MeleeAttack
+        [SerializeField, Space]
+        private MeleeWeapon _meleeWeapon;
+        public MeleeWeapon MeleeWeapon { get => _meleeWeapon; private set => _meleeWeapon = value; } 
+
+        [SerializeField]
+        private float _meleeAttackCooldown = 5f;
+        public float MeleeAttackCooldown { get => _meleeAttackCooldown; private set => _meleeAttackCooldown = value; }
+        public bool CanHit {get; set;} = true;
+        [SerializeField]
+        private float _parryInvulTime = 2f;
+        public bool Parried = false;
+
+        
+        public void MeleeAttack()
+        {
+            (if CanHit) (UnitVisuals as IMeleeAttack).MeleeAttack();
+            StartCoroutine(MeleeAttackCD());
+        }
+        private IEnumerator MeleeAttackCD()
+        {
+            CanHit = false;
+            yield return new WaitForSeconds(MeleeAttackCooldown);
+            CanHit = true;
+        }
+        public void InMeleeAttack(bool isInMeleeAttack)
+        {
+            Unit.CanMove = isInMeleeAttack;
+            Unit.CanShoot = isInMeleeAttack;
+        }
+
+        
+        protected void MeleeWeaponBindings()
+        {
+            MeleeWeapon.OnParry += () => StartCoroutine(Parry());
+        }
+        private IEnumerator Parry()
+        {
+            Parried = true;
+            (UnitVisuals as PlayerVisuals).Parry();
+            yield return new WaitForSeconds(_parryInvulTime);
+            Parried = false;            
         }
         #endregion
 

@@ -1,7 +1,7 @@
 using UnityEngine;
 namespace Samurai
 {    
-    public class PlayerInput : UnitInput, IRangeAttack
+    public class PlayerInput : UnitInput, IRangeAttack, IMeleeAttack
     {
         private PlayerControls _playerControls;
 
@@ -16,14 +16,18 @@ namespace Samurai
             _playerControls.PlayerMap.RedColor.performed += (cb) => UnitVisuals.ChangeColor(PhaseColor.Red);
 
             _playerControls.PlayerMap.Shoot.performed += RangeAttack;
-
             _playerControls.PlayerMap.PickWeapon.performed += EquipPickableRangeWeapon;
+            _playerControls.PlayerMap.PickWeapon.performed += MeleeAttack;
+        }
+        protected void FixedUpdate()
+        {
+            Movement();
         }
         private void OnDisable()
         {
             _playerControls.PlayerMap.Shoot.performed -= RangeAttack;
-
             _playerControls.PlayerMap.PickWeapon.performed -= EquipPickableRangeWeapon;
+            _playerControls.PlayerMap.PickWeapon.performed -= MeleeAttack;
 
             _playerControls.Disable();
         }
@@ -39,23 +43,20 @@ namespace Samurai
         {
             Vector2 movement = _playerControls.PlayerMap.Movement.ReadValue<Vector2>();
             MoveDirection = new Vector3(movement.x, 0, movement.y);
-            if (CanMove)
-            {
-                UnitVisuals(MoveDirection);
-                UnitPhysics(MoveDirection);
-            }
+            UnitVisuals.Movement(MoveDirection);
+            UnitPhysics.Movement(MoveDirection);
             
         }
         #endregion
         
 
-        #region RangeAttack
-        public bool CanShoot { get; private set; } = true;
+        #region RangeAttack        
         public void RangeAttack()
         {
-            if (CanShoot) (Unit as IRangeAttack).RangeAttack();
+            (Unit as IRangeAttack).RangeAttack();
         }
         #endregion
+
 
         #region PickableWeapon
         public void EquipPickableRangeWeapon(CallbackContext _)
@@ -65,5 +66,11 @@ namespace Samurai
         #endregion
 
         
+        #region MeleeAttack        
+        public void MeleeAttack(CallbackContext _)
+        {
+            (Unit as InMeleeAttack).MeleeAttack();
+        }
+        #endregion
         
     }

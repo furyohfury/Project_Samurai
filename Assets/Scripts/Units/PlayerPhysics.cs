@@ -1,12 +1,17 @@
 using UnityEngine;
+using Zenject;
 namespace Samurai
 {    
     public class PlayerPhysics : UnitPhysics
     {
         private CharacterController _charController;
 
+        [Inject]
+        private Camera _camera;
 
-#region UnityMethods
+
+
+        #region UnityMethods
         protected override void OnTriggerEnter(Collider other)
         {
             base.OnTriggerEnter();
@@ -28,11 +33,10 @@ namespace Samurai
         private void FaceCursor()
         {
             // Facing cursor
-            _cameraOffset = Vector3.Distance(transform.position, _camera.transform.position); //todo fix. Must be constant Y
-            Vector3 cursorPosition = new Vector3(Mouse.current.position.ReadValue().x, Mouse.current.position.ReadValue().y, _cameraOffset);
+            var cameraOffset = transform.position.y - _camera.transform.position.y;
+            Vector3 cursorPosition = new Vector3(Mouse.current.position.ReadValue().x, Mouse.current.position.ReadValue().y, cameraOffset);
             cursorPosition = _camera.ScreenToWorldPoint(cursorPosition);
             cursorPosition = new Vector3(cursorPosition.x, this.transform.position.y, cursorPosition.z);
-            TestShit = cursorPosition;
             transform.LookAt(cursorPosition);
         }
 
@@ -43,7 +47,7 @@ namespace Samurai
                 else _charController.Move(Time.fixedDeltaTime * (Unit.GetUnitStats().MoveSpeed * new Vector3(direction.x, 0, direction.z) + 9.8f * Vector3.down));
         }
         #endregion
-    
+            
 
         #region PickableWeapon
         public void EquipPickableRangeWeapon()
@@ -54,6 +58,5 @@ namespace Samurai
             }
         }
         #endregion
-
 
     }
