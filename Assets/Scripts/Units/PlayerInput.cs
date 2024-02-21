@@ -1,7 +1,7 @@
 using UnityEngine;
 namespace Samurai
 {    
-    public class PlayerInput : UnitInput
+    public class PlayerInput : UnitInput, IRangeAttack
     {
         private PlayerControls _playerControls;
 
@@ -11,11 +11,20 @@ namespace Samurai
         private void OnEnable()
         {
             _playerControls.Enable();
+            
             _playerControls.PlayerMap.BlueColor.performed += (cb) => UnitVisuals.ChangeColor(PhaseColor.Blue);
             _playerControls.PlayerMap.RedColor.performed += (cb) => UnitVisuals.ChangeColor(PhaseColor.Red);
+
+            _playerControls.PlayerMap.Shoot.performed += RangeAttack;
+
+            _playerControls.PlayerMap.PickWeapon.performed += EquipPickableRangeWeapon;
         }
         private void OnDisable()
         {
+            _playerControls.PlayerMap.Shoot.performed -= RangeAttack;
+
+            _playerControls.PlayerMap.PickWeapon.performed -= EquipPickableRangeWeapon;
+
             _playerControls.Disable();
         }
         #endregion
@@ -38,5 +47,23 @@ namespace Samurai
             
         }
         #endregion
+        
+
+        #region RangeAttack
+        public bool CanShoot { get; private set; } = true;
+        public void RangeAttack()
+        {
+            if (CanShoot) (Unit as IRangeAttack).RangeAttack();
+        }
+        #endregion
+
+        #region PickableWeapon
+        public void EquipPickableRangeWeapon(CallbackContext _)
+        {
+            (Unit as Player).EquipPickableRangeWeapon();
+        }
+        #endregion
+
+        
         
     }

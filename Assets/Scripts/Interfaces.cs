@@ -3,11 +3,10 @@ using UnityEngine;
 
 namespace Samurai
 {
-    public interface IAttackRange
+    /* public interface IAttackRange
     {
-        RangeWeapon RangeWeapon { get; }
         void RangeAttack();
-    }
+    } */
     public interface IAttackMelee
     {
         MeleeWeapon MeleeWeapon { get;}
@@ -34,5 +33,10 @@ namespace Samurai
     public interface IAttack
     {
         void Attack();
+    }
+
+    public interface RangeAttack
+    {
+        void RangeAttack();
     }
 }
