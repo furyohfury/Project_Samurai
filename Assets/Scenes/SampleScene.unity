@@ -211,47 +211,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8090a9c181099ce42a8f6025eb950623, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _currentColor: 0
-  MeshForColorChange:
-  - {fileID: 1203662872}
-  MaterialColorsDict:
-    reorderableList:
-      canAdd: 1
-      canRemove: 1
-      draggable: 1
-      expandable: 1
-      multipleSelection: 1
-      isExpanded: 0
-      label:
-        m_Text: Keys
-        m_Image: {fileID: 0}
-        m_Tooltip: 
-      headerHeight: 18
-      footerHeight: 13
-      slideEasing: 0.15
-      verticalSpacing: 2
-      showDefaultBackground: 1
-      elementDisplayType: 0
-      elementNameProperty: 
-      elementNameOverride: 
-      elementIcon: {fileID: 0}
-    reqReferences: {fileID: 0}
-    isExpanded: 0
-    _keyValues: 000000000100000002000000
-    _keys: 000000000100000002000000
-    _values:
-    - {fileID: 2100000, guid: 844384962065df4418a0bf4476725ce5, type: 2}
-    - {fileID: 2100000, guid: 6fc962880b38ad24d86428442fce17f6, type: 2}
-    - {fileID: 2100000, guid: 99719b2fa31b3184c9d117ba958214a6, type: 2}
   UnitStats:
     MaxHP: 20
     HP: 20
     MoveSpeed: 5
-  WeaponSlot: {fileID: 1198088356}
-  BlinkWhenDamagedTime: 0.1
-  TestShit: {x: 0, y: 0, z: 0}
-  _rangeWeapon: {fileID: 0}
-  _meleeWeapon: {fileID: 0}
+  _defaultPlayerWeapon: {fileID: 987668196}
+  _rangeWeapon: {fileID: 987668196}
+  RangeWeaponSlot: {fileID: 1198088356}
+  _meleeWeapon: {fileID: 116218659}
+  _meleeAttackCooldown: 5
+  _parryInvulTime: 2
 --- !u!143 &25276846
 CharacterController:
   m_ObjectHideFlags: 0
@@ -270,30 +239,6 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 1, z: 0}
---- !u!114 &25276847
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1198456056}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 021159201c5c87745a2201473e983a85, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TestShit: {x: 0, y: 0, z: 0}
-  _attackKatana: {fileID: 1627564576}
-  _sheathedKatana: {fileID: 1836738409}
-  _parryFeedback: {fileID: 561627893}
-  _meleeAttackFeedback: {fileID: 519526273}
-  _stepsFeedback: {fileID: 1657895804}
-  _rangeWeapon: {fileID: 0}
-  _meleeWeapon: {fileID: 0}
-  _meleeAttackCooldown: 5
-  _meleeAttackHitbox: {fileID: 116218653}
-  _parrySlowmoTime: 5
-  _slowMoMultiplier: 0.5
 --- !u!1 &26191952
 GameObject:
   m_ObjectHideFlags: 0
@@ -1078,7 +1023,8 @@ Transform:
   m_LocalPosition: {x: 1.3247604, y: -0.099999666, z: 0.21716022}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1068550156}
   m_Father: {fileID: 1198088344}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1097,6 +1043,9 @@ MonoBehaviour:
   _damage: 1
   _parrying: 0
   Owner: {fileID: 0}
+  _meleeAttackFeedback: {fileID: 519526273}
+  _parryFeedback: {fileID: 561627893}
+  _hitbox: {fileID: 116218653}
 --- !u!54 &116218660
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1227,7 +1176,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh31046
+  m_Name: pb_Mesh38986
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -2673,13 +2622,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519526271}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.1, z: 0}
+  m_LocalRotation: {x: -0.0000001685874, y: 0.00000007549784, z: -0.00000007549784, w: 1}
+  m_LocalPosition: {x: -1.3247603, y: 1.1999998, z: -0.21716043}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 839329218}
-  m_RootOrder: 1
+  m_Father: {fileID: 1068550156}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &519526273
 MonoBehaviour:
@@ -3041,13 +2990,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 561627891}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0.0000001685874, y: 0.00000007549784, z: -0.00000007549784, w: 1}
+  m_LocalPosition: {x: -1.3247604, y: 0.09999979, z: -0.21716006}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 839329218}
-  m_RootOrder: 0
+  m_Father: {fileID: 1068550156}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &561627893
 MonoBehaviour:
@@ -3643,7 +3592,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh30652
+  m_Name: pb_Mesh38580
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -3842,7 +3791,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 7084902129715469802, guid: 8ec8dafd9a9a66d45ad053b89a90db67, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 7084902129715469802, guid: 8ec8dafd9a9a66d45ad053b89a90db67, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4968,7 +4917,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
 --- !u!1 &707165854
 GameObject:
@@ -5079,7 +5028,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &737081865
 GameObject:
@@ -5239,8 +5188,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 561627892}
-  - {fileID: 519526272}
   - {fileID: 1657895803}
   m_Father: {fileID: 1198088344}
   m_RootOrder: 3
@@ -6316,7 +6263,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 65.73, y: 0, z: 0}
 --- !u!114 &963194229
 MonoBehaviour:
@@ -6425,8 +6372,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _numberOfBulletsForPlayer: 0
-  EnemyShootingDelay: 0
-  PlayerShootingDelay: 0
+  EnemyShootingDelay: 0.8
+  PlayerShootingDelay: 0.3
   WeaponProjectilePrefab: {fileID: 8827768608434931341, guid: 3bccae5e596adfe428a80979030e8fc9, type: 3}
   _isPickable: 0
   PlayerProjectileStats:
@@ -6438,6 +6385,7 @@ MonoBehaviour:
     ProjectileSpeed: 1
     ProjectileScale: 1
   _animController: {fileID: 9100000, guid: 996d4b4b9a7c5c74aa2373c8fde182d9, type: 2}
+  _mesh: []
   ShootingFeedbacks: {fileID: 619091520}
 --- !u!4 &991452495 stripped
 Transform:
@@ -6581,6 +6529,39 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: -20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1068550155
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1068550156}
+  m_Layer: 0
+  m_Name: Feedbacks
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1068550156
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1068550155}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 519526272}
+  - {fileID: 561627892}
+  m_Father: {fileID: 116218658}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1090999175
 GameObject:
   m_ObjectHideFlags: 0
@@ -6730,6 +6711,9 @@ MonoBehaviour:
   _damage: 1
   _parrying: 0
   Owner: {fileID: 0}
+  _meleeAttackFeedback: {fileID: 0}
+  _parryFeedback: {fileID: 0}
+  _hitbox: {fileID: 0}
 --- !u!114 &1109150760
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7620,7 +7604,7 @@ Transform:
   - {fileID: 116218658}
   - {fileID: 839329218}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1198088352
 Transform:
@@ -9429,7 +9413,9 @@ GameObject:
   - component: {fileID: 1207930584}
   - component: {fileID: 25276846}
   - component: {fileID: 25276845}
-  - component: {fileID: 25276847}
+  - component: {fileID: 1207930587}
+  - component: {fileID: 1207930586}
+  - component: {fileID: 1207930585}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -10337,6 +10323,80 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1207930585
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1198456056}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b94c0bcd51d2082498db9433be9ccee2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1207930586
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1198456056}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10b1d50bf69020d449c22ad0c147b909, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1207930587
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1198456056}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 140ba5f4166cc6b40b154d400e1d58b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _currentColor: 0
+  MeshForColorChange:
+  - {fileID: 1203662872}
+  MaterialColorsDict:
+    reorderableList:
+      canAdd: 1
+      canRemove: 1
+      draggable: 1
+      expandable: 1
+      multipleSelection: 1
+      isExpanded: 1
+      label:
+        m_Text: Keys
+        m_Image: {fileID: 0}
+        m_Tooltip: 
+      headerHeight: 18
+      footerHeight: 13
+      slideEasing: 0.15
+      verticalSpacing: 2
+      showDefaultBackground: 1
+      elementDisplayType: 0
+      elementNameProperty: 
+      elementNameOverride: 
+      elementIcon: {fileID: 0}
+    reqReferences: {fileID: 0}
+    isExpanded: 1
+    _keyValues: 000000000100000002000000
+    _keys: 000000000100000002000000
+    _values:
+    - {fileID: 2100000, guid: 844384962065df4418a0bf4476725ce5, type: 2}
+    - {fileID: 2100000, guid: 6fc962880b38ad24d86428442fce17f6, type: 2}
+    - {fileID: 2100000, guid: 99719b2fa31b3184c9d117ba958214a6, type: 2}
+  StepsFeedback: {fileID: 1657895804}
+  _blinkTime: 0.1
+  _sheathedKatana: {fileID: 1836738409}
+  _attackKatana: {fileID: 1627564576}
+  _slowMoMultiplier: 0.5
+  _parrySlowmoTime: 3
 --- !u!1 &1241737006
 GameObject:
   m_ObjectHideFlags: 0
@@ -10575,6 +10635,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ae0c07317647f4469052f12a5be6965, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DefaultPlayerGunPool: {fileID: 858035582}
+  Player: {fileID: 25276845}
+  EnemyPool: {fileID: 1175658464}
+  ProjectileManager: {fileID: 1374641222}
+  PlayerUI: {fileID: 1972537448}
+  Camera: {fileID: 963194227}
 --- !u!114 &1272231296
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10978,7 +11044,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!95 &1494592553
 Animator:
   serializedVersion: 5
@@ -11053,45 +11119,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a658c0526db80974da71a122c09020e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _currentColor: 0
-  MeshForColorChange:
-  - {fileID: 488184045}
-  MaterialColorsDict:
-    reorderableList:
-      canAdd: 1
-      canRemove: 1
-      draggable: 1
-      expandable: 1
-      multipleSelection: 1
-      isExpanded: 0
-      label:
-        m_Text: Keys
-        m_Image: {fileID: 0}
-        m_Tooltip: 
-      headerHeight: 18
-      footerHeight: 13
-      slideEasing: 0.15
-      verticalSpacing: 2
-      showDefaultBackground: 1
-      elementDisplayType: 0
-      elementNameProperty: 
-      elementNameOverride: 
-      elementIcon: {fileID: 0}
-    reqReferences: {fileID: 0}
-    isExpanded: 0
-    _keyValues: 000000000100000002000000
-    _keys: 000000000100000002000000
-    _values:
-    - {fileID: 2100000, guid: 844384962065df4418a0bf4476725ce5, type: 2}
-    - {fileID: 2100000, guid: 6fc962880b38ad24d86428442fce17f6, type: 2}
-    - {fileID: 2100000, guid: 99719b2fa31b3184c9d117ba958214a6, type: 2}
-  UnitStats:
-    MaxHP: 10
-    HP: 10
-    MoveSpeed: 2
-  WeaponSlot: {fileID: 2146086232}
-  BlinkWhenDamagedTime: 0.1
-  _meleeWeapon: {fileID: 0}
 --- !u!114 &1494592557
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11104,10 +11131,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f44cccd5dc66a94b9fea21c420949b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TestShit: {x: 0, y: 0, z: 0}
-  _meleeWeapon: {fileID: 0}
-  _meleeAttackCooldown: 4
-  _meleeAttackFeedback: {fileID: 963098320}
 --- !u!114 &1494592558
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11120,14 +11143,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4dce0a164984a7d47b0b37c89b1075d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayerSpotRange: 5
-  AttackRange: 2
-  PatrollingIdleDelay: 1
-  PatrollingIdleRandomStep: 1
-  AIState: 0
-  LogicUpdateTime: 0
-  _fleeingChanceAfterParried: 1
-  _fleeTimeAfterParried: 5
 --- !u!136 &1494592559
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -11430,7 +11445,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fccf182ee2653a24f931c2d7d3f87b25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _timescale: 1
 --- !u!1 &1525807972
 GameObject:
   m_ObjectHideFlags: 0
@@ -11732,7 +11746,7 @@ Transform:
   m_Children:
   - {fileID: 1992940154}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 60, y: 0, z: 0}
 --- !u!114 &1616527492
 MonoBehaviour:
@@ -11920,7 +11934,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 839329218}
-  m_RootOrder: 2
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1657895804
 MonoBehaviour:
@@ -13128,6 +13142,9 @@ MonoBehaviour:
   _damage: 5
   _parrying: 0
   Owner: {fileID: 0}
+  _meleeAttackFeedback: {fileID: 0}
+  _parryFeedback: {fileID: 0}
+  _hitbox: {fileID: 0}
 --- !u!114 &1853930320
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14000,7 +14017,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!195 &1975952031
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -14035,8 +14052,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea50bf994085e354db4b7a60e91b78a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TestShit: {x: 0, y: 0, z: 0}
-  _rangeWeapon: {fileID: 0}
 --- !u!114 &1975952034
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14049,16 +14064,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e8e1e72fceaf2e43b5d7ad40e36e6d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayerSpotRange: 8.76
-  AttackRange: 5.96
-  PatrollingIdleDelay: 1
-  PatrollingIdleRandomStep: 1
-  AIState: 0
-  LogicUpdateTime: 0
-  _hpPercentToTryFlee: 50
-  _chanceToFlee: 1
-  _timeToFlee: 5
-  _timeBetweenFleeTries: 2
 --- !u!95 &1975952036
 Animator:
   serializedVersion: 5
@@ -14109,46 +14114,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c96455d947343042a6fc4b9d1c5e075, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _currentColor: 1
-  MeshForColorChange:
-  - {fileID: 43559181}
-  MaterialColorsDict:
-    reorderableList:
-      canAdd: 1
-      canRemove: 1
-      draggable: 1
-      expandable: 1
-      multipleSelection: 1
-      isExpanded: 0
-      label:
-        m_Text: Keys
-        m_Image: {fileID: 0}
-        m_Tooltip: 
-      headerHeight: 18
-      footerHeight: 13
-      slideEasing: 0.15
-      verticalSpacing: 2
-      showDefaultBackground: 1
-      elementDisplayType: 0
-      elementNameProperty: 
-      elementNameOverride: 
-      elementIcon: {fileID: 0}
-    reqReferences: {fileID: 0}
-    isExpanded: 0
-    _keyValues: 000000000100000002000000
-    _keys: 000000000100000002000000
-    _values:
-    - {fileID: 2100000, guid: 844384962065df4418a0bf4476725ce5, type: 2}
-    - {fileID: 2100000, guid: 6fc962880b38ad24d86428442fce17f6, type: 2}
-    - {fileID: 2100000, guid: 99719b2fa31b3184c9d117ba958214a6, type: 2}
-  UnitStats:
-    MaxHP: 0
-    HP: 5
-    MoveSpeed: 2
-  WeaponSlot: {fileID: 882604990}
-  BlinkWhenDamagedTime: 0.1
-  _rangeWeapon: {fileID: 0}
-  ChanceToDropRangeWeapon: 1
 --- !u!136 &1975952039
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -18931,46 +18896,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08fe45d680226f2408feb6e93b0ace8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _currentColor: 1
-  MeshForColorChange:
-  - {fileID: 1692317552603830225}
-  MaterialColorsDict:
-    reorderableList:
-      canAdd: 1
-      canRemove: 1
-      draggable: 1
-      expandable: 1
-      multipleSelection: 1
-      isExpanded: 0
-      label:
-        m_Text: Keys
-        m_Image: {fileID: 0}
-        m_Tooltip: 
-      headerHeight: 18
-      footerHeight: 13
-      slideEasing: 0.15
-      verticalSpacing: 2
-      showDefaultBackground: 1
-      elementDisplayType: 0
-      elementNameProperty: 
-      elementNameOverride: 
-      elementIcon: {fileID: 0}
-    reqReferences: {fileID: 0}
-    isExpanded: 0
-    _keyValues: 000000000100000002000000
-    _keys: 000000000100000002000000
-    _values:
-    - {fileID: 2100000, guid: 844384962065df4418a0bf4476725ce5, type: 2}
-    - {fileID: 2100000, guid: 6fc962880b38ad24d86428442fce17f6, type: 2}
-    - {fileID: 2100000, guid: 99719b2fa31b3184c9d117ba958214a6, type: 2}
-  UnitStats:
-    MaxHP: 5
-    HP: 5
-    MoveSpeed: 2
-  WeaponSlot: {fileID: 168541702}
-  BlinkWhenDamagedTime: 0.1
-  _rangeWeapon: {fileID: 0}
-  ChanceToDropRangeWeapon: 1
 --- !u!114 &6165474379941931990
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18983,16 +18908,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e8e1e72fceaf2e43b5d7ad40e36e6d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayerSpotRange: 5.11
-  AttackRange: 3
-  PatrollingIdleDelay: 1
-  PatrollingIdleRandomStep: 1
-  AIState: 0
-  LogicUpdateTime: 0
-  _hpPercentToTryFlee: 50
-  _chanceToFlee: 1
-  _timeToFlee: 5
-  _timeBetweenFleeTries: 2
 --- !u!195 &6165474379941931992
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -19027,8 +18942,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea50bf994085e354db4b7a60e91b78a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TestShit: {x: 0, y: 0, z: 0}
-  _rangeWeapon: {fileID: 0}
 --- !u!136 &6165474379941931994
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -19141,45 +19054,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c427c2a3a47c92428ed3eaad0d5376f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _currentColor: 0
-  MeshForColorChange:
-  - {fileID: 1467365754662236997}
-  MaterialColorsDict:
-    reorderableList:
-      canAdd: 1
-      canRemove: 1
-      draggable: 1
-      expandable: 1
-      multipleSelection: 1
-      isExpanded: 0
-      label:
-        m_Text: Keys
-        m_Image: {fileID: 0}
-        m_Tooltip: 
-      headerHeight: 18
-      footerHeight: 13
-      slideEasing: 0.15
-      verticalSpacing: 2
-      showDefaultBackground: 1
-      elementDisplayType: 0
-      elementNameProperty: 
-      elementNameOverride: 
-      elementIcon: {fileID: 0}
-    reqReferences: {fileID: 0}
-    isExpanded: 0
-    _keyValues: 000000000100000002000000
-    _keys: 000000000100000002000000
-    _values:
-    - {fileID: 2100000, guid: 844384962065df4418a0bf4476725ce5, type: 2}
-    - {fileID: 2100000, guid: 6fc962880b38ad24d86428442fce17f6, type: 2}
-    - {fileID: 2100000, guid: 99719b2fa31b3184c9d117ba958214a6, type: 2}
-  UnitStats:
-    MaxHP: 5
-    HP: 5
-    MoveSpeed: 3
-  WeaponSlot: {fileID: 246623663}
-  BlinkWhenDamagedTime: 0.1
-  _meleeWeapon: {fileID: 0}
 --- !u!195 &6246874146993524555
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -19214,14 +19088,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4dce0a164984a7d47b0b37c89b1075d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayerSpotRange: 5
-  AttackRange: 1.86
-  PatrollingIdleDelay: 1
-  PatrollingIdleRandomStep: 1
-  AIState: 0
-  LogicUpdateTime: 0
-  _fleeingChanceAfterParried: 1
-  _fleeTimeAfterParried: 5
 --- !u!114 &6246874146993524557
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19234,10 +19100,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f44cccd5dc66a94b9fea21c420949b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TestShit: {x: 0, y: 0, z: 0}
-  _meleeWeapon: {fileID: 0}
-  _meleeAttackCooldown: 2
-  _meleeAttackFeedback: {fileID: 0}
 --- !u!136 &6246874146993524558
 CapsuleCollider:
   m_ObjectHideFlags: 0

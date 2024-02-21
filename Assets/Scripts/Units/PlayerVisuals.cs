@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 namespace Samurai
 {
-    public class PlayerVisuals : UnitVisuals, IRangeAttack
+    public class PlayerVisuals : UnitVisuals, IRangeAttack, IMeleeAttack
     {
         #region Color
         public override void ChangeColor(PhaseColor color)
@@ -13,22 +13,10 @@ namespace Samurai
         #endregion
 
         #region PickableWeapon
-        // private RangeWeaponEnum _currentAnimationLayer = RangeWeaponEnum.DefaultPlayerWeapon;
 
-        // Layers must have names of rangeweaponenum
-        /* public void SwitchToAnimationLayer(RangeWeaponEnum rweapon)
-        {
-            if (rweapon != _currentAnimationLayer)
-            {
-                UnitAnimator.SetLayerWeight(UnitAnimator.GetLayerIndex(_currentAnimationLayer.ToString()), 0f);
-                UnitAnimator.SetLayerWeight(UnitAnimator.GetLayerIndex(rweapon.ToString()), 1f);
-                _currentAnimationLayer = rweapon;
-            }            
-        } */
-
-        public void EquipRangeWeapon(RangeWeapon rweapon) => SwitchToAnimationLayer(rweapon);
-
-        private string _currentAnimationLayer = typeof(DefaultPlayerWeapon).Name.ToString();
+        /* public void EquipRangeWeapon(RangeWeapon rweapon) => SwitchToAnimationLayer(rweapon);
+        
+        / private string _currentAnimationLayer = typeof(DefaultPlayerWeapon).Name.ToString();
 
         public void SwitchToAnimationLayer(RangeWeapon rweapon)
         {
@@ -39,7 +27,13 @@ namespace Samurai
                 UnitAnimator.SetLayerWeight(UnitAnimator.GetLayerIndex(rwstring), 1f);
                 _currentAnimationLayer = rwstring;
             }
+        }*/
+        public void EquipRangeWeapon(RangeWeapon rweapon) => SwitchAnimationController(rweapon);
+        private void SwitchAnimationController(RangeWeapon rweapon)
+        {
+            UnitAnimator.runtimeAnimatorController = rweapon.AnimController;
         }
+
         #endregion
 
 
@@ -68,7 +62,7 @@ namespace Samurai
 
             _sheathedKatana.enabled = false;
             _attackKatana.enabled = true;
-            (Unit as IRangeWeapon).RangeWeapon.gameObject.SetActive(false);
+            (Unit as IRangeWeapon).RangeWeapon.MeshVisible(false);
         }
         public void OnMeleeAttackAnimationEnded_UnityEvent()
         {
@@ -76,7 +70,16 @@ namespace Samurai
 
             _attackKatana.enabled = false;
             _sheathedKatana.enabled = true;
-            (Unit as IRangeWeapon).RangeWeapon.gameObject.SetActive(true);
+            (Unit as IRangeWeapon).RangeWeapon.MeshVisible(true);
+        }
+
+        public void OnMeleeAttackSlashAnimationStarted_UnityEvent()
+        {
+            (Unit as IMeleeWeapon).MeleeWeapon.EnableHitbox(true);
+        }
+        public void OnMeleeAttackSlashAnimationEnded_UnityEvent()
+        {
+            (Unit as IMeleeWeapon).MeleeWeapon.EnableHitbox(true);
         }
 
 

@@ -11,7 +11,6 @@ namespace Samurai
         private Camera _camera;
 
 
-
         #region UnityMethods
         protected override void OnTriggerEnter(Collider other)
         {

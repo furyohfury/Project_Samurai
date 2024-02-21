@@ -8,7 +8,7 @@ namespace Samurai
 
         public Vector3 MoveDirection { get; private set; }
 
-        #region UnityMethods        
+        #region UnityMethods
         private void OnEnable()
         {
             _playerControls.Enable();
@@ -18,7 +18,7 @@ namespace Samurai
 
             _playerControls.PlayerMap.Shoot.performed += RangeAttack;
             _playerControls.PlayerMap.PickWeapon.performed += EquipPickableRangeWeapon;
-            _playerControls.PlayerMap.PickWeapon.performed += MeleeAttack;
+            _playerControls.PlayerMap.MeleeAttack.performed += MeleeAttack;
         }
         protected void FixedUpdate()
         {
@@ -28,7 +28,7 @@ namespace Samurai
         {
             _playerControls.PlayerMap.Shoot.performed -= RangeAttack;
             _playerControls.PlayerMap.PickWeapon.performed -= EquipPickableRangeWeapon;
-            _playerControls.PlayerMap.PickWeapon.performed -= MeleeAttack;
+            _playerControls.PlayerMap.MeleeAttack.performed -= MeleeAttack;
 
             _playerControls.Disable();
         }
@@ -36,6 +36,7 @@ namespace Samurai
 
         protected override void Bindings()
         {
+            base.Bindings();
             _playerControls = new();
         }
 

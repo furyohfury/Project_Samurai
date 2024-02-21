@@ -7,9 +7,9 @@ namespace Samurai
 {
     public abstract class Unit : MonoBehaviour
     {
-        public UnitVisuals UnitVisuals { get; private set; }
-        public UnitPhysics UnitPhysics { get; private set; }
-        public UnitInput UnitInput { get; private set; }
+        public UnitVisuals UnitVisuals { get; protected set; }
+        public UnitPhysics UnitPhysics { get; protected set; }
+        public UnitInput UnitInput { get; protected set; }
 
         [Inject]
         protected DefaultPlayerGunPool DefPlayerGunPool;

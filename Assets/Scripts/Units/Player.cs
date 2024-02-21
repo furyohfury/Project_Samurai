@@ -5,6 +5,7 @@ namespace Samurai
 {
     public class Player : Unit, IRangeAttack, IMeleeAttack, IRangeWeapon, IMeleeWeapon
     {
+        [SerializeField]
         private DefaultPlayerWeapon _defaultPlayerWeapon;
 
         [SerializeField]
@@ -17,7 +18,8 @@ namespace Samurai
         #region UnityMethods
         protected void Start()
         {
-            EquipRangeWeapon(_defaultPlayerWeapon);
+            // EquipRangeWeapon(_defaultPlayerWeapon);
+
         }
         #endregion
 
@@ -103,7 +105,7 @@ namespace Samurai
         public bool CanHit { get; set; } = true;
         [SerializeField]
         private float _parryInvulTime = 2f;
-        public bool Parried = false;
+        public bool Parried { get; set; } = false;
 
 
         public void MeleeAttack()
@@ -111,6 +113,8 @@ namespace Samurai
             if (CanHit)
             {
                 (UnitVisuals as IMeleeAttack).MeleeAttack();
+                MeleeWeapon.MeleeAttack();
+
                 StartCoroutine(MeleeAttackCD());
                 OnPlayerMeleeHit?.Invoke();
             }
@@ -123,8 +127,8 @@ namespace Samurai
         }
         public void InMeleeAttack(bool isInMeleeAttack)
         {
-            CanMove = isInMeleeAttack;
-            CanShoot = isInMeleeAttack;
+            CanMove = !isInMeleeAttack;
+            CanShoot = !isInMeleeAttack;
         }
 
 

@@ -1,12 +1,14 @@
+using MoreMountains.Feedbacks;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 namespace Samurai
 {
-    public class MeleeWeapon : MonoBehaviour
+    public class MeleeWeapon : MonoBehaviour, IMeleeAttack
     {
         [SerializeField]
         private int _damage;
+        
         public int Damage
         {
             get => _damage;
@@ -17,13 +19,24 @@ namespace Samurai
         private bool _parrying = false;
         public bool Parrying { get => _parrying; set => _parrying = value; }
 
-
-
         public Unit Owner;
+
+        [SerializeField, Space]
+        private MMF_Player _meleeAttackFeedback;
+        [SerializeField]
+        private MMF_Player _parryFeedback;
+
+        [SerializeField]
+        private Collider _hitbox;
+
+
+        #region UnityMethods
         private void Start()
         {
             Owner = GetComponentInParent<Unit>();
         }
+
+
         private void OnTriggerEnter(Collider other)
         {
             if (other.TryGetComponent(out MeleeWeapon mw) && 
@@ -31,6 +44,7 @@ namespace Samurai
                     && (Owner as Enemy == null || mw.Owner as Enemy == null))
             {
                 Parrying = true;
+                _parryFeedback?.PlayFeedbacks();
                 OnParry?.Invoke();
             }
         }        
@@ -43,6 +57,16 @@ namespace Samurai
                 Parrying = false;
             }
         }
+        #endregion
+
+
+        public void MeleeAttack()
+        {
+            _meleeAttackFeedback?.PlayFeedbacks();
+        }
+
+        public void EnableHitbox(bool v) => _hitbox.enabled = v;
+
         public event SimpleHandle OnParry;
     }
 }

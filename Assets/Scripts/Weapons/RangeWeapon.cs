@@ -51,10 +51,17 @@ namespace Samurai
             protected set => _animController = value;
         }
         [SerializeField]
+        protected Renderer[] _mesh;
+
+        [SerializeField, Space]
         protected MMFeedbacks ShootingFeedbacks;
 
 
         #region Unity_Methods
+        protected void Awake()
+        {
+            _mesh = GetComponentsInChildren<Renderer>();
+        }
         protected virtual void OnEnable()
         {
             Equipped(GetComponentInParent<Unit>());
@@ -113,6 +120,11 @@ namespace Samurai
                 transform.position = hit.point;
             }
             else Destroy(gameObject);
+        }
+
+        public void MeshVisible(bool isEnabled)
+        {
+            foreach (var mesh in _mesh) mesh.enabled = isEnabled;
         }
 
 

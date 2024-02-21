@@ -12,8 +12,6 @@ namespace Samurai
     {
         [Inject]
         private Player _player;
-        [Inject]
-        private PlayerInput _playerInput;
         [SerializeField]
         private Image[] _imagesToChangeColorsAsPlayer;
 
@@ -95,6 +93,7 @@ namespace Samurai
 
         public void RangeWeaponNumberOfBulletsChanged()
         {
+            if (_player.RangeWeapon is DefaultPlayerWeapon) return;
             _bulletsNumber.text = _player.RangeWeapon.NumberOfBulletsForPlayer.ToString();
         }
         #endregion
