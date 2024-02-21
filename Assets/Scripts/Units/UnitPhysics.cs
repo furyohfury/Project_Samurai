@@ -6,6 +6,21 @@ namespace Samurai
         protected Unit Unit;
         protected UnitVisuals UnitVisuals;
 
+
+        #region UnityMethods
+        protected virtual void Awake()
+        {
+            Bindings();
+        }
+        #endregion
+
+        protected virtual void Bindings()
+        {
+            Unit = GetComponent<Unit>();
+            UnitVisuals = GetComponent<UnitVisuals>();
+        }
+
+
         #region Movement
         public abstract void Movement(Vector3 direction);
         #endregion
@@ -16,6 +31,11 @@ namespace Samurai
         {
             Unit.GetDamagedByProjectile(proj);
             UnitVisuals.GetDamagedByProjectile();
+        }
+        public virtual void GetDamagedByMelee(MeleeWeapon weapon)
+        {
+            Unit.GetDamagedByMelee(weapon);
+            UnitVisuals.GetDamagedByMelee();
         }
         #endregion
     }

@@ -8,8 +8,13 @@ namespace Samurai
     [RequireComponent(typeof(Unit))]
     public abstract class UnitInput : MonoBehaviour
     {
-        protected Unit Unit;
+        protected Unit Unit;     
 
+
+        #region UnityMethods
+        #endregion
+
+        
         #region Movement
         public abstract void Movement();
         #endregion

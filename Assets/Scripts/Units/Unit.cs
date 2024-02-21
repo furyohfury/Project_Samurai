@@ -22,11 +22,26 @@ namespace Samurai
             return UnitStats;
         }
 
+
+        #region UnityMethods
+        protected virtual void Awake()
+        {
+            Bindings();
+        }
+        #endregion
+
+        protected virtual void Bindings()
+        {
+            UnitVisuals = GetComponent<UnitVisuals>();
+        }
+
         #region Damaged
         public void GetDamagedByProjectile(Projectile proj)
         {
             if ((proj.CurrentColor != this.CurrentColor) && (this.GetType() != proj.Owner.GetType()) && (this as Enemy == null || proj.Owner as Enemy == null))
             {
+                UnitVisuals.GetDamagedByProjectile();                
+
                 ChangeHP(-proj.GetProjectileStats().Damage);
 
                 var defProj = proj as DefaultPlayerWeaponProjectile;
@@ -36,13 +51,14 @@ namespace Samurai
         }
 
         /// <summary>
-        /// Rewrite for parryable units
+        /// Rewrite for parrying units
         /// </summary>
         /// <param name="weapon"></param>
         public virtual void GetDamagedByMelee(MeleeWeapon weapon)
         {
             if ((this.GetType() != weapon.Owner.GetType()) && (this as Enemy == null || weapon.Owner as Enemy == null))
             {
+                UnitVisuals.GetDamagedByMelee();
                 ChangeHP(-weapon.Damage);
             }
         }
@@ -65,7 +81,10 @@ namespace Samurai
         #region Death
         public void Die()
         {
+            UnitPhysics.enabled = false;
+            UnitInput.enabled = false;
             UnitVisuals.Die();
+            StartCoroutine(DieAwait());
         }
         /// <summary>
         /// Needs different logic for player and enemy
