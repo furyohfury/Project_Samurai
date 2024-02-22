@@ -16,13 +16,7 @@ namespace Samurai
 
         private void Start()
         {
-            foreach (var enemy in EnemyPool.EnemyList)
-            {
-                // enemy.AI.StartingIdlePatrolLogic();
-            }
-
             StartCoroutine(AILogicManagement());
-
         }
         private IEnumerator AILogicManagement()
         {
@@ -30,7 +24,7 @@ namespace Samurai
             {
                 foreach (var enemy in EnemyPool.EnemyList.ToList())
                 {
-                    // enemy.AI.GeneralAICycle();
+                    (enemy.UnitInput as EnemyInput).GeneralAICycle();
                 }
                 yield return new WaitForFixedUpdate();
             }

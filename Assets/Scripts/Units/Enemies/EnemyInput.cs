@@ -58,6 +58,10 @@ namespace Samurai
         protected Coroutine PatrollingDelayCoroutine;        
         
         #region UnityMethods
+        protected void Start()
+        {
+            StartingIdlePatrolLogic();
+        }
         protected void FixedUpdate()
         {
             UnitVisuals.Movement(Target);

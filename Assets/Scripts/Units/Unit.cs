@@ -97,16 +97,16 @@ namespace Samurai
             StartCoroutine(DieAwait());
         }
         /// <summary>
-        /// Gets processed by managers
+        /// Gets processed by managers (or its shit lol)
         /// </summary>
-        protected IEnumerator DieAwait()
+        protected virtual IEnumerator DieAwait()
         {
             yield return new WaitUntil(() => UnitVisuals.DeathAnimationEnded);
-            OnUnitDied?.Invoke(this);
+            // OnUnitDied?.Invoke(this);
         }
         #endregion
 
         public event SimpleHandle OnUnitHealthChanged;
-        public event UnitHandle OnUnitDied;
+        // public event UnitHandle OnUnitDied;
     }
 }

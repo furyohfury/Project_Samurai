@@ -16,6 +16,9 @@ namespace Samurai
         private Transform _rangeWeaponSlot;
         public Transform RangeWeaponSlot {get => _rangeWeaponSlot; set => _rangeWeaponSlot = value;}
 
+        [SerializeField, Space]
+        private GameObject GameOverScreen;
+
         #region UnityMethods
         #endregion
 
@@ -168,6 +171,15 @@ namespace Samurai
         }
         #endregion
 
+        #region Death
+        protected override IEnumerator DieAwait()
+        {
+            base.DieAwait();
+            if (GameOverScreen == null) Debug.LogError("GameOverScren ot found");
+            else GameOverScreen.SetActive(true);
+        }
+        #endregion
+        
         public event SimpleHandle OnPlayerDied;
         public event RangeWeaponChangeHandle OnPlayerChangedWeapon;
         public event SimpleHandle OnPlayerShot;

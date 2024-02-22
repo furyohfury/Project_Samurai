@@ -38,6 +38,14 @@ namespace Samurai
         }
         #endregion
         
+        #region Death
+        protected override IEnumerator DieAwait()
+        {
+            base.DieAwait();
+            Destroy(this.gameObject);
+        }
+        #endregion
+        
         public abstract void Attack();        
     }
 }
