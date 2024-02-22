@@ -47,7 +47,8 @@ namespace Samurai
         #region Damaged
         public void GetDamagedByProjectile(Projectile proj)
         {
-            if ((proj.CurrentColor != this.CurrentColor) && (this.GetType() != proj.Owner.GetType()) && (this as Enemy == null || proj.Owner as Enemy == null))
+            // if ((proj.CurrentColor != this.CurrentColor) && (this.GetType() != proj.Owner.GetType()) && (this as Enemy == null || proj.Owner as Enemy == null))
+            if ((proj.CurrentColor != this.CurrentColor) && !(this is Enemy = proj.Owner is Enemy))
             {
                 UnitVisuals.GetDamagedByProjectile();
 
@@ -65,7 +66,7 @@ namespace Samurai
         /// <param name="weapon"></param>
         public virtual void GetDamagedByMelee(MeleeWeapon weapon)
         {
-            if ((this.GetType() != weapon.Owner.GetType()) && (this as Enemy == null || weapon.Owner as Enemy == null))
+            if (!(this is Enemy = weapon.Owner is Enemy))
             {
                 UnitVisuals.GetDamagedByMelee();
                 ChangeHP(-weapon.Damage);

@@ -9,7 +9,7 @@ namespace Samurai
         #region GetDamaged
         public override void GetDamagedByMelee(MeleeWeapon weapon)
         {
-            if (!Parried && this.GetType() != weapon.Owner.GetType() && (this.GetType() != typeof(Enemy) || weapon.Owner as Enemy == null))
+            if (!Parried && !(this is Enemy = weapon.Owner is Enemy))
             {
                 UnitVisuals.GetDamagedByMelee();
                 ChangeHP(-weapon.Damage);
