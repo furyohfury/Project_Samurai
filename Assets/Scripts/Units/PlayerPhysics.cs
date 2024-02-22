@@ -12,15 +12,23 @@ namespace Samurai
 
 
         #region UnityMethods
-        protected override void OnTriggerEnter(Collider other)
+        protected void OnEnable()
         {
-            base.OnTriggerEnter(other);
-            EquipPickableRangeWeapon(other);
+            _charController.enabled = true;
         }
         protected void FixedUpdate()
         {
             FaceCursor();
         }
+        protected override void OnTriggerEnter(Collider other)
+        {
+            base.OnTriggerEnter(other);
+            EquipPickableRangeWeapon(other);
+        }
+        protected void OnDisable()
+        {
+            _charController.enabled = false;
+        }        
         #endregion
 
 
@@ -32,12 +40,22 @@ namespace Samurai
 
         private void FaceCursor()
         {
-            // Facing cursor
+            /* Facing cursor
             var cameraOffset = transform.position.y - _camera.transform.position.y;
             Vector3 cursorPosition = new Vector3(Mouse.current.position.ReadValue().x, Mouse.current.position.ReadValue().y, cameraOffset);
             cursorPosition = _camera.ScreenToWorldPoint(cursorPosition);
             cursorPosition = new Vector3(cursorPosition.x, this.transform.position.y, cursorPosition.z);
-            transform.LookAt(cursorPosition);
+            transform.LookAt(cursorPosition); */
+
+            // WTF
+            Ray ray = _camera.ScreenPointToRay((Mouse.current.position.ReadValue());
+            if (Physics.Raycast(ray, out RaycastHit hit, 1 << 6))
+            {
+                float k = (this.transform.y - hit.point.y) / (_camera.transform.position.y - hit.point.y);
+                Vector3 cursorPosition = ray.point + (camera.transform.position - hit.point) * k;
+                this.transform.LookAt(cursorPosition);
+            }
+
         }
 
         #region Movement
@@ -48,7 +66,7 @@ namespace Samurai
         }
         #endregion
 
-
+        // Player only
         #region PickableWeapon
         public void EquipPickableRangeWeapon(Collider other)
         {

@@ -47,7 +47,6 @@ namespace Samurai
             MoveDirection = new Vector3(movement.x, 0, movement.y);
             UnitVisuals.Movement(MoveDirection);
             UnitPhysics.Movement(MoveDirection);
-
         }
         #endregion
 

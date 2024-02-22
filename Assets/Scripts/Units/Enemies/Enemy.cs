@@ -5,6 +5,6 @@ namespace Samurai
 {
     public class Enemy : Unit
     {
-
+        
     }
 }

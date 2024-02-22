@@ -4,6 +4,7 @@ namespace Samurai
 {
     public class PlayerVisuals : UnitVisuals, IRangeAttack, IMeleeAttack
     {
+        // Player only
         #region Color
         public override void ChangeColor(PhaseColor color)
         {
@@ -12,6 +13,8 @@ namespace Samurai
         }
         #endregion
 
+
+        // Player only
         #region PickableWeapon
 
         /* public void EquipRangeWeapon(RangeWeapon rweapon) => SwitchToAnimationLayer(rweapon);
@@ -37,6 +40,7 @@ namespace Samurai
         #endregion
 
 
+        // IRangeAttack
         #region RangeAttack
         public void RangeAttack()
         {
@@ -45,6 +49,7 @@ namespace Samurai
         #endregion
 
 
+        // IMeleeAttack
         #region MeleeAttack
         public void MeleeAttack()
         {
@@ -88,7 +93,7 @@ namespace Samurai
         [SerializeField]
         private float _parrySlowmoTime = 3f;
         public void Parry()
-        {
+        {            
             StartCoroutine(PlayerParrySlomoCor());
         }
         public IEnumerator PlayerParrySlomoCor()

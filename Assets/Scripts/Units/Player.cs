@@ -18,11 +18,11 @@ namespace Samurai
         #region UnityMethods
         protected void Start()
         {
-            // EquipRangeWeapon(_defaultPlayerWeapon);
-
+            EquipRangeWeapon(_defaultPlayerWeapon);
         }
         #endregion
 
+        // For IMeleeWeapon
         #region GetDamaged
         public override void GetDamagedByMelee(MeleeWeapon weapon)
         {
@@ -34,6 +34,8 @@ namespace Samurai
         }
         #endregion
 
+
+        // For IRangeAttack
         #region RangeAttack
         public void RangeAttack()
         {
@@ -44,9 +46,26 @@ namespace Samurai
                 OnPlayerShot?.Invoke();
             }
         }
+
+        public void EquipRangeWeapon(RangeWeapon rWeapon)
+        {
+            RangeWeapon = rWeapon;
+            RangeWeapon.transform.SetLocalPositionAndRotation(
+                RangeWeapon.WeaponPositionWhenPicked, Quaternion.Euler(RangeWeapon.WeaponRotationWhenPicked));
+
+            (UnitVisuals as PlayerVisuals).EquipRangeWeapon(RangeWeapon);
+            RangeWeapon.Equipped(this);
+
+            // For UI todo switch to rangeweapon w/out enum
+            if (Enum.TryParse(RangeWeapon.GetType().Name, true, out RangeWeaponEnum weapon))
+            {
+                OnPlayerChangedWeapon?.Invoke(weapon);
+            }
+            else Debug.LogWarning($"Player equipped weapon not in enum {typeof(RangeWeaponEnum)}");
+        }
         #endregion
 
-
+        //Player only
         #region PickableWeapon
         private RangeWeapon _pickableWeapon;
         public RangeWeapon PickableWeapon
@@ -93,7 +112,7 @@ namespace Samurai
         }
         #endregion
 
-
+        // For IMeleeAttack
         #region MeleeAttack
         [SerializeField, Space]
         private MeleeWeapon _meleeWeapon;
@@ -102,10 +121,7 @@ namespace Samurai
         [SerializeField]
         private float _meleeAttackCooldown = 5f;
         public float MeleeAttackCooldown { get => _meleeAttackCooldown; private set => _meleeAttackCooldown = value; }
-        public bool CanHit { get; set; } = true;
-        [SerializeField]
-        private float _parryInvulTime = 2f;
-        public bool Parried { get; set; } = false;
+        public bool CanHit { get; set; } = true;        
 
 
         public void MeleeAttack()
@@ -131,10 +147,14 @@ namespace Samurai
             CanShoot = !isInMeleeAttack;
         }
 
+        // Parry
+        [SerializeField]
+        private float _parryInvulTime = 2f;
+        public bool Parried { get; set; } = false;
 
         protected void MeleeWeaponBindings()
         {
-            MeleeWeapon.OnParry += () => StartCoroutine(Parry());
+            MeleeWeapon.OnParry += () => {if (!Parried) StartCoroutine(Parry());}
         }
         private IEnumerator Parry()
         {
