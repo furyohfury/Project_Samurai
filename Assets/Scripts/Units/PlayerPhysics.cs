@@ -58,6 +58,7 @@ namespace Samurai
 
         }
 
+        // Player only cuz CharacterController
         #region Movement
         public override void Movement(Vector3 direction)
         {

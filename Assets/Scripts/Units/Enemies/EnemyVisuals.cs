@@ -5,6 +5,6 @@ namespace Samurai
 {
     public abstract class EnemyVisuals : UnitVisuals
     {
-
+        
     }
 }

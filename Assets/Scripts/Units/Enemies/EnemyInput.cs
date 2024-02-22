@@ -6,7 +6,17 @@ namespace Samurai
     public abstract class EnemyInput : UnitInput
     {
         [Inject]
-        protected Player Player;       
+        protected Player Player;     
+
+        [SerializeField]
+        protected AIStateType AIState = AIStateType.Idle;
+        [SerializeField]
+        protected float LogicUpdateTime;
+
+        /// <summary>
+        /// Main property for this component to set
+        /// </summary>
+        public Vector3 Target { get; protected set; }  
 
         // Spotting        
         protected bool SpottedPlayer = false;
@@ -45,17 +55,7 @@ namespace Samurai
         protected int CurrentPatrollingPointIndex;
         protected float ArrivalDistance;
 
-        protected Coroutine PatrollingDelayCoroutine;
-
-        [SerializeField, Space]
-        protected AIStateType AIState = AIStateType.Idle;
-        [SerializeField]
-        protected float LogicUpdateTime;
-
-        /// <summary>
-        /// Main property for this component to set
-        /// </summary>
-        public Vector3 Target { get; protected set; }
+        protected Coroutine PatrollingDelayCoroutine;        
         
         #region UnityMethods        
         protected virtual void Awake()

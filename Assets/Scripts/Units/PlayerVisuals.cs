@@ -84,7 +84,7 @@ namespace Samurai
         }
         public void OnMeleeAttackSlashAnimationEnded_UnityEvent()
         {
-            (Unit as IMeleeWeapon).MeleeWeapon.EnableHitbox(true);
+            (Unit as IMeleeWeapon).MeleeWeapon.EnableHitbox(false);
         }
 
 
