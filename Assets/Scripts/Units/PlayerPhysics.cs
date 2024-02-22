@@ -48,11 +48,11 @@ namespace Samurai
             transform.LookAt(cursorPosition); */
 
             // WTF
-            Ray ray = _camera.ScreenPointToRay((Mouse.current.position.ReadValue());
+            Ray ray = _camera.ScreenPointToRay(Mouse.current.position.ReadValue());
             if (Physics.Raycast(ray, out RaycastHit hit, 1 << 6))
             {
-                float k = (this.transform.y - hit.point.y) / (_camera.transform.position.y - hit.point.y);
-                Vector3 cursorPosition = ray.point + (camera.transform.position - hit.point) * k;
+                float k = (this.transform.position.y - hit.point.y) / (_camera.transform.position.y - hit.point.y);
+                Vector3 cursorPosition = hit.point + (_camera.transform.position - hit.point) * k;
                 this.transform.LookAt(cursorPosition);
             }
 
@@ -62,6 +62,7 @@ namespace Samurai
         #region Movement
         public override void Movement(Vector3 direction)
         {
+            if (!Unit.CanMove) return;
             if (_charController.isGrounded) _charController.Move(Unit.GetUnitStats().MoveSpeed / Time.timeScale * Time.fixedDeltaTime * new Vector3(direction.x, 0, direction.z));
             else _charController.Move(Time.fixedDeltaTime * (Unit.GetUnitStats().MoveSpeed * new Vector3(direction.x, 0, direction.z) + 9.8f * Vector3.down));
         }

@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Samurai
 {
-    public class RangeEnemyVisuals : EnemyVisuals
+    public class RangeEnemyVisuals : EnemyVisuals, IRangeAttack
     {
         // IRangeAttack
         #region RangeAttack

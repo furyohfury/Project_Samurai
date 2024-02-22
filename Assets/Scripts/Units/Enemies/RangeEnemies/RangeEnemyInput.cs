@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Samurai
 {
-    public  class RangeEnemyInput : EnemyInput
+    public class RangeEnemyInput : EnemyInput
     {
         [SerializeField, Range(0, 100)]
         private int _hpPercentToTryFlee = 30;
@@ -15,8 +15,7 @@ namespace Samurai
         private float _timeBetweenFleeTries = 2f;
 
         private bool _fleeing = false;
-        private bool _triedToFlee = false;
-
+        private bool _triedToFlee = false;        
 
         protected override void BattleCycle()
         {
@@ -28,7 +27,7 @@ namespace Samurai
             }
 
             // Trying to flee if low HP
-            if (_enemyComponent.GetUnitStats().HP <= _enemyComponent.GetUnitStats().HP * _hpPercentToTryFlee / 100 &&
+            if (Unit.GetUnitStats().HP <= Unit.GetUnitStats().HP * _hpPercentToTryFlee / 100 &&
                 !_fleeing && !_triedToFlee)
             {
                 if (Random.value < _chanceToFlee)
@@ -46,7 +45,7 @@ namespace Samurai
             // Is there an obstacle on the way. Obstacle layer is 7
             if (Physics.Raycast(transform.position, Player.transform.position - transform.position, out RaycastHit hit, AttackRange, 1 << 7)
                 && (hit.transform.TryGetComponent(out Obstacle _)
-                    || (hit.transform.TryGetComponent(out ColorObstacle colObstacle) && colObstacle.CurrentColor != _enemyComponent.CurrentColor)))
+                    || (hit.transform.TryGetComponent(out ColorObstacle colObstacle) && colObstacle.CurrentColor != Unit.CurrentColor)))
             {
                 AIState = AIStateType.Pursuit;
             }
@@ -54,10 +53,7 @@ namespace Samurai
             {
                 Target = this.transform.position;
                 AIState = AIStateType.Attack;
-            }
-
-
-        з
+            }        
         }
         private IEnumerator FleeCoroutine()
         {

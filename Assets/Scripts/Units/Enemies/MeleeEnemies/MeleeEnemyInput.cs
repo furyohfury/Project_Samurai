@@ -23,6 +23,12 @@ namespace Samurai
             MeleeWeapon.OnParry -= Parried;
         }
         #endregion
+
+        public override void Movement()
+        {
+            UnitVisuals.Movement(Target);
+            UnitPhysics.Movement(Target);
+        }
         protected override void BattleCycle()
         {
             if (_parried) return;
@@ -46,6 +52,6 @@ namespace Samurai
             _parried = true;
             yield return new WaitForSeconds(_fleeTimeAfterParried);
             _parried = false;
-        }
+        }        
     }
 }

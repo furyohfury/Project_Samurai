@@ -15,14 +15,14 @@ namespace Samurai
 
         [SerializeField]
         protected ProjectileStatsStruct ProjectileStats;
-        public ProjectileStatsStruct GetProjectileStats() => ProjectileStats;        
+        public ProjectileStatsStruct GetProjectileStats() => ProjectileStats;
         public void SetProjectileStatsOnShoot(Unit owner)
         {
             Owner = owner;
             ProjectileStats = (owner as IRangeWeapon).RangeWeapon.GetProjectileStats();
             transform.localScale *= ProjectileStats.ProjectileScale;
             ChangeCurrentColor(owner.CurrentColor);
-        }        
+        }
 
 
         protected virtual void OnEnable()
@@ -36,7 +36,8 @@ namespace Samurai
         }
         protected virtual void OnTriggerEnter(Collider other)
         {
-            if (other.TryGetComponent(out MeleeWeapon weapon) && weapon.Owner.GetType() == typeof(Player))
+            //if (other.TryGetComponent(out MeleeWeapon weapon) && weapon.Owner.GetType() == typeof(Player))
+            if (other.TryGetComponent(out MeleeWeapon weapon) && !(Owner is Enemy == weapon.Owner is Enemy))
             {
                 Destroy(this.gameObject);
             }
@@ -47,7 +48,7 @@ namespace Samurai
         }
         protected virtual void OnDestroy()
         {
-            
-        }        
+
+        }
     }
 }

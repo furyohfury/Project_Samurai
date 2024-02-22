@@ -1,5 +1,7 @@
+using DG.Tweening;
 using System.Collections;
 using UnityEngine;
+using Zenject;
 
 namespace Samurai
 {
@@ -64,11 +66,17 @@ namespace Samurai
         }
         protected void FixedUpdate()
         {
-            UnitVisuals.Movement(Target);
-            UnitPhysics.Movement(Target);
+            Movement();
         }
         #endregion
-
+        public override void Movement()
+        {
+            if (Target != Vector3.zero)
+            {
+                UnitVisuals.Movement(Target);
+                UnitPhysics.Movement(Target);
+            }            
+        }
 
         /// <summary>
         /// First method for AIManager
@@ -88,6 +96,7 @@ namespace Samurai
             else
             {
                 AIState = AIStateType.Idle;
+                Target = this.transform.position;
                 StartPoint = this.transform.position;
                 PatrollingPoints = new Vector3[0];
             }
@@ -116,7 +125,7 @@ namespace Samurai
         }
         protected void IdleAction()
         {
-            Target = this.transform.position;
+            Target = Vector3.zero;
         }
         protected void PatrollingAction()
         {
@@ -147,6 +156,7 @@ namespace Samurai
         }
         protected void AttackAction()
         {
+            transform.LookAt(new Vector3(Player.transform.position.x, this.transform.position.y, Player.transform.position.z));
             (Unit as Enemy).Attack();
         }
 
@@ -159,10 +169,13 @@ namespace Samurai
             else SpottedPlayer = PlayerIsInSpotRange;
             ActionByState();
         }
+        /// <summary>
+        /// Abstract
+        /// </summary>
         protected abstract void BattleCycle();
 
 
-        public event SimpleHandle OnAttack;
+        // public event SimpleHandle OnAttack;
 
 
         #region Gizmos

@@ -3,15 +3,18 @@ using UnityEngine;
 
 namespace Samurai
 {
+    [RequireComponent(typeof(RangeEnemyVisuals))]
+    [RequireComponent(typeof(EnemyPhysics))]
+    [RequireComponent(typeof(RangeEnemyInput))]
     public class RangeEnemy : Enemy, IRangeWeapon, IRangeAttack
     {
         [SerializeField]
         private RangeWeapon _rangeWeapon;
         public RangeWeapon RangeWeapon { get => _rangeWeapon; private set => _rangeWeapon = value; }
-        
+
         [SerializeField]
         private Transform _rangeWeaponSlot;
-        public Transform RangeWeaponSlot {get => _rangeWeaponSlot; set => _rangeWeaponSlot = value;}
+        public Transform RangeWeaponSlot { get => _rangeWeaponSlot; set => _rangeWeaponSlot = value; }
 
         [SerializeField, Range(0, 1f)]
         protected float ChanceToDropRangeWeapon = 0.5f;
@@ -22,7 +25,7 @@ namespace Samurai
         #region UnityMethods
         #endregion
 
-        protected override Bindings()
+        protected override void Bindings()
         {
             base.Bindings();
             if (RangeWeapon == null) RangeWeapon = GetComponentInChildren<RangeWeapon>();
@@ -30,7 +33,7 @@ namespace Samurai
         }
 
         public override void Attack() => RangeAttack();
-        
+
         // For IRangeAttack
         #region RangeAttack
         public void RangeAttack()
@@ -45,14 +48,12 @@ namespace Samurai
         public void EquipRangeWeapon(RangeWeapon rWeapon)
         {
             RangeWeapon = rWeapon;
-            RangeWeapon.transform.SetLocalPositionAndRotation(
-                RangeWeapon.WeaponPositionWhenPicked, Quaternion.Euler(RangeWeapon.WeaponRotationWhenPicked));
+            // RangeWeapon.transform.SetLocalPositionAndRotation(RangeWeapon.WeaponPositionWhenPicked, Quaternion.Euler(RangeWeapon.WeaponRotationWhenPicked));
 
-            (UnitVisuals as PlayerVisuals).EquipRangeWeapon(RangeWeapon);
             RangeWeapon.Equipped(this);
         }
         #endregion
-    
+
 
         #region Death
         public override void Die()

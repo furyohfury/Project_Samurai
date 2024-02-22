@@ -7,17 +7,17 @@ namespace Samurai
         [Inject]
         private readonly DefaultPlayerGunPool _pool;
 
-        public override Vector3 WeaponPositionWhenPicked => Vector3.zero;
+        public override Vector3 WeaponPositionWhenPicked => new Vector3(0.12f , -0.06f , 0.01f);
 
-        public override Vector3 WeaponRotationWhenPicked => Vector3.zero;
+        public override Vector3 WeaponRotationWhenPicked => new Vector3(0, 90, 90);
 
-        protected override void Start()
+        protected void Start()
         {
-            base.Start();
             if (_pool == null) Debug.LogError($"Pool not found by {this.GetType()} component on {gameObject}");
         }
         public override void RangeAttack()
         {
+            if (!CanShoot) return;
             Projectile proj = _pool.Pool.Get();
             proj.SetProjectileStatsOnShoot(Owner);
             proj.transform.position = this.transform.position + this.transform.forward * 0.1f;

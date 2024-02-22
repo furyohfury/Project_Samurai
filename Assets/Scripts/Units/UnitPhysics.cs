@@ -28,10 +28,7 @@ namespace Samurai
 
 
         #region Movement
-        public virtual void Movement(Vector3 direction)
-        {
-            if (!Unit.CanMove) return;
-        }
+        public abstract void Movement(Vector3 direction);
         #endregion
 
 

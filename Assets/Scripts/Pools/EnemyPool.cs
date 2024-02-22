@@ -10,12 +10,14 @@ namespace Samurai
 
         public void AddEnemyToPool(Enemy enemy)
         {
-            enemy.transform.parent = this.gameObject;
+            enemy.transform.parent = this.transform;
             EnemyList.AddLast(enemy);            
         }
         public void RemoveEnemyFromPool(Enemy enemy)
         {
+#if !UNITY_EDITOR
             enemy.transform.parent = null;
+#endif
             EnemyList.Remove(enemy);
         }
     }

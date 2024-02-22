@@ -5,11 +5,17 @@ namespace Samurai
 {
     public class MeleeEnemy : Enemy, IMeleeWeapon, IMeleeAttack
     {
+        protected override void Bindings()
+        {
+            base.Bindings();
+            MeleeWeaponBindings();
+        }
+
         // For IMeleeWeapon
         #region GetDamaged
         public override void GetDamagedByMelee(MeleeWeapon weapon)
         {
-            if (!Parried && !(this is Enemy = weapon.Owner is Enemy))
+            if (!Parried && !(this is Enemy == weapon.Owner is Enemy))
             {
                 UnitVisuals.GetDamagedByMelee();
                 ChangeHP(-weapon.Damage);
@@ -27,7 +33,7 @@ namespace Samurai
         [SerializeField]
         private float _meleeAttackCooldown = 5f;
         public float MeleeAttackCooldown { get => _meleeAttackCooldown; private set => _meleeAttackCooldown = value; }
-        public bool CanHit { get; set; } = true;        
+        public bool CanHit { get; set; } = true;
 
 
         public void MeleeAttack()
@@ -49,7 +55,6 @@ namespace Samurai
         public void InMeleeAttack(bool isInMeleeAttack)
         {
             CanMove = !isInMeleeAttack;
-            CanShoot = !isInMeleeAttack;
         }
 
         // Parry
@@ -59,9 +64,13 @@ namespace Samurai
 
         protected void MeleeWeaponBindings()
         {
-            MeleeWeapon.OnParry += () => {if (!Parried) StartCoroutine(Parry());}
+            MeleeWeapon.OnParry += Parry;
         }
-        private IEnumerator Parry()
+        public void Parry()
+        {
+            if (!Parried) StartCoroutine(ParryCoroutine());
+        }
+        private IEnumerator ParryCoroutine()
         {
             Parried = true;
             (UnitVisuals as PlayerVisuals).Parry();
@@ -69,5 +78,7 @@ namespace Samurai
             Parried = false;
         }
         #endregion
+
+        public override void Attack() => MeleeAttack();
     }
 }

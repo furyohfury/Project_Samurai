@@ -29,6 +29,9 @@ namespace Samurai
 
 
         #region Movement
+        /// <summary>
+        /// Abstract
+        /// </summary>
         public abstract void Movement();
         #endregion
 

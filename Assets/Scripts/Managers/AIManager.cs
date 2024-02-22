@@ -22,9 +22,9 @@ namespace Samurai
         {
             while (true)
             {
-                foreach (var enemy in EnemyPool.EnemyList.ToList())
+                foreach (var enemy in EnemyPool.EnemyList)
                 {
-                    (enemy.UnitInput as EnemyInput).GeneralAICycle();
+                    if (enemy != null) (enemy.UnitInput as EnemyInput).GeneralAICycle();
                 }
                 yield return new WaitForFixedUpdate();
             }

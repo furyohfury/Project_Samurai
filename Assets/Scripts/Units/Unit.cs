@@ -48,12 +48,11 @@ namespace Samurai
         public void GetDamagedByProjectile(Projectile proj)
         {
             // if ((proj.CurrentColor != this.CurrentColor) && (this.GetType() != proj.Owner.GetType()) && (this as Enemy == null || proj.Owner as Enemy == null))
-            if ((proj.CurrentColor != this.CurrentColor) && !(this is Enemy = proj.Owner is Enemy))
+            if ((proj.CurrentColor != this.CurrentColor) && !(this is Enemy == proj.Owner is Enemy))
             {
                 UnitVisuals.GetDamagedByProjectile();
 
                 ChangeHP(-proj.GetProjectileStats().Damage);
-
                 var defProj = proj as DefaultPlayerWeaponProjectile;
                 if (defProj != null) DefPlayerGunPool.Pool.Release(defProj);
                 else Destroy(proj.gameObject);
@@ -61,12 +60,12 @@ namespace Samurai
         }
 
         /// <summary>
-        /// Rewrite for parrying units
+        /// Rewrite for parrying units w/out base
         /// </summary>
         /// <param name="weapon"></param>
         public virtual void GetDamagedByMelee(MeleeWeapon weapon)
         {
-            if (!(this is Enemy = weapon.Owner is Enemy))
+            if (!(this is Enemy == weapon.Owner is Enemy))
             {
                 UnitVisuals.GetDamagedByMelee();
                 ChangeHP(-weapon.Damage);
@@ -82,7 +81,7 @@ namespace Samurai
 
             if (UnitStats.HP <= 0)
             {
-                UnitVisuals.Die();
+                Die();
             }
         }
         #endregion
@@ -99,11 +98,15 @@ namespace Samurai
         /// <summary>
         /// Gets processed by managers (or its shit lol)
         /// </summary>
-        protected virtual IEnumerator DieAwait()
+        protected IEnumerator DieAwait()
         {
             yield return new WaitUntil(() => UnitVisuals.DeathAnimationEnded);
-            // OnUnitDied?.Invoke(this);
+            DiscardUnit();
         }
+        /// <summary>
+        /// Abstract
+        /// </summary>
+        protected abstract void DiscardUnit();
         #endregion
 
         public event SimpleHandle OnUnitHealthChanged;

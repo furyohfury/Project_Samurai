@@ -1,14 +1,16 @@
-﻿using System.Collections;
+﻿using MoreMountains.Tools;
+using System.Collections;
 using UnityEngine;
+using Zenject;
 
 namespace Samurai
 {
+    [RequireComponent(typeof(MMHealthBar))]
     public abstract class Enemy : Unit
     {
         [Inject]
         private EnemyPool EnemyPool;
 
-        [SerializeField]
         protected MMHealthBar HPBar;
 
         #region UnityMethods
@@ -26,12 +28,12 @@ namespace Samurai
         protected override void Bindings()
         {
             base.Bindings();
-            HPBar ??= GetComponent<MMHealthBar>();
+            HPBar = GetComponent<MMHealthBar>();
             HPBar.UpdateBar(UnitStats.HP, 0f, UnitStats.MaxHP, true);
         }
 
         #region GetDamaged
-        protected virtual void ChangeHP(int delta)
+        protected override void ChangeHP(int delta)
         {
             base.ChangeHP(delta);
             HPBar.UpdateBar(UnitStats.HP + delta, 0f, UnitStats.MaxHP, true);
@@ -39,13 +41,15 @@ namespace Samurai
         #endregion
         
         #region Death
-        protected override IEnumerator DieAwait()
+        protected override void DiscardUnit()
         {
-            base.DieAwait();
             Destroy(this.gameObject);
         }
         #endregion
-        
+
+        /// <summary>
+        /// Abstract
+        /// </summary>
         public abstract void Attack();        
     }
 }

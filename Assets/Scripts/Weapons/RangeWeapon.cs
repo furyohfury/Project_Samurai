@@ -16,7 +16,8 @@ namespace Samurai
         [SerializeField]
         protected float PlayerShootingDelay;
 
-        public bool CanShoot { get; set; } = true; // todo incapsulation
+        private bool _canShoot = true;
+        public bool CanShoot { get => _canShoot; set => _canShoot = value; } // todo incapsulation
 
         [SerializeField]
         protected GameObject WeaponProjectilePrefab;
@@ -72,10 +73,11 @@ namespace Samurai
             if (Owner is RangeEnemy) (Owner as RangeEnemy).OnDroppedWeapon -= Dropped;
         }
         #endregion
-        public virtual void RangeAttack()
-        {
-            if (!CanShoot) return;
-        }
+
+        /// <summary>
+        /// Abstract
+        /// </summary>
+        public abstract void RangeAttack();
 
         public virtual void Equipped(Unit owner)
         {            
@@ -83,8 +85,11 @@ namespace Samurai
             if (owner == null) return;
             if (owner.GetType() == typeof(Player)) ProjectileStats = PlayerProjectileStats;
             else ProjectileStats = EnemyProjectileStats;
+            transform.SetLocalPositionAndRotation(WeaponPositionWhenPicked, Quaternion.Euler(WeaponRotationWhenPicked));
         }
-
+        /// <summary>
+        /// Must be last in RangeAttack()
+        /// </summary>
         protected virtual void CheckIfEmpty()
         {
             if (Owner as Player != null)

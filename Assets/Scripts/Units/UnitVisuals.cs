@@ -49,7 +49,11 @@ namespace Samurai
                 UnitAnimator.SetFloat("FMove", animVector.z);
                 if (!StepsFeedback.IsPlaying) StepsFeedback?.PlayFeedbacks();
             }
-            else StepsFeedback?.StopFeedbacks();
+            else
+            {
+                UnitAnimator.SetBool("Moving", false);
+                StepsFeedback?.StopFeedbacks();
+            }
         }
         #endregion
 

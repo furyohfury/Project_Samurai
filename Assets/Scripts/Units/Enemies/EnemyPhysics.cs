@@ -1,19 +1,22 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace Samurai
 {
+    [RequireComponent(typeof(CapsuleCollider))]
+    [RequireComponent(typeof(NavMeshAgent))]
     public class EnemyPhysics : UnitPhysics
     {
         protected CapsuleCollider EnemyHitbox;
         protected NavMeshAgent Agent;
 
         #region UnityMethods
-        protected override OnEnable()
+        protected void OnEnable()
         {
             EnemyHitbox.enabled = true;
         }
-        protected override OnDisable()
+        protected void OnDisable()
         {
             EnemyHitbox.enabled = false;
         }
@@ -22,14 +25,17 @@ namespace Samurai
 
         protected override void Bindings()
         {
+            base.Bindings();
             EnemyHitbox = GetComponent<CapsuleCollider>();
+            Agent = GetComponent<NavMeshAgent>();
             Agent.speed = Unit.GetUnitStats().MoveSpeed;
         }
 
         #region Movement        
-        protected override void Movement(Vector3 direction)
+        public override void Movement(Vector3 direction)
         {
-            if (CanMove) Agent.destination = direction;
+            if (!Unit.CanMove) return;
+            Agent.destination = direction;
         }
         #endregion
     }

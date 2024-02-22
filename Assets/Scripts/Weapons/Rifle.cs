@@ -16,13 +16,15 @@ namespace Samurai
         [SerializeField]
         private MMF_Player _burstShootFeedback;
 
-        public override Vector3 WeaponPositionWhenPicked => new Vector3(0, 0, 0.03f);
+        // public override Vector3 WeaponPositionWhenPicked => new Vector3(0.01, 0, 0.03f);
+        public override Vector3 WeaponPositionWhenPicked => new Vector3(0.1f , 0, 0.03f);
 
-        public override Vector3 WeaponRotationWhenPicked => new Vector3(0, 60, 180);
+        // public override Vector3 WeaponRotationWhenPicked => new Vector3(0, 60, 180);
+        public override Vector3 WeaponRotationWhenPicked => new Vector3(-11, 90, 90);
 
         public override void RangeAttack()
         {
-            base.RangeAttack();
+            if (!CanShoot) return;
             if (Owner is Player) RangeAttackSingle();
             else if (Owner is Enemy) RangeAttackBurst();
         }
@@ -34,17 +36,17 @@ namespace Samurai
             proj.transform.position = this.transform.position + this.transform.forward * 0.1f;
             proj.transform.eulerAngles = new Vector3(0, Owner.transform.eulerAngles.y, 0);
 
-            CheckIfEmpty();
+            
             ShootingFeedbacks?.PlayFeedbacks();
             SetShootingDelay();
+            CheckIfEmpty();
         }
 
         private void RangeAttackBurst()
         {
-            StartCoroutine(ShootBurstCor());
-            CheckIfEmpty();
-            _burstShootFeedback?.PlayFeedbacks();
-            SetShootingDelay();
+            if (!CanShoot) return;
+            StartCoroutine(ShootBurstCor());            
+            _burstShootFeedback?.PlayFeedbacks();            
         }
         private IEnumerator ShootBurstCor()
         {
@@ -58,6 +60,7 @@ namespace Samurai
                 yield return new WaitForSeconds(_burstDelayBetweenShots);
             }
             SetShootingDelay();
+            CheckIfEmpty();
         }
     }
 }

@@ -3,6 +3,9 @@ using System.Collections;
 using UnityEngine;
 namespace Samurai
 {
+    [RequireComponent(typeof(PlayerVisuals))]
+    [RequireComponent(typeof(PlayerPhysics))]
+    [RequireComponent(typeof(PlayerInput))]
     public class Player : Unit, IRangeAttack, IMeleeAttack, IRangeWeapon, IMeleeWeapon
     {
         [SerializeField]
@@ -14,25 +17,30 @@ namespace Samurai
         public bool CanShoot { get; set; } = true;
         [SerializeField]
         private Transform _rangeWeaponSlot;
-        public Transform RangeWeaponSlot {get => _rangeWeaponSlot; set => _rangeWeaponSlot = value;}
-
-        [SerializeField, Space]
-        private GameObject GameOverScreen;
+        public Transform RangeWeaponSlot { get => _rangeWeaponSlot; set => _rangeWeaponSlot = value; }
 
         #region UnityMethods
+        private void Start()
+        {
+            PlayerInitialization();
+        }
         #endregion
 
-        protected override void Bindings()
+        private void PlayerInitialization()
         {
-            if (RangeWeapon == null) RangeWeapon = GetComponentInChildren<RangeWeapon>();
+            if (RangeWeapon == null)
+            {
+                RangeWeapon = GetComponentInChildren<RangeWeapon>();
+            }
             EquipRangeWeapon(RangeWeapon);
+            MeleeWeaponBindings();
         }
 
         // For IMeleeWeapon
         #region GetDamaged
         public override void GetDamagedByMelee(MeleeWeapon weapon)
         {
-            if (!Parried && !(this is Enemy = weapon.Owner is Enemy))
+            if (!Parried && weapon.Owner is Enemy)
             {
                 UnitVisuals.GetDamagedByMelee();
                 ChangeHP(-weapon.Damage);
@@ -56,8 +64,7 @@ namespace Samurai
         public void EquipRangeWeapon(RangeWeapon rWeapon)
         {
             RangeWeapon = rWeapon;
-            RangeWeapon.transform.SetLocalPositionAndRotation(
-                RangeWeapon.WeaponPositionWhenPicked, Quaternion.Euler(RangeWeapon.WeaponRotationWhenPicked));
+            // RangeWeapon.transform.SetLocalPositionAndRotation(RangeWeapon.WeaponPositionWhenPicked, Quaternion.Euler(RangeWeapon.WeaponRotationWhenPicked));
 
             (UnitVisuals as PlayerVisuals).EquipRangeWeapon(RangeWeapon);
             RangeWeapon.Equipped(this);
@@ -80,37 +87,23 @@ namespace Samurai
         }
         public void SetPlayerPickableWeapon(RangeWeapon rweapon) => PickableWeapon = rweapon;
 
-        public void EquipRangeWeapon(RangeWeapon rWeapon)
-        {
-            RangeWeapon = rWeapon;
-            RangeWeapon.transform.SetLocalPositionAndRotation(
-                RangeWeapon.WeaponPositionWhenPicked, Quaternion.Euler(RangeWeapon.WeaponRotationWhenPicked));
-
-            (UnitVisuals as PlayerVisuals).EquipRangeWeapon(RangeWeapon);
-            RangeWeapon.Equipped(this);
-
-            // For UI todo switch to rangeweapon w/out enum
-            if (Enum.TryParse(RangeWeapon.GetType().Name, true, out RangeWeaponEnum weapon))
-            {
-                OnPlayerChangedWeapon?.Invoke(weapon);
-            }
-            else Debug.LogWarning($"Player equipped weapon not in enum {typeof(RangeWeaponEnum)}");
-        }
-
         public void EquipPickableRangeWeapon()
         {
             if (PickableWeapon == null) return;
 
+            if (RangeWeapon != _defaultPlayerWeapon) Destroy(RangeWeapon.gameObject);
+
             _defaultPlayerWeapon.gameObject.SetActive(false);
+
+            PickableWeapon.transform.parent = RangeWeaponSlot;
             EquipRangeWeapon(PickableWeapon);
             // Throw away empty gun
-            RangeWeapon.OnBulletsEnded += UnequipPickableWeapon;
-
-            RangeWeapon.transform.parent = RangeWeaponSlot;
+            RangeWeapon.OnBulletsEnded += UnequipPickableWeaponToDefault;
+            
             PickableWeapon = null;
         }
 
-        public void UnequipPickableWeapon()
+        public void UnequipPickableWeaponToDefault()
         {
             Destroy(RangeWeapon.gameObject);
             _defaultPlayerWeapon.gameObject.SetActive(true);
@@ -127,7 +120,7 @@ namespace Samurai
         [SerializeField]
         private float _meleeAttackCooldown = 5f;
         public float MeleeAttackCooldown { get => _meleeAttackCooldown; private set => _meleeAttackCooldown = value; }
-        public bool CanHit { get; set; } = true;        
+        public bool CanHit { get; set; } = true;
 
 
         public void MeleeAttack()
@@ -158,11 +151,15 @@ namespace Samurai
         private float _parryInvulTime = 2f;
         public bool Parried { get; set; } = false;
 
-        protected void MeleeWeaponBindings()
+        private void MeleeWeaponBindings()
         {
-            MeleeWeapon.OnParry += () => {if (!Parried) StartCoroutine(Parry());}
+            MeleeWeapon.OnParry += Parry;
         }
-        private IEnumerator Parry()
+        private void Parry()
+        {
+            if (!Parried) StartCoroutine(ParryCoroutine());
+        }
+        private IEnumerator ParryCoroutine()
         {
             Parried = true;
             (UnitVisuals as PlayerVisuals).Parry();
@@ -172,14 +169,12 @@ namespace Samurai
         #endregion
 
         #region Death
-        protected override IEnumerator DieAwait()
+        protected override void DiscardUnit()
         {
-            base.DieAwait();
-            if (GameOverScreen == null) Debug.LogError("GameOverScren ot found");
-            else GameOverScreen.SetActive(true);
+            OnPlayerDied?.Invoke();
         }
         #endregion
-        
+
         public event SimpleHandle OnPlayerDied;
         public event RangeWeaponChangeHandle OnPlayerChangedWeapon;
         public event SimpleHandle OnPlayerShot;
