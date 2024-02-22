@@ -22,22 +22,32 @@ namespace Samurai
 
         public override void RangeAttack()
         {
+            base.RangeAttack();
+            if (Owner is Player) RangeAttackSingle();
+            else if (Owner is Enemy) RangeAttackBurst();
+        }
+
+        private void RangeAttackSingle()
+        {
             var proj = Instantiate(WeaponProjectilePrefab);
             proj.GetComponent<Projectile>().SetProjectileStatsOnShoot(Owner);
             proj.transform.position = this.transform.position + this.transform.forward * 0.1f;
             proj.transform.eulerAngles = new Vector3(0, Owner.transform.eulerAngles.y, 0);
+
             CheckIfEmpty();
             ShootingFeedbacks?.PlayFeedbacks();
             SetShootingDelay();
         }
-        public void ShootBurst()
+
+        private void RangeAttackBurst()
         {
             StartCoroutine(ShootBurstCor());
+            CheckIfEmpty();
+            _burstShootFeedback?.PlayFeedbacks();
+            SetShootingDelay();
         }
         private IEnumerator ShootBurstCor()
-        {            
-            SetShootingDelay();
-            _burstShootFeedback?.PlayFeedbacks();
+        {
             for (var i = 0; i < _burstNumberOfShells; i++)
             {
                 var proj = Instantiate(WeaponProjectilePrefab);
@@ -48,7 +58,6 @@ namespace Samurai
                 yield return new WaitForSeconds(_burstDelayBetweenShots);
             }
             SetShootingDelay();
-
         }
     }
 }

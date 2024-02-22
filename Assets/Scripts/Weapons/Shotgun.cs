@@ -14,6 +14,7 @@ namespace Samurai
         
         public override void RangeAttack()
         {
+            base.Rangeattack();
             for (var i = 0; i < _numberOfShells; i++)
             {
                 var proj = Instantiate(WeaponProjectilePrefab);

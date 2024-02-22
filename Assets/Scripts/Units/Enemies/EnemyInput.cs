@@ -57,11 +57,7 @@ namespace Samurai
 
         protected Coroutine PatrollingDelayCoroutine;        
         
-        #region UnityMethods        
-        protected virtual void Awake()
-        {
-            Agent.speed = Unit.GetUnitStats().MoveSpeed;
-        }
+        #region UnityMethods
         protected void FixedUpdate()
         {
             UnitVisuals.Movement(Target);

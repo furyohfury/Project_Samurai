@@ -67,16 +67,15 @@ namespace Samurai
             Equipped(GetComponentInParent<Unit>());
             if (Owner is RangeEnemy) (Owner as RangeEnemy).OnDroppedWeapon += Dropped;
         }
-        protected virtual void Start()
-        {
-
-        }
         protected virtual void OnDisable()
         {
             if (Owner is RangeEnemy) (Owner as RangeEnemy).OnDroppedWeapon -= Dropped;
         }
         #endregion
-        public abstract void RangeAttack();
+        public virtual void RangeAttack()
+        {
+            if (!CanShoot) return;
+        }
 
         public virtual void Equipped(Unit owner)
         {            

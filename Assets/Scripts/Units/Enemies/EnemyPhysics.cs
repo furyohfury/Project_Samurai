@@ -6,6 +6,7 @@ namespace Samurai
     public class EnemyPhysics : UnitPhysics
     {
         protected CapsuleCollider EnemyHitbox;
+        protected NavMeshAgent Agent;
 
         #region UnityMethods
         protected override OnEnable()
@@ -22,10 +23,10 @@ namespace Samurai
         protected override void Bindings()
         {
             EnemyHitbox = GetComponent<CapsuleCollider>();
+            Agent.speed = Unit.GetUnitStats().MoveSpeed;
         }
 
-        #region Movement
-        protected NavMeshAgent Agent;
+        #region Movement        
         protected override void Movement(Vector3 direction)
         {
             if (CanMove) Agent.destination = direction;

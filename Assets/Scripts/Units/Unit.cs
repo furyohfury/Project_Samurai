@@ -89,7 +89,7 @@ namespace Samurai
 
 
         #region Death
-        public void Die()
+        public virtual void Die()
         {
             UnitPhysics.enabled = false;
             UnitInput.enabled = false;
