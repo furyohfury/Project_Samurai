@@ -3,8 +3,8 @@ using UnityEngine;
 
 namespace Samurai
 {
-    public class Enemy : Unit
+    public abstract class Enemy : Unit
     {
-        
+        public abstract void Attack();
     }
 }

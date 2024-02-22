@@ -13,14 +13,17 @@ namespace Samurai
         public RangeWeapon RangeWeapon { get => _rangeWeapon; private set => _rangeWeapon = value; }
         public bool CanShoot { get; set; } = true;
         [SerializeField]
-        private Transform RangeWeaponSlot;
+        private Transform _rangeWeaponSlot;
+        public Transform RangeWeaponSlot {get => _rangeWeaponSlot; set => _rangeWeaponSlot = value;}
 
         #region UnityMethods
-        protected void Start()
-        {
-            EquipRangeWeapon(_defaultPlayerWeapon);
-        }
         #endregion
+
+        protected override void Bindings()
+        {
+            if (RangeWeapon == null) RangeWeapon = GetComponentInChildren<RangeWeapon>();
+            EquipRangeWeapon(RangeWeapon);
+        }
 
         // For IMeleeWeapon
         #region GetDamaged

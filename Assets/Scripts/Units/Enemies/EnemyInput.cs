@@ -3,14 +3,14 @@ using UnityEngine;
 
 namespace Samurai
 {
-    public class EnemyInput : UnitInput
+    public abstract class EnemyInput : UnitInput
     {
         [Inject]
         protected Player Player;       
 
         // Spotting        
         protected bool SpottedPlayer = false;
-        [SerializeField]
+        [SerializeField, Space]
         protected float PlayerSpotRange;
         protected bool PlayerIsInSpotRange
         {
@@ -47,7 +47,7 @@ namespace Samurai
 
         protected Coroutine PatrollingDelayCoroutine;
 
-        [SerializeField]
+        [SerializeField, Space]
         protected AIStateType AIState = AIStateType.Idle;
         [SerializeField]
         protected float LogicUpdateTime;
@@ -147,7 +147,7 @@ namespace Samurai
         }
         protected void AttackAction()
         {
-            OnAttack?.Invoke();
+            (Unit as Enemy).Attack();
         }
 
         /// <summary>

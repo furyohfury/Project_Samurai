@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Samurai
 {
-    public class EnemyVisuals : UnitVisuals
+    public abstract class EnemyVisuals : UnitVisuals
     {
 
     }

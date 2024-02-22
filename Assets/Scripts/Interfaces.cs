@@ -46,6 +46,8 @@ namespace Samurai
     public interface IRangeWeapon
     {
         RangeWeapon RangeWeapon { get; }
+        bool CanShoot {get;}
+        Transform RangeWeaponSlot {get;}
     }
     public interface IMeleeWeapon
     {
