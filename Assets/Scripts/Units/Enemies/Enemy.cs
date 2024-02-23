@@ -15,6 +15,7 @@ namespace Samurai
         #region UnityMethods
         protected void OnEnable()
         {
+            HPBar.enabled = true;
             EnemyPool.AddEnemyToPool(this);
         }
         protected void OnDisable()

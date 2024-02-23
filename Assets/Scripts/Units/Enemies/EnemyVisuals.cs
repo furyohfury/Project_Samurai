@@ -5,6 +5,17 @@ namespace Samurai
 {
     public abstract class EnemyVisuals : UnitVisuals
     {
+        #region UnityMethods
+        protected void OnEnable()
+        {
+            UnitAnimator.enabled = true;
+        }
+        protected void OnDisable()
+        {
+            UnitAnimator.enabled = false;
+        }
+        #endregion
+
         #region Movement
         public override void Movement(Vector3 direction)
         {

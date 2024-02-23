@@ -1,5 +1,6 @@
 using DG.Tweening;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using Zenject;
@@ -53,17 +54,25 @@ namespace Samurai
         [SerializeField]
         protected float PatrollingIdleRandomStep;
         [SerializeField]
+        protected Transform[] PatrollingObjectsPoints;
         protected Vector3[] PatrollingPoints;
 
         protected Vector3 StartPoint;
         protected int CurrentPatrollingPointIndex;
-        protected float ArrivalDistance;
+        [SerializeField]
+        protected float ArrivalDistance = 0.2f;
 
         protected Coroutine PatrollingDelayCoroutine;
 
         #region UnityMethods
         protected void Start()
         {
+            List<Vector3> pop = new();
+            for (var i = 0; i < PatrollingObjectsPoints.Length; i++)
+            {
+                pop.Add(PatrollingObjectsPoints[i].transform.position);
+            }
+            PatrollingPoints = pop.ToArray();
             StartingIdlePatrolLogic();
         }
         protected void FixedUpdate()
@@ -79,7 +88,7 @@ namespace Samurai
         }
 
         /// <summary>
-        /// First method for AIManager
+        /// First method to run
         /// </summary>
         public void StartingIdlePatrolLogic()
         {
@@ -133,7 +142,7 @@ namespace Samurai
             point.y = this.transform.position.y;
             var distance = (this.transform.position - point).sqrMagnitude;
 
-            if (distance < ArrivalDistance)
+            if (distance < ArrivalDistance * ArrivalDistance)
             {
                 CurrentPatrollingPointIndex = (CurrentPatrollingPointIndex + 1) % PatrollingPoints.Length;
                 if (PatrollingDelayCoroutine != null) Debug.LogWarning("Patrolling points are too close. Intersecting arrival distance");

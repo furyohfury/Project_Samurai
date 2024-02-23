@@ -26,4 +26,10 @@ namespace Samurai
     {
 
     }
+    public enum ArenaEndAction
+    {
+        OpenDoor = 0,
+        SwitchScene = 1,
+        None = 10
+    }
 }

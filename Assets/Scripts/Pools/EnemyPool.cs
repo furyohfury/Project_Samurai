@@ -7,12 +7,13 @@ namespace Samurai
     public class EnemyPool : MonoBehaviour
     {
         [SerializeField]
-        public LinkedList<Enemy> EnemyList {get; private set; } = new(); 
+        public List<Enemy> EnemyList;
 
         public void AddEnemyToPool(Enemy enemy)
         {
+            if (EnemyList == null) EnemyList = new();
             enemy.transform.parent = this.transform;
-            EnemyList.AddLast(enemy);            
+            EnemyList.Add(enemy);            
         }
         public void RemoveEnemyFromPool(Enemy enemy)
         {
@@ -20,6 +21,9 @@ namespace Samurai
             enemy.transform.parent = null;
 #endif
             EnemyList.Remove(enemy);
+            if (EnemyList.Count <= 0) OnAllEnemiesDied?.Invoke();
         }
+
+        public event SimpleHandle OnAllEnemiesDied;
     }
 }
