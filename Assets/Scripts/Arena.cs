@@ -12,7 +12,7 @@ namespace Samurai
     {
         [SerializeField]
         private Transform _floorParent;
-        [SerializeField]
+        // [SerializeField]
         private GameObject[] _floorArray;
 
         [SerializeField, Space]
@@ -46,6 +46,7 @@ namespace Samurai
         {
             FloorInit();
             EnemyPoolInit();
+            FinishedArenaInit();
         }
         private void OnEnable()
         {
@@ -72,9 +73,9 @@ namespace Samurai
         {
             foreach (var go in _floorArray)
             {
-                if (go.layer != 1 << 6)
+                if (go.layer != 6)
                 {
-                    go.layer = 1 << 6;
+                    go.layer = 6;
                     Debug.LogWarning($"Floor {gameObject.name} had no floor layer. It's been fixed for this session but needs to be done after that");
                 }
             }
@@ -129,8 +130,22 @@ namespace Samurai
 
 
         #region Finishing
+        private void FinishedArenaInit()
+        {
+            if (_arenaEndActions.Contains(ArenaEndAction.OpenDoor) && (_exitDoor == null || _exitDoorEndLocation == null))
+            {
+                Debug.LogError($"Arena {gameObject.name} must open door but doesnt have one");
+            }
+
+            if (_arenaEndActions.Contains(ArenaEndAction.SwitchScene) && _switchSceneFeedback == null)
+            {
+                Debug.LogError($"Arena {gameObject.name} must switch scene but doesnt have corresponding feedback");
+            }
+
+        }
         private void FinishedArena()
         {
+            if (_arenaStartedFeedback.IsPlaying) _arenaStartedFeedback?.StopFeedbacks();
             _arenaEndedFeedback?.PlayFeedbacks();
 
             foreach (var arenaEndAction in _arenaEndActions)

@@ -567,7 +567,7 @@ MonoBehaviour:
         RemapRangeFalloff: {x: 0, y: 1}
         Owner: {fileID: 6799667699689623394}
         DebugActive: 0
-        Sfx: {fileID: 8300000, guid: fa2c895540e967449b09e6d61065c1dd, type: 3}
+        Sfx: {fileID: 8300000, guid: 2916edbce226865428d9a93a51363eb0, type: 3}
         RandomSfx: []
         TestPlayButton:
           ButtonText: Debug Play Sound
@@ -831,6 +831,7 @@ MonoBehaviour:
     ProjectileSpeed: 5
     ProjectileScale: 1
   _animController: {fileID: 9100000, guid: fe36962ced391a54e811a68ee110eddb, type: 2}
+  _mesh: []
   ShootingFeedbacks: {fileID: 6799667699689623394}
   _burstNumberOfShells: 5
   _burstShellAngleSpread: 5

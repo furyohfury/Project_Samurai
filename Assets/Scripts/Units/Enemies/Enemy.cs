@@ -7,7 +7,6 @@ namespace Samurai
 {
     public abstract class Enemy : Unit
     {
-        [Inject]
         private EnemyPool EnemyPool;
 
         protected MMHealthBar HPBar;
@@ -16,7 +15,6 @@ namespace Samurai
         protected void OnEnable()
         {
             HPBar.enabled = true;
-            EnemyPool.AddEnemyToPool(this);
         }
         protected void OnDisable()
         {
@@ -33,6 +31,9 @@ namespace Samurai
                 HPBar = hpbar;
             }
             else Debug.LogError($"No hpbar on {gameObject.name}");
+
+            EnemyPool = GetComponentInParent<EnemyPool>();
+            if (EnemyPool == null) Debug.LogError($"Enemy {gameObject.name} didnt find its EnemyPool");
         }
 
         #region GetDamaged
@@ -42,7 +43,7 @@ namespace Samurai
             HPBar.UpdateBar(UnitStats.HP + delta, 0f, UnitStats.MaxHP, true);
         }
         #endregion
-        
+
         #region Death
         protected override void DiscardUnit()
         {
@@ -53,6 +54,6 @@ namespace Samurai
         /// <summary>
         /// Abstract
         /// </summary>
-        public abstract void Attack();        
+        public abstract void Attack();
     }
 }

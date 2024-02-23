@@ -10,6 +10,7 @@ namespace Samurai
 
         private void Awake()
         {
+            _collider = GetComponent<BoxCollider>();
             _collider.isTrigger = true;
         }
         private void OnTriggerEnter(Collider other)

@@ -10,10 +10,13 @@ namespace Samurai
 {
     public class AIManager : MonoBehaviour
     {
-        [Inject]
+        [SerializeField]
         private EnemyPool EnemyPool;
 
-
+        private void Awake()
+        {
+            if (EnemyPool == null) Debug.LogError($"AIManager {gameObject.name} doesnt have an EnemyPool");
+        }
         private void Start()
         {
             StartCoroutine(AILogicManagement());

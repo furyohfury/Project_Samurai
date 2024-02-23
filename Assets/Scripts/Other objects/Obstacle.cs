@@ -2,7 +2,6 @@ using UnityEngine;
 using Zenject;
 namespace Samurai
 {
-    [RequireComponent(typeof(Rigidbody))]
     public class Obstacle : MonoBehaviour
     {
         [Inject]

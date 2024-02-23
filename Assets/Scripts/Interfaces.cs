@@ -12,7 +12,7 @@ namespace Samurai
         MeleeWeapon MeleeWeapon { get;}
         void MeleeAttack();
     }
-    public interface IInputRange
+    /* public interface IInputRange
     {
         bool CanShoot { get;}
         void OnShootAnimationStarted_UnityEvent();
@@ -29,11 +29,11 @@ namespace Samurai
 
         void OnMeleeAttackSlashAnimationStarted_UnityEvent();
         void OnMeleeAttackSlashAnimationEnded_UnityEvent();
-    }
+    } 
     public interface IAttack
     {
         void Attack();
-    }
+    } */
 
     public interface IRangeAttack
     {
