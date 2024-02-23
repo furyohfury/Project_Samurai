@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace Samurai
 {
+    [RequireComponent(typeof(MeleeEnemyVisuals))]
+    [RequireComponent(typeof(MeleeEnemyInput))]
+    [RequireComponent(typeof(EnemyPhysics))]
     public class MeleeEnemy : Enemy, IMeleeWeapon, IMeleeAttack
     {
         protected override void Bindings()
@@ -73,7 +76,6 @@ namespace Samurai
         private IEnumerator ParryCoroutine()
         {
             Parried = true;
-            (UnitVisuals as PlayerVisuals).Parry();
             yield return new WaitForSeconds(_parryInvulTime);
             Parried = false;
         }

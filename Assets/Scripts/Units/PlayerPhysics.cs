@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Zenject;
@@ -24,7 +25,9 @@ namespace Samurai
         {
             base.OnTriggerEnter(other);
             EquipPickableRangeWeapon(other);
+            PickUpHealthPack(other);
         }
+
         protected void OnDisable()
         {
             _charController.enabled = false;
@@ -56,6 +59,17 @@ namespace Samurai
                 this.transform.LookAt(cursorPosition);
             }
 
+        }
+
+        // PlayerOnly
+        private void PickUpHealthPack(Collider other)
+        {
+            if (other.TryGetComponent(out HealthPack hpack))
+            {
+                (Unit as IHeal).Heal(hpack.Health);
+                (UnitVisuals as IHeal).Heal(hpack.Health);
+                Destroy(hpack.gameObject);
+            }
         }
 
         // Player only cuz CharacterController

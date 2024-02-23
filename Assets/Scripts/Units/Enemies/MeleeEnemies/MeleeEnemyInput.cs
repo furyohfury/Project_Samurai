@@ -11,16 +11,14 @@ namespace Samurai
         private float _fleeTimeAfterParried = 5f;
         private bool _parried;
 
-        private MeleeWeapon MeleeWeapon;
-
         #region UnityMethods
         private void OnEnable()
         {
-            MeleeWeapon.OnParry += Parried;
+            (Unit as IMeleeWeapon).MeleeWeapon.OnParry += Parried;
         }
         private void OnDisable()
         {
-            MeleeWeapon.OnParry -= Parried;
+            (Unit as IMeleeWeapon).MeleeWeapon.OnParry -= Parried;
         }
         #endregion
 

@@ -22,7 +22,9 @@ namespace Samurai
         public Unit Owner;
 
         [SerializeField, Space]
-        private MMF_Player _meleeAttackFeedback;
+        private MMF_Player _meleeAttackStartFeedback;
+        [SerializeField]
+        private MMF_Player _meleeAttackHitFeedback;
         [SerializeField]
         private MMF_Player _parryFeedback;
 
@@ -39,16 +41,13 @@ namespace Samurai
 
         private void OnTriggerEnter(Collider other)
         {
-            if (other.TryGetComponent(out MeleeWeapon mw) && 
-                (this.GetType() != mw.Owner.GetType()) 
-                    && (Owner as Enemy == null || mw.Owner as Enemy == null))
+            if (other.TryGetComponent(out MeleeWeapon mw) && !(Owner is Enemy == mw.Owner is Enemy) && !(Owner as IMeleeWeapon).Parried)
             {
-                Parrying = true;
                 _parryFeedback?.PlayFeedbacks();
                 OnParry?.Invoke();
             }
         }        
-        private void OnTriggerExit(Collider other)
+        /* private void OnTriggerExit(Collider other)
         {
             if (Parrying && other.TryGetComponent(out MeleeWeapon mw) 
                     && (this.GetType() != mw.Owner.GetType()) 
@@ -56,16 +55,25 @@ namespace Samurai
             {
                 Parrying = false;
             }
-        }
+        } */
         #endregion
 
 
         public void MeleeAttack()
         {
-            _meleeAttackFeedback?.PlayFeedbacks();
+            
         }
 
-        public void EnableHitbox(bool v) => _hitbox.enabled = v;
+        public void EnableHitbox(bool isEnabled)
+        {
+            if (isEnabled) _meleeAttackHitFeedback?.PlayFeedbacks();
+            _hitbox.enabled = isEnabled;
+        }
+
+        public void ApplyBuff(int damage)
+        {
+            Damage += damage;
+        }
 
         public event SimpleHandle OnParry;
     }

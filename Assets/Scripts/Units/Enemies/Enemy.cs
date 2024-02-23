@@ -5,7 +5,6 @@ using Zenject;
 
 namespace Samurai
 {
-    [RequireComponent(typeof(MMHealthBar))]
     public abstract class Enemy : Unit
     {
         [Inject]
@@ -28,8 +27,11 @@ namespace Samurai
         protected override void Bindings()
         {
             base.Bindings();
-            HPBar = GetComponent<MMHealthBar>();
-            HPBar.UpdateBar(UnitStats.HP, 0f, UnitStats.MaxHP, true);
+            if (TryGetComponent(out MMHealthBar hpbar))
+            {
+                HPBar = hpbar;
+            }
+            else Debug.LogError($"No hpbar on {gameObject.name}");
         }
 
         #region GetDamaged

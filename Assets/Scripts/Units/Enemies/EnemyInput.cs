@@ -1,14 +1,16 @@
 using DG.Tweening;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.AI;
 using Zenject;
 
 namespace Samurai
 {
+    [RequireComponent(typeof(NavMeshAgent))]
     public abstract class EnemyInput : UnitInput
     {
         [Inject]
-        protected Player Player;     
+        protected Player Player;
 
         [SerializeField]
         protected AIStateType AIState = AIStateType.Idle;
@@ -18,7 +20,7 @@ namespace Samurai
         /// <summary>
         /// Main property for this component to set
         /// </summary>
-        public Vector3 Target { get; protected set; }  
+        public Vector3 Target { get; protected set; }
 
         // Spotting        
         protected bool SpottedPlayer = false;
@@ -52,13 +54,13 @@ namespace Samurai
         protected float PatrollingIdleRandomStep;
         [SerializeField]
         protected Vector3[] PatrollingPoints;
-               
+
         protected Vector3 StartPoint;
         protected int CurrentPatrollingPointIndex;
         protected float ArrivalDistance;
 
-        protected Coroutine PatrollingDelayCoroutine;        
-        
+        protected Coroutine PatrollingDelayCoroutine;
+
         #region UnityMethods
         protected void Start()
         {
@@ -71,11 +73,9 @@ namespace Samurai
         #endregion
         public override void Movement()
         {
-            if (Target != Vector3.zero)
-            {
-                UnitVisuals.Movement(Target);
-                UnitPhysics.Movement(Target);
-            }            
+
+            UnitVisuals.Movement(Target);
+            UnitPhysics.Movement(Target);
         }
 
         /// <summary>
@@ -101,7 +101,7 @@ namespace Samurai
                 PatrollingPoints = new Vector3[0];
             }
         }
-        
+
         protected virtual void ActionByState()
         {
             switch (AIState)
@@ -157,6 +157,7 @@ namespace Samurai
         protected void AttackAction()
         {
             transform.LookAt(new Vector3(Player.transform.position.x, this.transform.position.y, Player.transform.position.z));
+            Target = Vector3.zero;
             (Unit as Enemy).Attack();
         }
 

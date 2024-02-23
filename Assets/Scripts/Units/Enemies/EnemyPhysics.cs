@@ -15,10 +15,12 @@ namespace Samurai
         protected void OnEnable()
         {
             EnemyHitbox.enabled = true;
+            Agent.enabled = true;
         }
         protected void OnDisable()
         {
             EnemyHitbox.enabled = false;
+            Agent.enabled = false;
         }
         #endregion
 
@@ -35,7 +37,8 @@ namespace Samurai
         public override void Movement(Vector3 direction)
         {
             if (!Unit.CanMove) return;
-            Agent.destination = direction;
+            if (direction == Vector3.zero) Agent.destination = Agent.transform.position;
+            else Agent.destination = direction;
         }
         #endregion
     }

@@ -7,25 +7,41 @@ namespace Samurai
     public class GameManager : MonoInstaller
     {
         [SerializeField]
+        private Player Player;
+
+        [SerializeField, Space]
         private DefaultPlayerGunPool DefaultPlayerGunPool;
         [SerializeField]
-        private Player Player;
-        [SerializeField]
-        private EnemyPool EnemyPool;
-        [SerializeField]
+        private EnemyPool EnemyPool;        
+        
+        [SerializeField, Space]
         private ProjectileManager ProjectileManager;
-        [SerializeField]
+
+        [SerializeField, Space]
         private PlayerUI PlayerUI;
         [SerializeField]
+        private MainMenu MainMenuUI;
+        [SerializeField]
+        private SettingsMenu SettingsMenuUI;
+        [SerializeField]
+        private PauseMenu PauseMenu;
+
+        [SerializeField, Space]
         private Camera Camera;
         public override void InstallBindings()
-        {          
-            Container.BindInstance(DefaultPlayerGunPool).AsSingle();
+        {
             Container.BindInstance(Player).AsSingle();
-            Container.BindInstance(EnemyPool).AsSingle();
-            Container.BindInstance(ProjectileManager).AsSingle();
-            Container.BindInstance(PlayerUI).AsSingle();
             Container.BindInstance(Camera).AsSingle();
+
+            Container.BindInstance(DefaultPlayerGunPool).AsSingle();            
+            Container.BindInstance(EnemyPool).AsSingle();
+
+            Container.BindInstance(ProjectileManager).AsSingle();            
+            
+            Container.BindInstance(PlayerUI).AsSingle();
+            Container.BindInstance(MainMenuUI).AsSingle();
+            Container.BindInstance(SettingsMenuUI).AsSingle();
+            Container.BindInstance(PauseMenu).AsSingle();
         }
     }
 }

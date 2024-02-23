@@ -5,7 +5,6 @@ using static UnityEngine.InputSystem.InputAction;
 
 namespace Samurai
 {
-    [RequireComponent(typeof(Unit))]
     public abstract class UnitInput : MonoBehaviour
     {
         protected Unit Unit;

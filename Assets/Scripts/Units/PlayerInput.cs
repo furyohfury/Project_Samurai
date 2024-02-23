@@ -4,21 +4,22 @@ namespace Samurai
 {
     public class PlayerInput : UnitInput, IRangeAttack, IMeleeAttack
     {
-        private PlayerControls _playerControls;
+        public PlayerControls PlayerControls { get; private set; }
 
         public Vector3 MoveDirection { get; private set; }
 
         #region UnityMethods
         private void OnEnable()
         {
-            _playerControls.Enable();
+            PlayerControls.Enable();
 
-            _playerControls.PlayerMap.BlueColor.performed += (cb) => UnitVisuals.ChangeColor(PhaseColor.Blue);
-            _playerControls.PlayerMap.RedColor.performed += (cb) => UnitVisuals.ChangeColor(PhaseColor.Red);
+            PlayerControls.PlayerMap.BlueColor.performed += (cb) => UnitVisuals.ChangeColor(PhaseColor.Blue);
+            PlayerControls.PlayerMap.RedColor.performed += (cb) => UnitVisuals.ChangeColor(PhaseColor.Red);
+            PlayerControls.PlayerMap.Shoot.performed += RangeAttack;
+            PlayerControls.PlayerMap.PickWeapon.performed += EquipPickableRangeWeapon;
+            PlayerControls.PlayerMap.MeleeAttack.performed += MeleeAttack;
 
-            _playerControls.PlayerMap.Shoot.performed += RangeAttack;
-            _playerControls.PlayerMap.PickWeapon.performed += EquipPickableRangeWeapon;
-            _playerControls.PlayerMap.MeleeAttack.performed += MeleeAttack;
+            PlayerControls.UIMap.Pause.performed += Paused;
         }
         protected void FixedUpdate()
         {
@@ -26,31 +27,41 @@ namespace Samurai
         }
         private void OnDisable()
         {
-            _playerControls.PlayerMap.Shoot.performed -= RangeAttack;
-            _playerControls.PlayerMap.PickWeapon.performed -= EquipPickableRangeWeapon;
-            _playerControls.PlayerMap.MeleeAttack.performed -= MeleeAttack;
+            PlayerControls.PlayerMap.Shoot.performed -= RangeAttack;
+            PlayerControls.PlayerMap.PickWeapon.performed -= EquipPickableRangeWeapon;
+            PlayerControls.PlayerMap.MeleeAttack.performed -= MeleeAttack;
 
-            _playerControls.Disable();
+            PlayerControls.UIMap.Pause.performed -= Paused;
+
+            PlayerControls.Disable();
+            PlayerControls.Dispose();
         }
         #endregion
 
+        #region Bindings
         protected override void Bindings()
         {
             base.Bindings();
-            _playerControls = new();
+            PlayerControls = new();
         }
+        public void Paused(CallbackContext cbc)
+        {
+            (Unit as Player).Paused();
+        }
+        #endregion
+
 
         #region Movement
         public override void Movement()
         {
-            Vector2 movement = _playerControls.PlayerMap.Movement.ReadValue<Vector2>();
+            Vector2 movement = PlayerControls.PlayerMap.Movement.ReadValue<Vector2>();
             MoveDirection = new Vector3(movement.x, 0, movement.y);
             UnitVisuals.Movement(MoveDirection);
             UnitPhysics.Movement(MoveDirection);
         }
         #endregion
 
-
+        // IRangeAttack
         #region RangeAttack        
         private void RangeAttack(CallbackContext _) => RangeAttack();
         public void RangeAttack()
@@ -59,7 +70,7 @@ namespace Samurai
         }
         #endregion
 
-
+        // Player only
         #region PickableWeapon
         public void EquipPickableRangeWeapon(CallbackContext _)
         {
@@ -67,7 +78,7 @@ namespace Samurai
         }
         #endregion
 
-
+        //IMeleeAttack
         #region MeleeAttack        
         public void MeleeAttack(CallbackContext _) => MeleeAttack();
         public void MeleeAttack()

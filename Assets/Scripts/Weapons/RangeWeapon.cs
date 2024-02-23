@@ -123,7 +123,11 @@ namespace Samurai
                 transform.parent = null;
                 transform.position = hit.point;
             }
-            else Destroy(gameObject);
+            else
+            {
+                this.enabled = false;
+                Destroy(gameObject);
+            }
         }
 
         public void MeshVisible(bool isEnabled)
@@ -131,6 +135,10 @@ namespace Samurai
             foreach (var mesh in _mesh) mesh.enabled = isEnabled;
         }
 
+        public void ApplyBuff(int damage)
+        {
+            ProjectileStats.Damage += damage;
+        }
 
         public SimpleHandle OnBulletsEnded;
     }

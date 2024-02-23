@@ -53,10 +53,12 @@ namespace Samurai
     {
         MeleeWeapon MeleeWeapon { get; }
         void InMeleeAttack(bool v);
-        void GetDamagedByMelee(MeleeWeapon mweapon);        
+        void GetDamagedByMelee(MeleeWeapon mweapon);
+        bool Parried { get; }
     }
-    public interface IEquipRange
+
+    public interface IHeal
     {
-        void EquipRangeWeapon();
+        void Heal(int hp);
     }
 }

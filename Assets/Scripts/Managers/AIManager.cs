@@ -24,7 +24,7 @@ namespace Samurai
             {
                 foreach (var enemy in EnemyPool.EnemyList)
                 {
-                    if (enemy != null) (enemy.UnitInput as EnemyInput).GeneralAICycle();
+                    if (enemy != null && enemy.UnitInput.enabled) (enemy.UnitInput as EnemyInput).GeneralAICycle();
                 }
                 yield return new WaitForFixedUpdate();
             }

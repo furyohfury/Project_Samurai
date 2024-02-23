@@ -6,18 +6,25 @@ namespace Samurai
     [RequireComponent(typeof(PlayerVisuals))]
     [RequireComponent(typeof(PlayerPhysics))]
     [RequireComponent(typeof(PlayerInput))]
-    public class Player : Unit, IRangeAttack, IMeleeAttack, IRangeWeapon, IMeleeWeapon
+    public class Player : Unit, IRangeAttack, IMeleeAttack, IRangeWeapon, IMeleeWeapon, IHeal
     {
-        [SerializeField]
+        [SerializeField, Space]
+        private PlayerBuffsStruct PlayerBuffs;
+        public PlayerBuffsStruct GetPlayerBuffs() => PlayerBuffs;
+
+
+        [SerializeField, Space]
         private DefaultPlayerWeapon _defaultPlayerWeapon;
 
         [SerializeField]
         private RangeWeapon _rangeWeapon;
         public RangeWeapon RangeWeapon { get => _rangeWeapon; private set => _rangeWeapon = value; }
-        public bool CanShoot { get; set; } = true;
+        
         [SerializeField]
         private Transform _rangeWeaponSlot;
         public Transform RangeWeaponSlot { get => _rangeWeaponSlot; set => _rangeWeaponSlot = value; }
+
+        public bool CanShoot { get; set; } = true;
 
         #region UnityMethods
         private void Start()
@@ -25,16 +32,7 @@ namespace Samurai
             PlayerInitialization();
         }
         #endregion
-
-        private void PlayerInitialization()
-        {
-            if (RangeWeapon == null)
-            {
-                RangeWeapon = GetComponentInChildren<RangeWeapon>();
-            }
-            EquipRangeWeapon(RangeWeapon);
-            MeleeWeaponBindings();
-        }
+        
 
         // For IMeleeWeapon
         #region GetDamaged
@@ -92,14 +90,13 @@ namespace Samurai
             if (PickableWeapon == null) return;
 
             if (RangeWeapon != _defaultPlayerWeapon) Destroy(RangeWeapon.gameObject);
-
             _defaultPlayerWeapon.gameObject.SetActive(false);
-
             PickableWeapon.transform.parent = RangeWeaponSlot;
             EquipRangeWeapon(PickableWeapon);
-            // Throw away empty gun
+            // To throw away empty gun
             RangeWeapon.OnBulletsEnded += UnequipPickableWeaponToDefault;
-            
+            // Buffs
+            RangeWeapon.ApplyBuff(PlayerBuffs.PickableWeaponDamageBuff);            
             PickableWeapon = null;
         }
 
@@ -162,7 +159,7 @@ namespace Samurai
         private IEnumerator ParryCoroutine()
         {
             Parried = true;
-            (UnitVisuals as PlayerVisuals).Parry();
+            (UnitVisuals as PlayerVisuals).ParryPlayerSlomo();
             yield return new WaitForSeconds(_parryInvulTime);
             Parried = false;
         }
@@ -175,9 +172,37 @@ namespace Samurai
         }
         #endregion
 
+        // Player only
+        #region PlayerBuffs
+        public void ApplyPlayerBuffs(PlayerBuffsStruct playerBuffs)
+        {
+            PlayerBuffs.PickableWeaponDamageBuff += playerBuffs.PickableWeaponDamageBuff;
+            PlayerBuffs.SlomoDurationBuff += playerBuffs.SlomoDurationBuff;
+        }
+        #endregion
+
+        // Player only
+        private void PlayerInitialization()
+        {
+            if (RangeWeapon == null)
+            {
+                RangeWeapon = GetComponentInChildren<RangeWeapon>();
+            }
+            EquipRangeWeapon(RangeWeapon);
+            MeleeWeaponBindings();
+        }
+        // Player only
+        public void Heal(int hp)
+        {
+            ChangeHP(hp);
+        }
+
+        public void Paused() => OnPlayerPaused?.Invoke();
+
         public event SimpleHandle OnPlayerDied;
         public event RangeWeaponChangeHandle OnPlayerChangedWeapon;
         public event SimpleHandle OnPlayerShot;
         public event SimpleHandle OnPlayerMeleeHit;
+        public event SimpleHandle OnPlayerPaused;
     }
 }

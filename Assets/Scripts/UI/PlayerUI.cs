@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using System;
 using TMPro;
 using MoreMountains.Feedbacks;
+using Unity.VisualScripting.Antlr3.Runtime;
 
 namespace Samurai
 {
@@ -24,7 +25,11 @@ namespace Samurai
             _player.OnPlayerChangedWeapon += RangeWeaponChanged;
             _player.OnPlayerShot += RangeWeaponNumberOfBulletsChanged;
             _player.OnPlayerMeleeHit += MeleeWeaponCD;
+
+            _player.OnPlayerPaused += Paused;
         }
+
+
         private void Start()
         {
             _hpSlider.value = _player.GetUnitStats().HP / _player.GetUnitStats().MaxHP;
@@ -39,6 +44,8 @@ namespace Samurai
             _player.OnPlayerChangedWeapon -= RangeWeaponChanged;
             _player.OnPlayerShot -= RangeWeaponNumberOfBulletsChanged;
             _player.OnPlayerMeleeHit -= MeleeWeaponCD;
+
+            _player.OnPlayerPaused -= Paused;
         }
 
         public void PlayerChangedColor(PhaseColor color)
@@ -109,7 +116,7 @@ namespace Samurai
 
         private void MeleeWeaponUIInit()
         {
-            _meleeWeaponImageFillFeedback = _meleeWeaponCDFeedback.GetFeedbackOfType<MMF_ImageFill>();            
+            _meleeWeaponImageFillFeedback = _meleeWeaponCDFeedback.GetFeedbackOfType<MMF_ImageFill>();
             _meleeWeaponPauseFeedback = _meleeWeaponCDFeedback.GetFeedbackOfType<MMF_Pause>();
             _meleeWeaponImageFillFeedback.Duration = _player.MeleeAttackCooldown;
             _meleeWeaponImageFillFeedback.FeedbackDuration = _player.MeleeAttackCooldown;
@@ -118,9 +125,30 @@ namespace Samurai
         }
         public void MeleeWeaponCD()
         {
-            
+
             // _meleeWeaponPauseFeedback.PauseDuration = _playerInput.MeleeAttackCooldown;
             _meleeWeaponCDFeedback?.PlayFeedbacks();
+        }
+        #endregion
+
+
+        #region Pause
+        [Inject]
+        private readonly PauseMenu PauseMenu;
+        public void Paused()
+        {
+            if (!PauseMenu.isActiveAndEnabled)
+            {
+                PauseMenu.gameObject.SetActive(true);
+                Time.timeScale = 0f;
+                (_player.UnitInput as PlayerInput).PlayerControls.PlayerMap.Disable();
+            }
+            else
+            {
+                PauseMenu.gameObject.SetActive(false);
+                Time.timeScale = 1;
+                (_player.UnitInput as PlayerInput).PlayerControls.PlayerMap.Enable();
+            }
         }
         #endregion
     }

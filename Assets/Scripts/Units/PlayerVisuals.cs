@@ -1,44 +1,24 @@
+using MoreMountains.Feedbacks;
 using System.Collections;
 using UnityEngine;
 namespace Samurai
 {
-    public class PlayerVisuals : UnitVisuals, IRangeAttack, IMeleeAttack
+    public class PlayerVisuals : UnitVisuals, IRangeAttack, IMeleeAttack, IHeal
     {
+        [SerializeField]
+        private MMF_Player _healthPackPicked;
+
         // Player only
         #region Color
+        [SerializeField, Space]
+        private MMF_Player _switchColorFeedback;
         public override void ChangeColor(PhaseColor color)
         {
             base.ChangeColor(color);
             OnPlayerSwapColor?.Invoke(color);
+            _switchColorFeedback?.PlayFeedbacks();
         }
         #endregion
-
-
-        // Player only
-        #region PickableWeapon
-
-        /* public void EquipRangeWeapon(RangeWeapon rweapon) => SwitchToAnimationLayer(rweapon);
-        
-        / private string _currentAnimationLayer = typeof(DefaultPlayerWeapon).Name.ToString();
-
-        public void SwitchToAnimationLayer(RangeWeapon rweapon)
-        {
-            string rwstring = rweapon.GetType().Name;
-            if (rwstring != _currentAnimationLayer)
-            {
-                UnitAnimator.SetLayerWeight(UnitAnimator.GetLayerIndex(_currentAnimationLayer), 0f);
-                UnitAnimator.SetLayerWeight(UnitAnimator.GetLayerIndex(rwstring), 1f);
-                _currentAnimationLayer = rwstring;
-            }
-        }*/
-        public void EquipRangeWeapon(RangeWeapon rweapon) => SwitchAnimationController(rweapon);
-        private void SwitchAnimationController(RangeWeapon rweapon)
-        {
-            UnitAnimator.runtimeAnimatorController = rweapon.AnimController;
-        }
-
-        #endregion
-
 
         // IRangeAttack
         #region RangeAttack
@@ -92,7 +72,7 @@ namespace Samurai
         private float _slowMoMultiplier = 0.5f;
         [SerializeField]
         private float _parrySlowmoTime = 3f;
-        public void Parry()
+        public void ParryPlayerSlomo()
         {            
             StartCoroutine(PlayerParrySlomoCor());
         }
@@ -100,11 +80,42 @@ namespace Samurai
         {
             Time.timeScale = _slowMoMultiplier;
             UnitAnimator.updateMode = AnimatorUpdateMode.UnscaledTime;
-            yield return new WaitForSecondsRealtime(_parrySlowmoTime);
+            yield return new WaitForSecondsRealtime(_parrySlowmoTime + (Unit as Player).GetPlayerBuffs().SlomoDurationBuff);
             Time.timeScale = 1;
             UnitAnimator.updateMode = AnimatorUpdateMode.Normal;
         }
         #endregion
+
+        // Player only
+        #region PickableWeapon
+
+        /* public void EquipRangeWeapon(RangeWeapon rweapon) => SwitchToAnimationLayer(rweapon);
+        
+        / private string _currentAnimationLayer = typeof(DefaultPlayerWeapon).Name.ToString();
+
+        public void SwitchToAnimationLayer(RangeWeapon rweapon)
+        {
+            string rwstring = rweapon.GetType().Name;
+            if (rwstring != _currentAnimationLayer)
+            {
+                UnitAnimator.SetLayerWeight(UnitAnimator.GetLayerIndex(_currentAnimationLayer), 0f);
+                UnitAnimator.SetLayerWeight(UnitAnimator.GetLayerIndex(rwstring), 1f);
+                _currentAnimationLayer = rwstring;
+            }
+        }*/
+        public void EquipRangeWeapon(RangeWeapon rweapon) => SwitchAnimationController(rweapon);
+        private void SwitchAnimationController(RangeWeapon rweapon)
+        {
+            UnitAnimator.runtimeAnimatorController = rweapon.AnimController;
+        }
+
+        #endregion
+
+        // Player only
+        public void Heal(int _)
+        {
+            _healthPackPicked?.PlayFeedbacks();
+        }
 
         public event ChangeColorHandle OnPlayerSwapColor;
     }

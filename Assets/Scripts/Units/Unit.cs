@@ -74,7 +74,8 @@ namespace Samurai
 
         protected virtual void ChangeHP(int delta)
         {
-            UnitStats.HP += delta;
+            if (UnitStats.HP + delta > UnitStats.MaxHP) UnitStats.HP = UnitStats.MaxHP;
+            else UnitStats.HP += delta;
 
             // For hpbar
             OnUnitHealthChanged?.Invoke();
@@ -109,7 +110,20 @@ namespace Samurai
         protected abstract void DiscardUnit();
         #endregion
 
+        #region Buffs
+        public void ApplyBuff(UnitBuffsStruct buffs)
+        {
+            UnitStats.MaxHP += buffs.HPBuff;
+            UnitStats.MoveSpeed += buffs.MoveSpeedBuff;
+
+            IRangeWeapon RangeUnit = this as IRangeWeapon;
+            RangeUnit?.RangeWeapon.ApplyBuff(buffs.RangeWeaponDamageBuff);
+
+            IMeleeWeapon MeleeUnit = this as IMeleeWeapon;
+            MeleeUnit?.MeleeWeapon.ApplyBuff(buffs.MeleeWeaponDamageBuff);
+        }
+        #endregion
+
         public event SimpleHandle OnUnitHealthChanged;
-        // public event UnitHandle OnUnitDied;
     }
 }

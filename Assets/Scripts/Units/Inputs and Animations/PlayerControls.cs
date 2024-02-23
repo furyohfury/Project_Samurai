@@ -196,6 +196,34 @@ namespace Samurai
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""UIMap"",
+            ""id"": ""46123b6c-c9d0-422f-90f2-d945df2c514c"",
+            ""actions"": [
+                {
+                    ""name"": ""Pause"",
+                    ""type"": ""Button"",
+                    ""id"": ""0f3ff2e7-d00b-4d8c-b599-3b2f5b8c77e2"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""99256181-9b42-4d05-8baa-5b20a96e0a82"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -208,6 +236,9 @@ namespace Samurai
             m_PlayerMap_RedColor = m_PlayerMap.FindAction("RedColor", throwIfNotFound: true);
             m_PlayerMap_PickWeapon = m_PlayerMap.FindAction("PickWeapon", throwIfNotFound: true);
             m_PlayerMap_MeleeAttack = m_PlayerMap.FindAction("MeleeAttack", throwIfNotFound: true);
+            // UIMap
+            m_UIMap = asset.FindActionMap("UIMap", throwIfNotFound: true);
+            m_UIMap_Pause = m_UIMap.FindAction("Pause", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -351,6 +382,52 @@ namespace Samurai
             }
         }
         public PlayerMapActions @PlayerMap => new PlayerMapActions(this);
+
+        // UIMap
+        private readonly InputActionMap m_UIMap;
+        private List<IUIMapActions> m_UIMapActionsCallbackInterfaces = new List<IUIMapActions>();
+        private readonly InputAction m_UIMap_Pause;
+        public struct UIMapActions
+        {
+            private @PlayerControls m_Wrapper;
+            public UIMapActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
+            public InputAction @Pause => m_Wrapper.m_UIMap_Pause;
+            public InputActionMap Get() { return m_Wrapper.m_UIMap; }
+            public void Enable() { Get().Enable(); }
+            public void Disable() { Get().Disable(); }
+            public bool enabled => Get().enabled;
+            public static implicit operator InputActionMap(UIMapActions set) { return set.Get(); }
+            public void AddCallbacks(IUIMapActions instance)
+            {
+                if (instance == null || m_Wrapper.m_UIMapActionsCallbackInterfaces.Contains(instance)) return;
+                m_Wrapper.m_UIMapActionsCallbackInterfaces.Add(instance);
+                @Pause.started += instance.OnPause;
+                @Pause.performed += instance.OnPause;
+                @Pause.canceled += instance.OnPause;
+            }
+
+            private void UnregisterCallbacks(IUIMapActions instance)
+            {
+                @Pause.started -= instance.OnPause;
+                @Pause.performed -= instance.OnPause;
+                @Pause.canceled -= instance.OnPause;
+            }
+
+            public void RemoveCallbacks(IUIMapActions instance)
+            {
+                if (m_Wrapper.m_UIMapActionsCallbackInterfaces.Remove(instance))
+                    UnregisterCallbacks(instance);
+            }
+
+            public void SetCallbacks(IUIMapActions instance)
+            {
+                foreach (var item in m_Wrapper.m_UIMapActionsCallbackInterfaces)
+                    UnregisterCallbacks(item);
+                m_Wrapper.m_UIMapActionsCallbackInterfaces.Clear();
+                AddCallbacks(instance);
+            }
+        }
+        public UIMapActions @UIMap => new UIMapActions(this);
         public interface IPlayerMapActions
         {
             void OnMovement(InputAction.CallbackContext context);
@@ -359,6 +436,10 @@ namespace Samurai
             void OnRedColor(InputAction.CallbackContext context);
             void OnPickWeapon(InputAction.CallbackContext context);
             void OnMeleeAttack(InputAction.CallbackContext context);
+        }
+        public interface IUIMapActions
+        {
+            void OnPause(InputAction.CallbackContext context);
         }
     }
 }
