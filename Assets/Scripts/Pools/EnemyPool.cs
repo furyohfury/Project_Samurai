@@ -6,6 +6,7 @@ namespace Samurai
 {
     public class EnemyPool : MonoBehaviour
     {
+        [SerializeField]
         public LinkedList<Enemy> EnemyList {get; private set; } = new(); 
 
         public void AddEnemyToPool(Enemy enemy)

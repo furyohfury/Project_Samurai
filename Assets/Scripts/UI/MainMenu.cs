@@ -1,5 +1,8 @@
+using MoreMountains.Feedbacks;
+using System.Collections;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 namespace Samurai
 {
@@ -14,24 +17,67 @@ namespace Samurai
         [SerializeField]
         private Button _exit;
         [SerializeField, Space]
-        private SettingsMenu _settingsMenu;
+        private GameObject _settingsMenu;
+
+        [SerializeField]
+        private GameObject _sureNewGameMenu;
+        [SerializeField, Space]
+        private MMF_Player _startGameSceneFeedback;
+        [SerializeField]
+        private MMF_Player _bgMusicFeedback;
 
         #region UnityMethods
+        private void Start()
+        {
+            _bgMusicFeedback?.PlayFeedbacks();
+        }
         #endregion
 
         public void ContinuePressed_UnityEvent()
         {
             // after saving system
         }
+
+
         public void NewGamePressed_UnityEvent()
         {
-            // download startgame scene
+            if (!_sureNewGameMenu.activeInHierarchy) _sureNewGameMenu.SetActive(true);
         }
+
+        public void SureMenuYesPressed_UnityEvent()
+        {
+            // StartCoroutine(LoadGameStart());
+            _startGameSceneFeedback?.PlayFeedbacks();
+        }
+        /* private IEnumerator LoadGameStart()
+        {
+            var loadedScene = SceneManager.LoadSceneAsync("StartGameScene", LoadSceneMode.Additive);
+            SceneManager.LoadScene("LoadingScreen");
+            while (!loadedScene.isDone)
+            {
+                yield return null;
+            }
+        }*/
+
+        public void SureMenuNoPressed_UnityEvent()
+        {
+            _sureNewGameMenu.SetActive(false);
+        }
+
+
         public void SettingsPressed_UnityEvent()
         {
-            _settingsMenu.gameObject.SetActive(true);
-            this.gameObject.SetActive(false);
+            if (!_settingsMenu.activeInHierarchy)
+            {
+                _settingsMenu.SetActive(true);
+            }
+            else
+            {
+                _settingsMenu.SetActive(false);
+            }
         }
+
+
         public void ExitPressed_UnityEvent()
         {
 #if UNITY_EDITOR

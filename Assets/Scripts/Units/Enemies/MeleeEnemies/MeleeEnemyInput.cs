@@ -22,11 +22,12 @@ namespace Samurai
         }
         #endregion
 
-        public override void Movement()
+        /* public override void Movement()
         {
             UnitVisuals.Movement(Target);
             UnitPhysics.Movement(Target);
-        }
+        } */ 
+
         protected override void BattleCycle()
         {
             if (_parried) return;

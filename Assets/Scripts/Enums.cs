@@ -22,4 +22,8 @@ namespace Samurai
         Flee,
         Attack
     }
+    public enum Languages
+    {
+
+    }
 }
