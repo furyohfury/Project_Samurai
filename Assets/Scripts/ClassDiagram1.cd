@@ -1,0 +1,503 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Samurai.Arena" Collapsed="true">
+    <Position X="24.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAECARAAIDAAAAABAAgIABAABAAQQIBIBAQAAKAAGEA=</HashCode>
+      <FileName>Assets\Scripts\Arena.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Samurai.ArenaEnterTrigger" Collapsed="true">
+    <Position X="26" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAgCAAAAAAAAAAAAAAAQAAAAAAAAEA=</HashCode>
+      <FileName>Assets\Scripts\ArenaEnterTrigger.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Samurai.CameraComponent" Collapsed="true">
+    <Position X="27.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAEAAAECAACAAAIAAACAAAAAAAAAAAAIAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\CameraComponent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Samurai.ColorObject" Collapsed="true">
+    <Position X="10.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAACAAAgAAAACCAAAAEAAAAJAAAAAgAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\ColorObject.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Samurai.MaterialColorDictionary" Collapsed="true">
+    <Position X="27.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Extensions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Samurai.WeaponSpriteDictionary" Collapsed="true">
+    <Position X="26" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Extensions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Samurai.AIManager" Collapsed="true">
+    <Position X="22.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAAAAAAAAAAAAAAAgAAAAAAAgAEA=</HashCode>
+      <FileName>Assets\Scripts\Managers\AIManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Samurai.GameManager" Collapsed="true">
+    <Position X="26" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACBAAAgAAAQAAAAAAEAAAAAAAAICAAAAAAAQAgAEA=</HashCode>
+      <FileName>Assets\Scripts\Managers\GameManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Samurai.ProjectileManager" Collapsed="true">
+    <Position X="27.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAQAAAAAAAAAAAAQAAAAAAAAEA=</HashCode>
+      <FileName>Assets\Scripts\Managers\ProjectileManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Samurai.ColorObstacle" Collapsed="true">
+    <Position X="9.25" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAACAAAAAAAAAAAAAAAAIQAAAAQAACAQ=</HashCode>
+      <FileName>Assets\Scripts\Other objects\ColorObstacle.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Samurai.HealthPack" Collapsed="true">
+    <Position X="22.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Other objects\HealthPack.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Samurai.Obstacle" Collapsed="true">
+    <Position X="22.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Other objects\Obstacle.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Samurai.DefaultPlayerGunPool" Collapsed="true">
+    <Position X="22.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAAgSAAAAAAQAACAAAAAABAAAIAAI=</HashCode>
+      <FileName>Assets\Scripts\Pools\DefaultPlayerGunPool.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Samurai.EnemyPool" Collapsed="true">
+    <Position X="24.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAgAI=</HashCode>
+      <FileName>Assets\Scripts\Pools\EnemyPool.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Samurai.Tests" Collapsed="true">
+    <Position X="22.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Tests.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Samurai.GameOverScreen" Collapsed="true">
+    <Position X="27.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\UI\GameOverScreen.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Samurai.LoseMenu" Collapsed="true">
+    <Position X="24.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\UI\LoseMenu.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Samurai.MainMenu" Collapsed="true">
+    <Position X="26" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAiAAABCAAAAAAhAAIEAAAQIAAAhAgAAEBAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\UI\MainMenu.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Samurai.PauseMenu" Collapsed="true">
+    <Position X="24.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAEAAAAQAAAABAAEAAAAAAAAgA=</HashCode>
+      <FileName>Assets\Scripts\UI\PauseMenu.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Samurai.PlayerUI" Collapsed="true">
+    <Position X="26" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAggAAAAiCAQAACABSgSAAAIIAEACAIQgAAAAgAKAA=</HashCode>
+      <FileName>Assets\Scripts\UI\PlayerUI.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Samurai.SettingsMenu" Collapsed="true">
+    <Position X="20.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAEAAAAAAAAAAAAAAAAAAAAAAAAAkAAAAAAAAAEA=</HashCode>
+      <FileName>Assets\Scripts\UI\SettingsMenu.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Samurai.Enemy" Collapsed="true">
+    <Position X="11" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAIBEAAAAAgKgA=</HashCode>
+      <FileName>Assets\Scripts\Units\Enemies\Enemy.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Samurai.EnemyInput" Collapsed="true">
+    <Position X="5.25" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEgAkAgiAQAAAMBEBIACAAQAAAAAAARHACQQEAAC0=</HashCode>
+      <FileName>Assets\Scripts\Units\Enemies\EnemyInput.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Samurai.EnemyPhysics" Collapsed="true">
+    <Position X="12" Y="12" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAACAAAABAEAAAAAAAAAAAAIAEAAAAAACAA=</HashCode>
+      <FileName>Assets\Scripts\Units\Enemies\EnemyPhysics.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Samurai.EnemyVisuals" Collapsed="true">
+    <Position X="14.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAABAAAAAAAAAAAAAAIAAAAAAAACAA=</HashCode>
+      <FileName>Assets\Scripts\Units\Enemies\EnemyVisuals.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Samurai.MeleeEnemy" Collapsed="true">
+    <Position X="12.25" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EQEQCIAEAIQAAAIAAAAAAAACAJAAAAAAAEAAgAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Units\Enemies\MeleeEnemies\MeleeEnemy.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Samurai.MeleeEnemyInput" Collapsed="true">
+    <Position X="4.25" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAEAEAAAAAAAAAAAAAAAABAAAQBIAAAAEAAACAA=</HashCode>
+      <FileName>Assets\Scripts\Units\Enemies\MeleeEnemies\MeleeEnemyInput.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Samurai.MeleeEnemyVisuals" Collapsed="true">
+    <Position X="13.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAEQAAQAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Units\Enemies\MeleeEnemies\MeleeEnemyVisuals.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Samurai.RangeEnemy" Collapsed="true">
+    <Position X="10" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABAQAAAAgCAAAACQIAIAAAAAAAEAAAAkAQAA=</HashCode>
+      <FileName>Assets\Scripts\Units\Enemies\RangeEnemies\RangeEnemy.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Samurai.RangeEnemyInput" Collapsed="true">
+    <Position X="6.5" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAEAAAAAACGAAAAAAAAgQAAAAAgAAEAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Units\Enemies\RangeEnemies\RangeEnemyInput.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Samurai.RangeEnemyVisuals" Collapsed="true">
+    <Position X="16" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAA=</HashCode>
+      <FileName>Assets\Scripts\Units\Enemies\RangeEnemies\RangeEnemyVisuals.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Samurai.@PlayerControls" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="20.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAECAAAAACAAADAgCAgCCBABACIACGAEEIAgAABQACA=</HashCode>
+      <FileName>Assets\Scripts\Units\Inputs and Animations\PlayerControls.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Samurai.Player" Collapsed="true">
+    <Position X="14.5" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EYkwCJAEBKSAABKAKAAACCQKADAgEAACBAAAhAmAIAA=</HashCode>
+      <FileName>Assets\Scripts\Units\Player.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Samurai.PlayerInput" Collapsed="true">
+    <Position X="2" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EIAgAAAAAgAAAAAABAAAAAAAAAACgAAIAEAAAAgACAA=</HashCode>
+      <FileName>Assets\Scripts\Units\PlayerInput.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Samurai.PlayerPhysics" Collapsed="true">
+    <Position X="9.75" Y="12" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QIAAAABAAgAAAAAABAAAAAAAAAAAAAAIQEQAACAACAA=</HashCode>
+      <FileName>Assets\Scripts\Units\PlayerPhysics.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Samurai.PlayerVisuals" Collapsed="true">
+    <Position X="11.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAEQAQQAAAAgCACAAACABADAAAIAABAUIAAAgAAAA=</HashCode>
+      <FileName>Assets\Scripts\Units\PlayerVisuals.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Samurai.Unit" Collapsed="true">
+    <Position X="12.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAkCCAAAAAAACAgAAAAAACUAAAAAIACBMAAgAQAIEA=</HashCode>
+      <FileName>Assets\Scripts\Units\Unit.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Samurai.UnitInput" Collapsed="true">
+    <Position X="4.25" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAAAAAAAAAAJAAAAAAAAAAAAAAAAEAAAAQAAEA=</HashCode>
+      <FileName>Assets\Scripts\Units\UnitInput.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Samurai.UnitPhysics" Collapsed="true">
+    <Position X="11" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAJAAAAAAEAAAAAAAAQEAAgAQAAEA=</HashCode>
+      <FileName>Assets\Scripts\Units\UnitPhysics.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Samurai.UnitVisuals" Collapsed="true">
+    <Position X="13.75" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQAAAAAAAQAgJgACAEAEAAAAAAAAAEAAxAAAAEA=</HashCode>
+      <FileName>Assets\Scripts\Units\UnitVisuals.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Samurai.DefaultPlayerWeapon" Collapsed="true">
+    <Position X="6.5" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABCAAAAAAAAAAAAAAAAAAAAAEAAAAAAgAEAA=</HashCode>
+      <FileName>Assets\Scripts\Weapons\DefaultPlayerWeapon.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Samurai.MeleeWeapon" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="20.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAgIAADAACAAAAAAAwAAAAAAAABAAAAAQIAEAACAAAA=</HashCode>
+      <FileName>Assets\Scripts\Weapons\MeleeWeapon.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Samurai.DefaultPlayerWeaponProjectile" Collapsed="true">
+    <Position X="2.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Weapons\Projectiles\DefaultPlayerWeaponProjectile.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Samurai.Projectile" Collapsed="true">
+    <Position X="4.75" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABgCCAACCgAAAAAAAAAAAAAAAAAAAIQAAAAAAACAA=</HashCode>
+      <FileName>Assets\Scripts\Weapons\Projectiles\Projectile.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Samurai.RifleProjectile" Collapsed="true">
+    <Position X="4.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Weapons\Projectiles\RifleProjectile.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Samurai.ShotgunProjectile" Collapsed="true">
+    <Position X="7" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Weapons\Projectiles\ShotgunProjectile.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Samurai.RangeWeapon" Collapsed="true">
+    <Position X="4.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAACACCCBAAgBAAEABDAAACRgIEIAMAMAMAgBAgAGEA=</HashCode>
+      <FileName>Assets\Scripts\Weapons\RangeWeapon.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Samurai.Rifle" Collapsed="true">
+    <Position X="2" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAQAAAAAAAAAAAAAEgCAAQAAAAAAAAEABAAAAgAEAA=</HashCode>
+      <FileName>Assets\Scripts\Weapons\Rifle.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Samurai.Shotgun" Collapsed="true">
+    <Position X="4.25" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAAAAAAAAAAAAEAAAAAAAAAAEAAAAAAgAEAA=</HashCode>
+      <FileName>Assets\Scripts\Weapons\Shotgun.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CursorBasedCameraMovement" Collapsed="true">
+    <Position X="20.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAACECAAAAAAAAAAAAAAAAAAEAAAAAAAABAAAAA=</HashCode>
+      <FileName>Assets\Scripts\CursorBasedCameraMovement.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GettingStartedTutorialHero" Collapsed="true">
+    <Position X="20.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQBABAAAgAAAAAAAIBAQAAAAAAAAAEAAABAACAAAEA=</HashCode>
+      <FileName>Assets\Scripts\GettingStartedTutorialHero.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="Samurai.UnitStatsStruct" Collapsed="true">
+    <Position X="26" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAABAAAAAAEAAAQAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Structs.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Samurai.UnitBuffsStruct" Collapsed="true">
+    <Position X="24.25" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAgAAAAAAAAAAAAAAAAAAAAAAAQAAAACAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Structs.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Samurai.ProjectileStatsStruct" Collapsed="true">
+    <Position X="22.5" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAEAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Structs.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Samurai.PlayerBuffsStruct" Collapsed="true">
+    <Position X="20.75" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAA=</HashCode>
+      <FileName>Assets\Scripts\Structs.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Interface Name="Samurai.IAttackMelee" Collapsed="true">
+    <Position X="20.75" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Interfaces.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Samurai.IRangeAttack" Collapsed="true">
+    <Position X="27.75" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAA=</HashCode>
+      <FileName>Assets\Scripts\Interfaces.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Samurai.IMeleeAttack" Collapsed="true">
+    <Position X="24.25" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Interfaces.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Samurai.IRangeWeapon" Collapsed="true">
+    <Position X="20.75" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABAAAAAAAAAAAACAAAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Assets\Scripts\Interfaces.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Samurai.IMeleeWeapon" Collapsed="true">
+    <Position X="26" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAEAAAAAAAAAAAAAAAAABAAAAAAAAAAgAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Interfaces.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Samurai.IHeal" Collapsed="true">
+    <Position X="22.5" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Interfaces.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="Samurai.PhaseColor" Collapsed="true">
+    <Position X="26" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAgAAAAAAIAAAAAAAAAAAAAAIABAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Enums.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Samurai.RangeWeaponEnum" Collapsed="true">
+    <Position X="27.75" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQAAAAAAAAIAAAAAAAAAAAAEAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Enums.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Samurai.AIStateType" Collapsed="true">
+    <Position X="20.75" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABAAAAAAAAAAAAAAAAgQIAAAAAAAAAAAAAIAAA=</HashCode>
+      <FileName>Assets\Scripts\Enums.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Samurai.Languages" Collapsed="true">
+    <Position X="24.25" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Enums.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Samurai.ArenaEndAction" Collapsed="true">
+    <Position X="22.5" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAEBAAAAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Assets\Scripts\Enums.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Delegate Name="Samurai.SimpleHandle" Collapsed="true">
+    <Position X="24.25" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Extensions.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Samurai.ChangeColorHandle" Collapsed="true">
+    <Position X="20.75" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Extensions.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Samurai.RangeWeaponChangeHandle" Collapsed="true">
+    <Position X="22.5" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Extensions.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Samurai.UnitHandle" Collapsed="true">
+    <Position X="26" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Extensions.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
