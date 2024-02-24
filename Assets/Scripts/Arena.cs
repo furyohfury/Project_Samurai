@@ -22,6 +22,8 @@ namespace Samurai
 
         [SerializeField, Space]
         private ArenaEnterTrigger _arenaEnterTrigger;
+        [SerializeField]
+        private ArenaEnterTrigger _arenaEntryDoorClosingTrigger;
 
         [SerializeField, Space]
         private ArenaEndAction[] _arenaEndActions;
@@ -29,8 +31,8 @@ namespace Samurai
         private Obstacle _exitDoor;
         [SerializeField]
         private Transform _exitDoorEndLocation;
-        [SerializeField]
-        private float _durationToMoveExitDoor = 2;
+        /* [SerializeField]
+        private float _durationToMoveExitDoor = 2; */
         [SerializeField]
         private string _sceneNameToSwitchTo;
         [SerializeField]
@@ -40,6 +42,11 @@ namespace Samurai
         private MMF_Player _arenaStartedFeedback;
         [SerializeField]
         private MMF_Player _arenaEndedFeedback;
+        [SerializeField]
+        private MMF_Player _entryDoorCloseFeedback;
+        [SerializeField]
+        private MMF_Player _exitDoorOpenFeedback;
+
 
         #region UnityMethods
         private void Awake()
@@ -105,12 +112,19 @@ namespace Samurai
             if (on)
             {
                 _arenaEnterTrigger.OnEnterArena += PlayerEnteredArena;
+                _arenaEntryDoorClosingTrigger.OnEntryDoorClosing += EntryDoorClose;
             }
             else
             {
                 _arenaEnterTrigger.OnEnterArena -= PlayerEnteredArena;
+                _arenaEntryDoorClosingTrigger.OnEntryDoorClosing -= EntryDoorClose;
                 Destroy(_arenaEnterTrigger.gameObject);
             }
+        }
+
+        private void EntryDoorClose()
+        {
+            _entryDoorCloseFeedback?.PlayFeedbacks();
         }
 
         private void PlayerEnteredArena()
@@ -153,15 +167,13 @@ namespace Samurai
                 switch (arenaEndAction)
                 {
                     case ArenaEndAction.OpenDoor:
-                        if (_exitDoor == null)
+                        if (_exitDoor == null || _exitDoorOpenFeedback == null)
                         {
-                            Debug.LogError($"Arena {gameObject.name} tried to open exit door but doesn't have it");
+                            Debug.LogError($"Arena {gameObject.name} tried to open exit door but doesn't have it or it's feedback");
                             break;
                         }
-                        DOTween.To(() => _exitDoor.transform.position,
-                            x => _exitDoor.transform.position = x,
-                                _exitDoorEndLocation.transform.position,
-                                    _durationToMoveExitDoor);
+                        // DOTween.To(() => _exitDoor.transform.position, x => _exitDoor.transform.position = x, _exitDoorEndLocation.transform.position, _durationToMoveExitDoor);
+                        _exitDoorOpenFeedback?.PlayFeedbacks();
                         break;
                     case ArenaEndAction.SwitchScene:
                         _switchSceneFeedback?.PlayFeedbacks();
