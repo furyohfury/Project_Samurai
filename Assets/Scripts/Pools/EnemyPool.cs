@@ -6,12 +6,19 @@ namespace Samurai
 {
     public class EnemyPool : MonoBehaviour
     {
-        [SerializeField]
         public List<Enemy> EnemyList;
+        private void Start()
+        {
+            if (EnemyList.Count <= 0)
+            {
+                Debug.LogError($"EnemyPool in {transform.root.name} didn't have any enemies");
+                EnemyList.AddRange(GetComponentsInChildren<Enemy>());
+            }
+        }
 
         public void AddEnemyToPool(Enemy enemy)
         {
-            if (EnemyList == null) EnemyList = new();
+            if (EnemyList.Count <= 0) EnemyList = new();
             enemy.transform.parent = this.transform;
             EnemyList.Add(enemy);            
         }

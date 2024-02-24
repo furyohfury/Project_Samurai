@@ -55,6 +55,8 @@ namespace Samurai
         void InMeleeAttack(bool v);
         void GetDamagedByMelee(MeleeWeapon mweapon);
         bool Parried { get; }
+
+        float MeleeAttackCooldown { get; set; }
     }
 
     public interface IHeal

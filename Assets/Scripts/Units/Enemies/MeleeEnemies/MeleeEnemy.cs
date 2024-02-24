@@ -35,7 +35,7 @@ namespace Samurai
 
         [SerializeField]
         private float _meleeAttackCooldown = 5f;
-        public float MeleeAttackCooldown { get => _meleeAttackCooldown; private set => _meleeAttackCooldown = value; }
+        public float MeleeAttackCooldown { get => _meleeAttackCooldown; set => _meleeAttackCooldown = value; }
         public bool CanHit { get; set; } = true;
 
 

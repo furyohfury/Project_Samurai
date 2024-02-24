@@ -10,6 +10,9 @@ namespace Samurai
 {
     public class Arena : MonoBehaviour
     {
+        [Inject]
+        private Player _player;
+
         [SerializeField]
         private Transform _floorParent;
         // [SerializeField]
@@ -24,17 +27,21 @@ namespace Samurai
         private ArenaEnterTrigger _arenaEnterTrigger;
         [SerializeField]
         private ArenaEnterTrigger _arenaEntryDoorClosingTrigger;
+        // [SerializeField]
+        // private Obstacle _entryDoor;
+        // [SerializeField]
+        // private Transform _entryDoorEndLocation;
 
         [SerializeField, Space]
         private ArenaEndAction[] _arenaEndActions;
-        [SerializeField]
-        private Obstacle _exitDoor;
-        [SerializeField]
-        private Transform _exitDoorEndLocation;
+        // [SerializeField]
+        // private Obstacle _exitDoor;
+        // [SerializeField]
+        // private Transform _exitDoorEndLocation;
         /* [SerializeField]
-        private float _durationToMoveExitDoor = 2; */
+        private float _durationToMoveExitDoor = 2; 
         [SerializeField]
-        private string _sceneNameToSwitchTo;
+        private string _sceneNameToSwitchTo; */
         [SerializeField]
         private MMF_Player _switchSceneFeedback;
 
@@ -138,6 +145,10 @@ namespace Samurai
             }
             _aiManager.enabled = true;
 
+            // Saving
+            SaveLoadManager.ArenaSaving(gameObject.name, false, _player) ;
+
+            // Feedbacks
             _arenaStartedFeedback?.PlayFeedbacks();
         }
         #endregion
@@ -146,10 +157,10 @@ namespace Samurai
         #region Finishing
         private void FinishedArenaInit()
         {
-            if (_arenaEndActions.Contains(ArenaEndAction.OpenDoor) && (_exitDoor == null || _exitDoorEndLocation == null))
+            /* if (_arenaEndActions.Contains(ArenaEndAction.OpenDoor) && (_exitDoor == null || _exitDoorEndLocation == null))
             {
                 Debug.LogError($"Arena {gameObject.name} must open door but doesnt have one");
-            }
+            } */
 
             if (_arenaEndActions.Contains(ArenaEndAction.SwitchScene) && _switchSceneFeedback == null)
             {
@@ -159,6 +170,8 @@ namespace Samurai
         }
         private void FinishedArena()
         {
+            SaveLoadManager.ArenaSaving(gameObject.name, true, _player);
+
             if (_arenaStartedFeedback.IsPlaying) _arenaStartedFeedback?.StopFeedbacks();
             _arenaEndedFeedback?.PlayFeedbacks();
 
@@ -167,12 +180,12 @@ namespace Samurai
                 switch (arenaEndAction)
                 {
                     case ArenaEndAction.OpenDoor:
-                        if (_exitDoor == null || _exitDoorOpenFeedback == null)
+                        /* if (_exitDoor == null || _exitDoorOpenFeedback == null)
                         {
                             Debug.LogError($"Arena {gameObject.name} tried to open exit door but doesn't have it or it's feedback");
                             break;
                         }
-                        // DOTween.To(() => _exitDoor.transform.position, x => _exitDoor.transform.position = x, _exitDoorEndLocation.transform.position, _durationToMoveExitDoor);
+                         DOTween.To(() => _exitDoor.transform.position, x => _exitDoor.transform.position = x, _exitDoorEndLocation.transform.position, _durationToMoveExitDoor); */
                         _exitDoorOpenFeedback?.PlayFeedbacks();
                         break;
                     case ArenaEndAction.SwitchScene:

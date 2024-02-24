@@ -1904,6 +1904,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _floorParent: {fileID: 828053999}
+  _floorArray: []
   _enemyPool: {fileID: 849141501}
   _aiManager: {fileID: 334814140}
   _arenaEnterTrigger: {fileID: 1063923438}
@@ -1911,7 +1912,6 @@ MonoBehaviour:
   _arenaEndActions: 00000000
   _exitDoor: {fileID: 1721603274}
   _exitDoorEndLocation: {fileID: 1955995051}
-  _durationToMoveExitDoor: 10
   _sceneNameToSwitchTo: MainMenuScene
   _switchSceneFeedback: {fileID: 2081905130}
   _arenaStartedFeedback: {fileID: 1712542104}
@@ -2983,6 +2983,23 @@ MonoBehaviour:
       elementNameProperty: 
       elementNameOverride: 
       elementIcon: {fileID: 0}
+      controlID: 0
+      elementRects: []
+      elementLabel:
+        m_Text: 
+        m_Image: {fileID: 0}
+        m_Tooltip: 
+      pressIndex: 0
+      dragging: 0
+      pressPosition: 0
+      dragPosition: 0
+      dragDirection: 0
+      dragDropControlID: 0
+      enablePages: 0
+      perPageCount: 0
+      currentPage: 0
+      pagesCount: 0
+      showPage: 0
     reqReferences: {fileID: 0}
     isExpanded: 0
     _keyValues: 000000000100000002000000
@@ -4736,6 +4753,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isForEntryDoorClosing: 1
+  _collider: {fileID: 0}
 --- !u!65 &766358956
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -6005,6 +6023,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isForEntryDoorClosing: 0
+  _collider: {fileID: 0}
 --- !u!65 &1063923439
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -9033,12 +9052,12 @@ MonoBehaviour:
     - {fileID: 2100000, guid: 99719b2fa31b3184c9d117ba958214a6, type: 2}
   StepsFeedback: {fileID: 1657895804}
   _blinkTime: 0.1
-  _healthPackPicked: {fileID: 755476854}
   _switchColorFeedback: {fileID: 7026457}
   _sheathedKatana: {fileID: 1836738409}
   _attackKatana: {fileID: 1627564576}
   _slowMoMultiplier: 0.5
   _parrySlowmoTime: 3
+  _healthPackPicked: {fileID: 755476854}
 --- !u!1 &1212101183
 GameObject:
   m_ObjectHideFlags: 0
@@ -9171,6 +9190,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c13918f0c2046e945a7ef442a30a195b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _defaultPlayerGunPool: {fileID: 0}
 --- !u!65 &1271547059
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -10802,11 +10822,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1513811102}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fccf182ee2653a24f931c2d7d3f87b25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  EncodedString: '{"field1": 0.5,"field2": "sampletext","field3": [1,2,3]}'
 --- !u!1 &1525807972
 GameObject:
   m_ObjectHideFlags: 0
@@ -12817,6 +12838,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c13918f0c2046e945a7ef442a30a195b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _defaultPlayerGunPool: {fileID: 0}
 --- !u!54 &1721603275
 Rigidbody:
   m_ObjectHideFlags: 0

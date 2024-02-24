@@ -16,6 +16,7 @@ namespace Samurai
 
         public int RangeWeaponDamageBuff;
         public int MeleeWeaponDamageBuff;
+        public float MeleeAttackCDBuff;
     }
 
     [System.Serializable]
@@ -29,6 +30,7 @@ namespace Samurai
     [System.Serializable]
     public struct PlayerBuffsStruct
     {
+        public int DefaultPlayerWeaponDamageBuff;
         public int PickableWeaponDamageBuff;
         public float SlomoDurationBuff;
     }

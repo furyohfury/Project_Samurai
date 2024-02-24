@@ -30,12 +30,13 @@ namespace Samurai
         private void Start()
         {
             _bgMusicFeedback?.PlayFeedbacks();
+            Application.targetFrameRate = 60;
         }
         #endregion
 
         public void ContinuePressed_UnityEvent()
         {
-            // after saving system
+            if (SaveLoadManager._saveData.count <= 0) return;
         }
 
 

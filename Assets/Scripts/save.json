@@ -1,0 +1,31 @@
+{
+  "Scene": "SceneName",
+
+  "Arena": "ArenaName",
+
+  "ArenaIsFinished": false,
+
+  "Player": {
+    "UnitStats": {
+      "hp": 5,
+      "maxhp": 5,
+      "MoveSpeed": 5
+    },
+
+    "UnitBuffs": {
+      "HPBuff": 1,
+      "MoveSpeedBuff": 1,
+      "RangeWeaponDamageBuff": 1,
+      "MeleeWeaponDamageBuff": 1,
+      "MeleeAttackCDBuff": 1
+    },
+
+    "PlayerBuffs" : {
+      "DefaultPlayerWeaponDamageBuff" : 1,
+      "PickableWeaponDamageBuff": 1,
+      "SlomoDurationBuff": 1
+    },
+
+    "RangeWeapon": { "NumberOfbulletsForPlayer": 3 }
+  }
+}

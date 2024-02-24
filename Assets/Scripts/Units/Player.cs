@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Linq;
 using UnityEngine;
 namespace Samurai
 {
@@ -15,11 +16,12 @@ namespace Samurai
 
         [SerializeField, Space]
         private DefaultPlayerWeapon _defaultPlayerWeapon;
+        public DefaultPlayerWeapon DefaultPlayerWeapon { get => _defaultPlayerWeapon; private set => _defaultPlayerWeapon = value; }
 
         [SerializeField]
         private RangeWeapon _rangeWeapon;
         public RangeWeapon RangeWeapon { get => _rangeWeapon; private set => _rangeWeapon = value; }
-        
+
         [SerializeField]
         private Transform _rangeWeaponSlot;
         public Transform RangeWeaponSlot { get => _rangeWeaponSlot; set => _rangeWeaponSlot = value; }
@@ -32,7 +34,7 @@ namespace Samurai
             PlayerInitialization();
         }
         #endregion
-        
+
 
         // For IMeleeWeapon
         #region GetDamaged
@@ -96,7 +98,7 @@ namespace Samurai
             // To throw away empty gun
             RangeWeapon.OnBulletsEnded += UnequipPickableWeaponToDefault;
             // Buffs
-            RangeWeapon.ApplyBuff(PlayerBuffs.PickableWeaponDamageBuff);            
+            RangeWeapon.ApplyBuff(PlayerBuffs.PickableWeaponDamageBuff);
             PickableWeapon = null;
         }
 
@@ -116,7 +118,7 @@ namespace Samurai
 
         [SerializeField]
         private float _meleeAttackCooldown = 5f;
-        public float MeleeAttackCooldown { get => _meleeAttackCooldown; private set => _meleeAttackCooldown = value; }
+        public float MeleeAttackCooldown { get => _meleeAttackCooldown; set => _meleeAttackCooldown = value; }
         public bool CanHit { get; set; } = true;
 
 
@@ -176,8 +178,24 @@ namespace Samurai
         #region PlayerBuffs
         public void ApplyPlayerBuffs(PlayerBuffsStruct playerBuffs)
         {
-            PlayerBuffs.PickableWeaponDamageBuff += playerBuffs.PickableWeaponDamageBuff;
-            PlayerBuffs.SlomoDurationBuff += playerBuffs.SlomoDurationBuff;
+            // PlayerBuffs.PickableWeaponDamageBuff += playerBuffs.PickableWeaponDamageBuff;
+            // PlayerBuffs.SlomoDurationBuff += playerBuffs.SlomoDurationBuff;
+
+            // HUH?
+            var playerBuffFields = PlayerBuffs.GetType().GetFields();
+            var newBuffFields = playerBuffs.GetType().GetFields();
+            foreach (var field in playerBuffFields)
+            {
+                if (field.GetType() == typeof(int))
+                {
+                    field.SetValue(this, (int)field.GetValue(this) + (int)(newBuffFields.Single((newbuff) => newbuff.Name == field.Name).GetValue(this)));
+                }
+                else if (field.GetType() == typeof(float))
+                {
+                    field.SetValue(this, (float)field.GetValue(this) + (float)(newBuffFields.Single((newbuff) => newbuff.Name == field.Name).GetValue(this)));
+                }
+
+            }
         }
         #endregion
 

@@ -1,4 +1,6 @@
+using System;
 using System.Collections;
+using System.Linq;
 using UnityEngine;
 using Zenject;
 using static UnityEngine.InputSystem.InputAction;
@@ -24,6 +26,13 @@ namespace Samurai
             return UnitStats;
         }
 
+        [SerializeField]
+        protected UnitBuffsStruct UnitBuffs;
+        public UnitBuffsStruct GetUnitBuffs()
+        {
+            return UnitBuffs;
+        }
+
         public bool CanMove { get; set; } = true;
 
 
@@ -42,7 +51,7 @@ namespace Samurai
             UnitVisuals = GetComponent<UnitVisuals>();
             UnitPhysics = GetComponent<UnitPhysics>();
             UnitInput = GetComponent<UnitInput>();
-            if (UnitStats.HP <= 0 || UnitStats.MaxHP <= 0 || UnitStats.MoveSpeed <= 0) Debug.LogError($"Unit {gameObject.name} has wrong UnitStats");
+            if (UnitStats.HP <= 0 || UnitStats.MaxHP <= 0 || UnitStats.MoveSpeed <= 0) Debug.LogError($"Unit {gameObject.name} has wrong UnitStats");            
         }
 
         #region Damaged
@@ -122,6 +131,24 @@ namespace Samurai
 
             IMeleeWeapon MeleeUnit = this as IMeleeWeapon;
             MeleeUnit?.MeleeWeapon.ApplyBuff(buffs.MeleeWeaponDamageBuff);
+
+            if (MeleeUnit != null) MeleeUnit.MeleeAttackCooldown += buffs.MeleeAttackCDBuff;
+
+            // HUH?
+            var unitBuffFields = UnitBuffs.GetType().GetFields();
+            var newBuffFields = buffs.GetType().GetFields();
+            foreach (var field in unitBuffFields)
+            {
+                if (field.GetType() == typeof(int))
+                {
+                    field.SetValue(this, (int)field.GetValue(this) + (int) (newBuffFields.Single((newbuff) => newbuff.Name == field.Name).GetValue(this)));
+                }
+                else if (field.GetType() == typeof(float))
+                {
+                    field.SetValue(this, (float)field.GetValue(this) + (float)(newBuffFields.Single((newbuff) => newbuff.Name == field.Name).GetValue(this)));
+                }
+                
+            }
         }
         #endregion
 

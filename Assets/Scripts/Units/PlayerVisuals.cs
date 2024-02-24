@@ -5,9 +5,6 @@ namespace Samurai
 {
     public class PlayerVisuals : UnitVisuals, IRangeAttack, IMeleeAttack, IHeal
     {
-        [SerializeField]
-        private MMF_Player _healthPackPicked;
-
         // Player only
         #region Color
         [SerializeField, Space]
@@ -112,6 +109,8 @@ namespace Samurai
         #endregion
 
         // Player only
+        [SerializeField]
+        private MMF_Player _healthPackPicked;
         public void Heal(int _)
         {
             _healthPackPicked?.PlayFeedbacks();
