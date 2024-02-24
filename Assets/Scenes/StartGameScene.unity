@@ -492,8 +492,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UnitStats:
     MaxHP: 20
-    HP: 20
-    MoveSpeed: 5
+    HP: 15
+    MoveSpeed: 7
   UnitBuffs:
     HPBuff: 0
     MoveSpeedBuff: 0
@@ -3070,7 +3070,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh105334
+  m_Name: pb_Mesh150058
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -10499,7 +10499,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1513811102}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fccf182ee2653a24f931c2d7d3f87b25, type: 3}
   m_Name: 
@@ -17709,7 +17709,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: -15.11, y: 1, z: 1}
+  m_Size: {x: 10.19, y: 5.2, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &3343073673175937195
 GameObject:

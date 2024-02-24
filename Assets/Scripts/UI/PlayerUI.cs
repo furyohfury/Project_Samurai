@@ -32,7 +32,7 @@ namespace Samurai
 
         private void Start()
         {
-            _hpSlider.value = _player.GetUnitStats().HP / _player.GetUnitStats().MaxHP;
+            HealthChanged();
             PlayerChangedColor(_player.CurrentColor);
             // RangeWeaponChanged(Enum.Parse<RangeWeaponEnum>(_player.RangeWeapon.GetType().Name, true));
             MeleeWeaponUIInit();

@@ -179,6 +179,15 @@ namespace Samurai
         }
         private void FinishedArena()
         {
+            if (_enemyPool.EnemyList.Count > 0)
+            {
+                foreach(var enemy in _enemyPool.EnemyList)
+                {
+                    enemy.DiscardUnit();
+                }
+                return;
+            }
+
             SaveLoadManager.ArenaSaving(gameObject.name, true, _player);
 
             if (_arenaStartedFeedback.IsPlaying) _arenaStartedFeedback?.StopFeedbacks();

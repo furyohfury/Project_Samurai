@@ -168,7 +168,7 @@ namespace Samurai
         #endregion
 
         #region Death
-        protected override void DiscardUnit()
+        public override void DiscardUnit()
         {
             OnPlayerDied?.Invoke();
         }
@@ -207,7 +207,7 @@ namespace Samurai
                 RangeWeapon = GetComponentInChildren<RangeWeapon>();
             }
             EquipRangeWeapon(RangeWeapon);
-            MeleeWeaponBindings();
+            MeleeWeaponBindings();            
         }
         // Player only
         public void Heal(int hp)

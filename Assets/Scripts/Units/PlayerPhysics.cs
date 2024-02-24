@@ -15,6 +15,8 @@ namespace Samurai
         #region UnityMethods
         protected void OnEnable()
         {
+            _charController.enabled = false;
+            LoadPlayerPosition();            
             _charController.enabled = true;
         }
         protected void FixedUpdate()
@@ -39,6 +41,10 @@ namespace Samurai
         {
             base.Bindings();
             _charController = GetComponent<CharacterController>();
+        }
+        private void LoadPlayerPosition()
+        {
+            transform.position = SaveLoadManager.PlayerPosition;
         }
 
         private void FaceCursor()

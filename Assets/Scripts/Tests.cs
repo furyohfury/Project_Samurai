@@ -15,10 +15,10 @@ namespace Samurai
         private void Start()
         {
             // SaveLoadManager.Test(EncodedString);
-            Debug.Log(Application.persistentDataPath);
+            // Debug.Log(Application.persistentDataPath);
         }
     }
-/*
+
 #if UNITY_EDITOR
     [CustomEditor(typeof(Tests))]
     public class TestCustomEditor : Editor
@@ -40,9 +40,14 @@ namespace Samurai
             {
                 SaveLoadManager.Test(_encString.ToString());
             }
+
+            if (GUILayout.Button("LoadScene"))
+            {
+                SaveLoadManager.LoadLastSave();
+            }
             serializedObject.ApplyModifiedProperties();
         }
     }
 #endif 
-*/
+
 }

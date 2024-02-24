@@ -117,7 +117,7 @@ namespace Samurai
         /// <summary>
         /// Abstract
         /// </summary>
-        protected abstract void DiscardUnit();
+        public abstract void DiscardUnit();
         #endregion
 
         #region Buffs

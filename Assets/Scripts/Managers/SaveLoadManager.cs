@@ -1,5 +1,6 @@
 ﻿using Defective.JSON;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -13,38 +14,20 @@ namespace Samurai
 {
     public static class SaveLoadManager
     {
-
-        /* private static string _sceneString = $"\"Scene\": {SceneManager.GetActiveScene().name}";
-
-
-        private static string _arenaName = string.Empty;
-        private static string _arenaString = $"\"Arena\": {_arenaName}";
-
-        private static bool _isArenaFinished = false;
-        private static string _arenaFinishedString = $"\"ArenaFinished\": {_isArenaFinished}";
-
-        private static string saveString = string.Empty; */
-        /* private static string _playerString = $"\"Player\": \{ \}";
-
-        private static string UnitStatsConvert(UnitStatsStruct unitStats)
-        {
-            string hp = $"\"HP\": {unitStats.HP}";
-            string maxhp = $"\"MaxHP\": {unitStats.MaxHP}";
-            string ms = $"\"MoveSpeed\": {unitStats.MoveSpeed}";
-            return string.Concat(hp, ",", maxhp, ",", ms);
-        } */
-
-        private static string _saveFilePath = Application.persistentDataPath + "/SaveFile.json";
-
+        private static readonly string _saveDataPath = Application.persistentDataPath + "/SaveFile.json";        
 
         public static JSONObject _saveData;
+
+        public static Vector3 PlayerPosition;
+
         public static void UpdateSaveFile()
         {
-            if (File.Exists(_saveFilePath))
+            if (File.Exists(_saveDataPath))
             {
-                File.WriteAllText(_saveFilePath, _saveData.ToString());
+                File.WriteAllText(_saveDataPath, _saveData.ToString());
             }
         }
+
 
         public static void SaveLoadManagerInitialization(bool on)
         {
@@ -53,16 +36,16 @@ namespace Samurai
                 SceneManager.activeSceneChanged += SceneChanged;
 
                 // On first launch
-                if (!File.Exists(_saveFilePath))
+                if (!File.Exists(_saveDataPath))
                 {
                     // string defaultSaveFileText = LoadResourceTextfile("DefaultSaveFile.json");
                     // File.WriteAllText(_saveFilePath, defaultSaveFileText);
 
                     // Creating empty save file
-                    File.WriteAllText(_saveFilePath, string.Empty);
+                    File.WriteAllText(_saveDataPath, string.Empty);
                 }
                 // Buffering save file in SaveLoadManager
-                _saveData = new(File.ReadAllText(_saveFilePath));
+                _saveData = new(File.ReadAllText(_saveDataPath));
             }
             else
             {
@@ -80,6 +63,7 @@ namespace Samurai
             return targetFile.text;
         }
 
+        #region Saving
         private static void SceneChanged(Scene fromScene, Scene toScene)
         {
             if (toScene.name == "MainMenuScene") return;
@@ -93,47 +77,120 @@ namespace Samurai
         public static void ArenaSaving(string arenaName, bool isArenaFinished, Player player)
         {
 #if UNITY_EDITOR
-            _saveData = new(File.ReadAllText(_saveFilePath));
+            _saveData = new(File.ReadAllText(_saveDataPath));
 #endif
             _saveData.SetField("Scene", $"{SceneManager.GetActiveScene().name}");
             _saveData.SetField("Arena", arenaName);
             _saveData.SetField("ArenaIsFinished", isArenaFinished);
 
+            _saveData.SetField("Player", PlayerJSON(player));
 
+            UpdateSaveFile();
+        }
+        private static JSONObject PlayerJSON(Player player)
+        {
             JSONObject UnitStats = UnitStatsToJson(player.GetUnitStats());
             JSONObject UnitBuffs = UnitBuffsToJson(player.GetUnitBuffs());
             JSONObject PlayerBuffs = PlayerBuffsToJson(player.GetPlayerBuffs());
-            JSONObject RangeWeapon = new($"{player.RangeWeapon.NumberOfBulletsForPlayer}");
-            JSONObject[] ar = { UnitStats, UnitBuffs, PlayerBuffs, RangeWeapon };
+            JSONObject PlayerTransform = TransformToJson(player.transform);
 
-            _saveData.SetField("Player", new JSONObject(ar));
-            UpdateSaveFile();
+            JSONObject RangeWeapon = RangeWeaponToJson(player.RangeWeapon);
+            Dictionary<string, JSONObject> jsonDic = new(){
+                { nameof(UnitStats), UnitStats },
+                { nameof(UnitBuffs), UnitBuffs },
+                { nameof(PlayerBuffs), PlayerBuffs },
+                { nameof(RangeWeapon), RangeWeapon },
+                { nameof(PlayerTransform), PlayerTransform}
+            };
+
+            // _saveData.SetField("Player", $"{{\"UnitStats\" : {UnitStats}, \"UnitBuffs\": {UnitBuffs}, \"PlayerBuffs\": {PlayerBuffs}, \"RangeWeapon\": {RangeWeapon}");
+            JSONObject playerJSON = new("");
+            foreach (var key in jsonDic.Keys)
+            {
+                playerJSON.AddField(key, jsonDic[key]);
+            }
+            return playerJSON;
         }
-
-        /* public static string GetSaveDataFromArena(string arenaName, bool isArenaFinished, Player player)
-        {
-            string sceneString = $"\"Scene\": {SceneManager.GetActiveScene().name}";
-
-            string encodedString = $"{{\r\n  \"Scene\": \"{sceneString}\",\r\n\r\n  \"Arena\": \"{arenaName}\",\r\n\r\n  \"ArenaIsFinished\": {isArenaFinished},\r\n\r\n  \"Player\": {{\r\n    \"UnitStats\": {{\r\n      \"HP\": {player.GetUnitStats().HP},\r\n      \"MaxHP\": {player.GetUnitStats().MaxHP},\r\n      \"MoveSpeed\": {player.GetUnitStats().MoveSpeed}\r\n    }},\r\n\r\n    \"UnitBuffs\": {{\r\n      \"RangeWeaponDamageBuff\": 1,\r\n      \"MeleeWeaponDamageBuff\": 1,\r\n      \"MeleeAttackCDBuff\": 1\r\n    }},\r\n\r\n    \"PlayerBuffs\" {{\r\n      \"PickableWeaponDamageBuff\": 1,\r\n      \"SlomoDurationBuff\": 1\r\n    }},\r\n\r\n    \"RangeWeapon\": {{ \"NumberOfbulletsForPlayer\": 3 }}\r\n  }}\r\n}}";
-            return encodedString;
-        } */
-        public static JSONObject UnitStatsToJson(UnitStatsStruct unitStats)
+        private static JSONObject UnitStatsToJson(UnitStatsStruct unitStats)
         {
             return new($"{{\r\n      \"HP\": {unitStats.HP},\r\n      \"MaxHP\": {unitStats.MaxHP},\r\n      \"MoveSpeed\": {unitStats.MoveSpeed}\r\n    }}");
         }
-        public static JSONObject UnitBuffsToJson(UnitBuffsStruct unitBuffs)
+        private static JSONObject UnitBuffsToJson(UnitBuffsStruct unitBuffs)
         {
             return new($"{{\r\n      \"MeleeWeaponDamageBuff\": {unitBuffs.MeleeWeaponDamageBuff},\r\n      \"MeleeAttackCDBuff\": {unitBuffs.MeleeAttackCDBuff}\r\n    }}");
         }
-        public static JSONObject PlayerBuffsToJson(PlayerBuffsStruct playerBuffs)
+        private static JSONObject PlayerBuffsToJson(PlayerBuffsStruct playerBuffs)
         {
-            return new($"{{\r\n      \"PickableWeaponDamageBuff\": {playerBuffs.PickableWeaponDamageBuff},\r\n      \"SlomoDurationBuff\": {playerBuffs.SlomoDurationBuff}\r\n    }}, \"DefaultPlayerWeaponDamageBuff\": {playerBuffs.DefaultPlayerWeaponDamageBuff}");
+            return new($"{{\r\n      \"PickableWeaponDamageBuff\": {playerBuffs.PickableWeaponDamageBuff},\r\n      \"SlomoDurationBuff\": {playerBuffs.SlomoDurationBuff}\r\n    }}, \"DefaultPlayerWeaponDamageBuff\": {playerBuffs.DefaultPlayerWeaponDamageBuff}}}");
         }
-        public static JSONObject RangeWeaponBuffsToJson(RangeWeapon rweapon)
+        private static JSONObject RangeWeaponToJson(RangeWeapon rweapon)
         {
-            return new($"{{ \"NumberOfbulletsForPlayer\": 3 }}\r\n  }}\r\n}}");
+            JSONObject rw = new();
+            if (rweapon is DefaultPlayerWeapon)
+            {
+                // return new("{ \"Type\": DefaultPlayerWeapon }");
+                rw.AddField("Type", "DefaultPlayerWeapon");
+            }
+            else
+            {
+                // return new($"{{ \"Type\": {rweapon.GetType().Name}, \"NumberOfbulletsForPlayer\": {rweapon.NumberOfBulletsForPlayer}}}\r\n}}");
+                rw.AddField("Type", rweapon.GetType().Name);
+                rw.AddField("NumberOfbulletsForPlayer", rweapon.NumberOfBulletsForPlayer);
+            }
+            return rw;
         }
+        private static JSONObject TransformToJson(Transform transform)
+        {
+            JSONObject tr = new();
+            JSONObject trPos = new();
+            trPos.AddField("x", transform.position.x);
+            trPos.AddField("y", transform.position.y);
+            trPos.AddField("z", transform.position.z);
 
+            tr.AddField("Position", trPos);
+            return tr;
+        }
+        #endregion
+
+        #region Loading
+        public static void LoadLastSave()
+        {
+            _saveData = new(File.ReadAllText(_saveDataPath));
+
+            //SceneManager.LoadScene("AdditiveLoadingScreen", LoadSceneMode.Additive);
+            if (_saveData.GetField(out string sceneName, "Scene", "MainMenu"))
+            {
+                LoadPlayerTransform();
+
+                SceneManager.LoadSceneAsync(sceneName);
+
+                // todo enable finish arena soomehow
+            }
+            else
+            {
+                Debug.LogError("No scene found in save file");
+            }
+
+            
+
+
+
+            if (_saveData.GetField(out string arenaName, "Arena", ""))
+            {
+
+            }
+        }
+        private static void LoadPlayerTransform()
+        {
+            JSONObject player = _saveData.GetField("Player");
+            JSONObject transform = player.GetField("PlayerTransform");
+            JSONObject position = transform.GetField("Position");
+            PlayerPosition = new();
+            PlayerPosition.x = position.GetField(out float x, "x", 0) ? x : 0;
+            PlayerPosition.y = position.GetField(out float y, "y", 0) ? y : 0;
+            PlayerPosition.z = position.GetField(out float z, "z", 0) ? z : 0;
+        }
+        #endregion
 
         public static void Test(string encodedString)
         {
