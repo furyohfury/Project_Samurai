@@ -18,7 +18,7 @@ namespace Samurai
         }
         protected void OnDisable()
         {
-            EnemyPool.RemoveEnemyFromPool(this);
+            
         }
         #endregion
 
@@ -47,6 +47,7 @@ namespace Samurai
         #region Death
         protected override void DiscardUnit()
         {
+            EnemyPool.RemoveEnemyFromPool(this);
             Destroy(this.gameObject);
         }
         #endregion

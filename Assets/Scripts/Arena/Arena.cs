@@ -59,12 +59,13 @@ namespace Samurai
         private void Awake()
         {
             FloorInit();
-            EnemyPoolInit();
+            
             FinishedArenaInit();
         }
         private void OnEnable()
         {
             EnteringInit(true);
+            EnemyPoolInit(true);
         }
         private void Start()
         {
@@ -74,6 +75,7 @@ namespace Samurai
         private void OnDisable()
         {
             EnteringInit(false);
+            EnemyPoolInit(false);
         }
         #endregion
 
@@ -97,14 +99,21 @@ namespace Samurai
         #endregion
 
         #region EnemyPool
-        private void EnemyPoolInit()
-        {
-            if (_enemyPool.EnemyList == null || _enemyPool.EnemyList.Count <= 0)
+        private void EnemyPoolInit(bool on)
+        {            
+            if (on)
             {
-                Debug.LogError($"Arena {gameObject.name}'s EnemyPool is empty");
-                return;
+                if (_enemyPool.EnemyList == null || _enemyPool.EnemyList.Count <= 0)
+                {
+                    Debug.LogError($"Arena {gameObject.name}'s EnemyPool is empty");
+                    return;
+                }
+                _enemyPool.OnAllEnemiesDied += FinishedArena;
             }
-            _enemyPool.OnAllEnemiesDied += FinishedArena;
+            else
+            {
+                _enemyPool.OnAllEnemiesDied -= FinishedArena;
+            }            
         }
         private void AIManagerCheck()
         {
