@@ -12,6 +12,9 @@ namespace Samurai
     {
         [Inject]
         private Player _player;
+        [Inject]
+        private SaveLoadSceneAssistant _saveloadSceneAssistant;
+
 
         [SerializeField]
         private Transform _floorParent;
@@ -59,7 +62,7 @@ namespace Samurai
         private void Awake()
         {
             FloorInit();
-            
+
             FinishedArenaInit();
         }
         private void OnEnable()
@@ -100,7 +103,7 @@ namespace Samurai
 
         #region EnemyPool
         private void EnemyPoolInit(bool on)
-        {            
+        {
             if (on)
             {
                 if (_enemyPool.EnemyList == null || _enemyPool.EnemyList.Count <= 0)
@@ -113,7 +116,7 @@ namespace Samurai
             else
             {
                 _enemyPool.OnAllEnemiesDied -= FinishedArena;
-            }            
+            }
         }
         private void AIManagerCheck()
         {
@@ -138,7 +141,7 @@ namespace Samurai
             }
         }
 
-        private void EntryDoorClose()
+        public void EntryDoorClose()
         {
             _entryDoorCloseFeedback?.PlayFeedbacks();
         }
@@ -155,7 +158,7 @@ namespace Samurai
             _aiManager.enabled = true;
 
             // Saving
-            SaveLoadManager.ArenaSaving(gameObject.name, false, _player) ;
+            SaveLoadManager.ArenaSaving(gameObject.name, false, _player);
 
             // Feedbacks
             _arenaStartedFeedback?.PlayFeedbacks();
@@ -177,17 +180,22 @@ namespace Samurai
             }
 
         }
-        private void FinishedArena()
+
+        private void ClearArena()
+        {
+            foreach (var enemy in _enemyPool.EnemyList)
+            {
+                enemy.DiscardUnit();
+            }
+            return;
+        }
+        public void FinishedArena()
         {
             if (_enemyPool.EnemyList.Count > 0)
             {
-                foreach(var enemy in _enemyPool.EnemyList)
-                {
-                    enemy.DiscardUnit();
-                }
+                ClearArena();
                 return;
             }
-
             SaveLoadManager.ArenaSaving(gameObject.name, true, _player);
 
             if (_arenaStartedFeedback.IsPlaying) _arenaStartedFeedback?.StopFeedbacks();

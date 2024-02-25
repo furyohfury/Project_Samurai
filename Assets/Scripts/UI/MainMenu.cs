@@ -36,7 +36,7 @@ namespace Samurai
 
         public void ContinuePressed_UnityEvent()
         {
-            if (SaveLoadManager._saveData.count <= 0) return;
+            if (SaveLoadManager._saveData.count > 0) SaveLoadManager.LoadLastSave();
         }
 
 

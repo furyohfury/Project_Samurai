@@ -14,11 +14,14 @@ namespace Samurai
 {
     public static class SaveLoadManager
     {
-        private static readonly string _saveDataPath = Application.persistentDataPath + "/SaveFile.json";        
+        private static readonly string _saveDataPath = Application.persistentDataPath + "/SaveFile.json";
 
         public static JSONObject _saveData;
 
-        public static Vector3 PlayerPosition;
+        public static Vector3 CurrentPlayerPosition = new();
+        public static string CurrentScene;
+        public static string CurrentArena;
+        public static bool CurrentArenaIsFinished;
 
         public static void UpdateSaveFile()
         {
@@ -49,6 +52,7 @@ namespace Samurai
             }
             else
             {
+                // todo Useless?
                 SceneManager.activeSceneChanged -= SceneChanged;
             }
         }
@@ -157,11 +161,18 @@ namespace Samurai
         {
             _saveData = new(File.ReadAllText(_saveDataPath));
 
-            //SceneManager.LoadScene("AdditiveLoadingScreen", LoadSceneMode.Additive);
+            CurrentPlayerPosition = LoadPlayerTransform();
+            if (_saveData.GetField(out string arenaName, "Arena", string.Empty))
+            {
+                CurrentArena = arenaName;
+            }
+            if (_saveData.GetField(out bool arenaIsFinished, "ArenaIsFinished", false))
+            {
+                CurrentArenaIsFinished = arenaIsFinished;
+            }
+
             if (_saveData.GetField(out string sceneName, "Scene", "MainMenu"))
             {
-                LoadPlayerTransform();
-
                 SceneManager.LoadSceneAsync(sceneName);
 
                 // todo enable finish arena soomehow
@@ -171,24 +182,19 @@ namespace Samurai
                 Debug.LogError("No scene found in save file");
             }
 
-            
-
-
-
-            if (_saveData.GetField(out string arenaName, "Arena", ""))
-            {
-
-            }
         }
-        private static void LoadPlayerTransform()
+
+        // Mb do for rotation and scale
+        private static Vector3 LoadPlayerTransform()
         {
             JSONObject player = _saveData.GetField("Player");
             JSONObject transform = player.GetField("PlayerTransform");
             JSONObject position = transform.GetField("Position");
-            PlayerPosition = new();
-            PlayerPosition.x = position.GetField(out float x, "x", 0) ? x : 0;
-            PlayerPosition.y = position.GetField(out float y, "y", 0) ? y : 0;
-            PlayerPosition.z = position.GetField(out float z, "z", 0) ? z : 0;
+            Vector3 playerPos = new();
+            playerPos.x = position.GetField(out float x, "x", 0) ? x : 0;
+            playerPos.y = position.GetField(out float y, "y", 0) ? y : 0;
+            playerPos.z = position.GetField(out float z, "z", 0) ? z : 0;
+            return playerPos;
         }
         #endregion
 

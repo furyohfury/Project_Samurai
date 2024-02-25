@@ -11,11 +11,12 @@ namespace Samurai
 
         [SerializeField, Space]
         private DefaultPlayerGunPool DefaultPlayerGunPool;
-        [SerializeField]
-        private EnemyPool EnemyPool;        
         
+
         [SerializeField, Space]
         private ProjectileManager ProjectileManager;
+        [SerializeField]
+        private SaveLoadSceneAssistant SaveLoadSceneAssistant;
 
         [SerializeField, Space]
         private PlayerUI PlayerUI;
@@ -33,11 +34,12 @@ namespace Samurai
             Container.BindInstance(Player).AsSingle();
             Container.BindInstance(Camera).AsSingle();
 
-            Container.BindInstance(DefaultPlayerGunPool).AsSingle();            
-            Container.BindInstance(EnemyPool).AsSingle();
+            Container.BindInstance(DefaultPlayerGunPool).AsSingle();
+            // Container.BindInstance(EnemyPool).AsSingle();
 
-            Container.BindInstance(ProjectileManager).AsSingle();            
-            
+            Container.BindInstance(ProjectileManager).AsSingle();
+            Container.BindInstance(SaveLoadSceneAssistant).AsSingle();
+
             Container.BindInstance(PlayerUI).AsSingle();
             Container.BindInstance(MainMenuUI).AsSingle();
             Container.BindInstance(SettingsMenuUI).AsSingle();

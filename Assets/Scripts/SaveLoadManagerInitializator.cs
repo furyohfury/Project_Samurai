@@ -9,13 +9,9 @@ namespace Samurai
         {
             SaveLoadManager.SaveLoadManagerInitialization(true);
         }
-        void Start()
-        {
-            
-        }
         private void OnDisable()
         {
-            SaveLoadManager.SaveLoadManagerInitialization(false);
+            // SaveLoadManager.SaveLoadManagerInitialization(false);
         }
     }
 }
