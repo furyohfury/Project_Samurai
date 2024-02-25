@@ -98,7 +98,7 @@ namespace Samurai
             // To throw away empty gun
             RangeWeapon.OnBulletsEnded += UnequipPickableWeaponToDefault;
             // Buffs
-            RangeWeapon.ApplyBuff(PlayerBuffs.PickableWeaponDamageBuff);
+            RangeWeapon.ApplyBuff(new ProjectileStatsStruct {Damage = PlayerBuffs.PickableWeaponDamageBuff });
             PickableWeapon = null;
         }
 
@@ -225,7 +225,8 @@ namespace Samurai
         }
         public void SetupPlayer(string rWeaponName, int numberOfBullets)
         {
-            var rWeapon = Instantiate(Resources.Load<GameObject>(string.Concat("Prefabs/Weapons/", rWeaponName, "_Prefab")));
+            var path = string.Concat("Prefabs/Weapons/", rWeaponName, "_Prefab");
+            var rWeapon = Instantiate(Resources.Load<GameObject>(path));
             EquipPickableRangeWeapon(rWeapon.GetComponent<RangeWeapon>());
             if (RangeWeapon is not Samurai.DefaultPlayerWeapon) RangeWeapon.ApplyBuff(numberOfBullets);
         }

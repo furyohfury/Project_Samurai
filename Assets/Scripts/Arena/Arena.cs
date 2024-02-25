@@ -45,8 +45,7 @@ namespace Samurai
         private float _durationToMoveExitDoor = 2; 
         [SerializeField]
         private string _sceneNameToSwitchTo; */
-        [SerializeField]
-        private MMF_Player _switchSceneFeedback;
+
 
         [SerializeField, Space]
         private MMF_Player _arenaStartedFeedback;
@@ -56,6 +55,8 @@ namespace Samurai
         private MMF_Player _entryDoorCloseFeedback;
         [SerializeField]
         private MMF_Player _exitDoorOpenFeedback;
+        [SerializeField]
+        private MMF_Player _switchSceneFeedback;
 
 
         #region UnityMethods
@@ -124,6 +125,12 @@ namespace Samurai
         }
         #endregion
 
+        #region Saving
+        private void SaveGame(bool arenaFinished)
+        {
+            _saveloadSceneAssistant.SaveArena(gameObject.name, arenaFinished);
+        }
+        #endregion
 
         #region Entering
         private void EnteringInit(bool on)
@@ -156,9 +163,10 @@ namespace Samurai
                 enemy.enabled = true;
             }
             _aiManager.enabled = true;
+            _arenaEnterTrigger.enabled = false;
 
             // Saving
-            SaveLoadManager.ArenaSaving(gameObject.name, false, _player);
+            SaveGame(false);
 
             // Feedbacks
             _arenaStartedFeedback?.PlayFeedbacks();
@@ -188,15 +196,17 @@ namespace Samurai
                 enemy.DiscardUnit();
             }
         }
-
+        private bool _loaded = false;
         public void FinishedArena()
         {
             if (_enemyPool.EnemyList.Count > 0)
             {
+                _loaded = true;
                 ClearArena();
                 return;
             }
-            SaveLoadManager.ArenaSaving(gameObject.name, true, _player);
+            if (!_loaded) SaveGame(false);
+            _aiManager.enabled = false;
 
             if (_arenaStartedFeedback.IsPlaying) _arenaStartedFeedback?.StopFeedbacks();
             _arenaEndedFeedback?.PlayFeedbacks();

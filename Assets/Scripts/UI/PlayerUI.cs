@@ -34,7 +34,10 @@ namespace Samurai
         {
             HealthChanged();
             PlayerChangedColor(_player.CurrentColor);
-            // RangeWeaponChanged(Enum.Parse<RangeWeaponEnum>(_player.RangeWeapon.GetType().Name, true));
+            if (Enum.TryParse(_player.RangeWeapon.GetType().Name, out RangeWeaponEnum rWeapon))
+            {
+                RangeWeaponChanged(rWeapon);
+            }
             MeleeWeaponUIInit();
         }
         private void OnDisable()

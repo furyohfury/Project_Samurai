@@ -21,7 +21,6 @@ namespace Samurai
             LoadPlayerRangeWeapon();
             LoadPlayerStats();            
             ManageArena();
-
         }
         private void OnDisable()
         {
@@ -62,6 +61,15 @@ namespace Samurai
                 }
                 else Debug.LogError("Didnt find arena component on arena from savefile");
             }
+        }
+        public void SaveArena(string arenaName, bool arenaFinished)
+        {
+            SaveLoadManager.ArenaSaving(arenaName, arenaFinished, _player);
+        }
+
+        public void LoadLastCheckpoint()
+        {
+            SaveLoadManager.LoadLastSave();
         }
 
     }

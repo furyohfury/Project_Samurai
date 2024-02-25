@@ -17,7 +17,7 @@ namespace Samurai
         [SerializeField]
         private Button _exit;
         [SerializeField, Space]
-        private GameObject _settingsMenu;
+        private SettingsMenu _settingsMenu;
 
         [SerializeField]
         private GameObject _sureNewGameMenu;
@@ -27,10 +27,18 @@ namespace Samurai
         private MMF_Player _bgMusicFeedback;
 
         #region UnityMethods
+        private void OnEnable()
+        {
+            _settingsMenu.OnSettingsBackMenuButtonPressed += SettingsPressed_UnityEvent;
+        }
         private void Start()
         {
             _bgMusicFeedback?.PlayFeedbacks();
             Application.targetFrameRate = 60;
+        }
+        private void OnDisable()
+        {
+            _settingsMenu.OnSettingsBackMenuButtonPressed -= SettingsPressed_UnityEvent;
         }
         #endregion
 
@@ -68,13 +76,13 @@ namespace Samurai
 
         public void SettingsPressed_UnityEvent()
         {
-            if (!_settingsMenu.activeInHierarchy)
+            if (!_settingsMenu.gameObject.activeInHierarchy)
             {
-                _settingsMenu.SetActive(true);
+                _settingsMenu.gameObject.SetActive(true);
             }
             else
             {
-                _settingsMenu.SetActive(false);
+                _settingsMenu.gameObject.SetActive(false);
             }
         }
 

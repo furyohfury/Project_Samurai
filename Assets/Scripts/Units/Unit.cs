@@ -127,7 +127,7 @@ namespace Samurai
             UnitStats.MoveSpeed += buffs.MoveSpeedBuff;
 
             IRangeWeapon RangeUnit = this as IRangeWeapon;
-            RangeUnit?.RangeWeapon.ApplyBuff(buffs.RangeWeaponDamageBuff);
+            RangeUnit?.RangeWeapon.ApplyBuff(new ProjectileStatsStruct { Damage = UnitBuffs.RangeWeaponDamageBuff});
 
             IMeleeWeapon MeleeUnit = this as IMeleeWeapon;
             MeleeUnit?.MeleeWeapon.ApplyBuff(buffs.MeleeWeaponDamageBuff);

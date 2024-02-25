@@ -40,7 +40,7 @@ namespace Samurai
         protected override void ChangeHP(int delta)
         {
             base.ChangeHP(delta);
-            HPBar.UpdateBar(UnitStats.HP + delta, 0f, UnitStats.MaxHP, true);
+            HPBar.UpdateBar(UnitStats.HP, 0f, UnitStats.MaxHP, true);
         }
         #endregion
 

@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 namespace Samurai
 {
@@ -9,6 +10,8 @@ namespace Samurai
         private Slider _volumeSlider;
         [SerializeField]
         private TMP_Dropdown _languageDropdown;
+        [SerializeField]
+        private Button _backButton;
 
         private void Awake()
         {
@@ -25,5 +28,12 @@ namespace Samurai
         {
             //todo if have time
         }
+
+        public void BackButtonPressed_UnityEvent()
+        {
+            OnSettingsBackMenuButtonPressed?.Invoke();
+        }
+
+        public event SimpleHandle OnSettingsBackMenuButtonPressed;
     }
 }
