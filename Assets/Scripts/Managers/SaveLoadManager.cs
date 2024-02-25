@@ -26,6 +26,9 @@ namespace Samurai
         public static UnitBuffsStruct PlayerUnitBuffs;
         public static PlayerBuffsStruct PlayerOnlyBuffs;
 
+        public static string PlayerRangeWeapon;
+        public static int PlayerPickableWeaponNumberOfBullets;
+
         public static void UpdateSaveFile()
         {
             if (File.Exists(_saveDataPath))
@@ -142,7 +145,7 @@ namespace Samurai
             {
                 // return new($"{{ \"Type\": {rweapon.GetType().Name}, \"NumberOfbulletsForPlayer\": {rweapon.NumberOfBulletsForPlayer}}}\r\n}}");
                 rw.AddField("Type", rweapon.GetType().Name);
-                rw.AddField("NumberOfbulletsForPlayer", rweapon.NumberOfBulletsForPlayer);
+                rw.AddField("NumberOfBulletsForPlayer", rweapon.NumberOfBulletsForPlayer);
             }
             return rw;
         }
@@ -172,7 +175,7 @@ namespace Samurai
                 PlayerStats = LoadStats<UnitStatsStruct>(playerJSON, "UnitStats");
                 PlayerUnitBuffs = LoadStats<UnitBuffsStruct>(playerJSON, "UnitBuffs");
                 PlayerOnlyBuffs = LoadStats<PlayerBuffsStruct>(playerJSON, "PlayerBuffs");
-
+                LoadPlayerRangeWeapon(playerJSON);
             }
             else
             {
@@ -222,14 +225,26 @@ namespace Samurai
             // Reflections SetField doesnt work with structs
             T stats = (T)Activator.CreateInstance(typeof(T));
             object box = stats;
-            var ussFields = stats.GetType().GetFields();            
+            var ussFields = stats.GetType().GetFields();
             for (var i = 0; i < unitStatsJsonObj.count; i++)
             {
                 var field = ussFields.Single((ussfield) => ussfield.Name == unitStatsJsonObj.keys[i]);
-                if (unitStatsJsonObj.list[i].isInteger) field.SetValue(box, (int) unitStatsJsonObj.list[i].intValue);
-                else if (unitStatsJsonObj.list[i].isNumber) field.SetValue(box, (float) unitStatsJsonObj.list[i].floatValue);
+                if (unitStatsJsonObj.list[i].isInteger) field.SetValue(box, (int)unitStatsJsonObj.list[i].intValue);
+                else if (unitStatsJsonObj.list[i].isNumber) field.SetValue(box, (float)unitStatsJsonObj.list[i].floatValue);
             }
             return (T)box;
+        }
+        private static void LoadPlayerRangeWeapon(JSONObject unitJsonObj)
+        {
+            var rWeaponJson = unitJsonObj.GetField("RangeWeapon");
+            if (rWeaponJson.GetField(out string type, "Type", ""))
+            {
+                PlayerRangeWeapon = type;
+                if (rWeaponJson.GetField(out int numberOfBullets, "NumberOfBulletsForPlayer", 0) && numberOfBullets != 0)
+                {
+                    PlayerPickableWeaponNumberOfBullets = numberOfBullets;
+                }
+            }
         }
         #endregion
 

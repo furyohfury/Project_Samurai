@@ -188,6 +188,7 @@ namespace Samurai
                 enemy.DiscardUnit();
             }
         }
+
         public void FinishedArena()
         {
             if (_enemyPool.EnemyList.Count > 0)

@@ -18,9 +18,10 @@ namespace Samurai
         private void Start()
         {
             LoadPlayerPosition();
-            LoadPlayerStats();
+            LoadPlayerRangeWeapon();
+            LoadPlayerStats();            
             ManageArena();
-                       
+
         }
         private void OnDisable()
         {
@@ -40,12 +41,17 @@ namespace Samurai
             _player.SetupPlayer(SaveLoadManager.PlayerStats);
             _player.SetupPlayer(SaveLoadManager.PlayerUnitBuffs);
             _player.SetupPlayer(SaveLoadManager.PlayerOnlyBuffs);
+
+        }
+        private void LoadPlayerRangeWeapon()
+        {
+            _player.SetupPlayer(SaveLoadManager.PlayerRangeWeapon, SaveLoadManager.PlayerPickableWeaponNumberOfBullets);
         }
         private void ManageArena()
         {
             if (SaveLoadManager.CurrentArena == string.Empty) return;
 
-            
+
             if (SaveLoadManager.CurrentArenaIsFinished)
             {
                 GameObject arena = GameObject.Find(SaveLoadManager.CurrentArena);

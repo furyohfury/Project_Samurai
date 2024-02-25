@@ -135,9 +135,13 @@ namespace Samurai
             foreach (var mesh in _mesh) mesh.enabled = isEnabled;
         }
 
-        public void ApplyBuff(int damage)
+        public void ApplyBuff(ProjectileStatsStruct stats)
         {
-            ProjectileStats.Damage += damage;
+            ProjectileStats.Damage += stats.Damage;
+        }
+        public void ApplyBuff(int numberOfBullets)
+        {
+            NumberOfBulletsForPlayer = numberOfBullets;
         }
 
         public SimpleHandle OnBulletsEnded;

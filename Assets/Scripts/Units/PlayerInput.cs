@@ -74,7 +74,7 @@ namespace Samurai
         #region PickableWeapon
         public void EquipPickableRangeWeapon(CallbackContext _)
         {
-            (Unit as Player).EquipPickableRangeWeapon();
+            (Unit as Player).EquipPickableRangeWeapon((Unit as Player).PickableWeapon);
         }
         #endregion
 
