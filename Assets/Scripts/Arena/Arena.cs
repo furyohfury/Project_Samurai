@@ -183,11 +183,10 @@ namespace Samurai
 
         private void ClearArena()
         {
-            foreach (var enemy in _enemyPool.EnemyList)
+            foreach (var enemy in _enemyPool.EnemyList.ToList())
             {
                 enemy.DiscardUnit();
             }
-            return;
         }
         public void FinishedArena()
         {

@@ -17,8 +17,9 @@ namespace Samurai
         }
         private void Start()
         {
+            LoadPlayerPosition();
             ManageArena();
-            LoadPlayerPosition();           
+                       
         }
         private void OnDisable()
         {
@@ -28,6 +29,7 @@ namespace Samurai
 
         private void LoadPlayerPosition()
         {
+            if (SaveLoadManager.CurrentPlayerPosition == Vector3.zero) return;
             _player.UnitPhysics.enabled = false;
             _player.transform.position = SaveLoadManager.CurrentPlayerPosition;
             _player.UnitPhysics.enabled = true;

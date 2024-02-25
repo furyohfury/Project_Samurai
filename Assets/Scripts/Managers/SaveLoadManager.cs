@@ -160,8 +160,16 @@ namespace Samurai
         public static void LoadLastSave()
         {
             _saveData = new(File.ReadAllText(_saveDataPath));
+            if (_saveData.GetField("Player") != null)
+            {
+                CurrentPlayerPosition = LoadPlayerTransform();
+            }
+            else
+            {
+                CurrentPlayerPosition = Vector3.zero;
+            }
 
-            CurrentPlayerPosition = LoadPlayerTransform();
+
             if (_saveData.GetField(out string arenaName, "Arena", string.Empty))
             {
                 CurrentArena = arenaName;
