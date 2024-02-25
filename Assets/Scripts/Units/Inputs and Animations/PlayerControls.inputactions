@@ -200,6 +200,34 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "DoorMinigameMap",
+            "id": "29a7e1e3-1942-4898-9f05-941d23239ae0",
+            "actions": [
+                {
+                    "name": "Action",
+                    "type": "Button",
+                    "id": "cd0a9cc1-dc09-4d23-abb4-039317291c7c",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "b29c746a-fac7-4634-b31c-64eb993407f1",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Action",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": []

@@ -1,5 +1,5 @@
-using System;
 using System.Collections;
+using System;
 using System.Linq;
 using UnityEngine;
 using Zenject;
@@ -137,7 +137,27 @@ namespace Samurai
             // HUH?
             var unitBuffFields = UnitBuffs.GetType().GetFields();
             var newBuffFields = buffs.GetType().GetFields();
-            foreach (var field in unitBuffFields)
+            object box = UnitBuffs;
+
+            foreach(var newBuffField in newBuffFields)
+            {
+                if (newBuffField.FieldType == typeof(int))
+                {
+                    var corrUnitBuffField = unitBuffFields.Single((f) => f.Name == newBuffField.Name);
+                    corrUnitBuffField.SetValue(box, (int) corrUnitBuffField.GetValue(UnitBuffs) + (int) newBuffField.GetValue(buffs));
+                }
+                else if (newBuffField.FieldType == typeof(float))
+                {
+                    var corrUnitBuffField = unitBuffFields.Single((f) => f.Name == newBuffField.Name);
+                    corrUnitBuffField.SetValue(box, (float)corrUnitBuffField.GetValue(UnitBuffs) + (float)newBuffField.GetValue(buffs));
+                }
+            }
+            UnitBuffs = (UnitBuffsStruct)box;
+
+
+
+
+            /* foreach (var field in unitBuffFields)
             {
                 if (field.GetType() == typeof(int))
                 {
@@ -148,7 +168,7 @@ namespace Samurai
                     field.SetValue(this, (float)field.GetValue(this) + (float)(newBuffFields.Single((newbuff) => newbuff.Name == field.Name).GetValue(this)));
                 }
                 
-            }
+            } */
         }
         #endregion
 

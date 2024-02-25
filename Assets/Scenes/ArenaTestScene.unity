@@ -371,6 +371,107 @@ MonoBehaviour:
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
+--- !u!1 &11547391
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 11547395}
+  - component: {fileID: 11547394}
+  - component: {fileID: 11547393}
+  - component: {fileID: 11547392}
+  m_Layer: 5
+  m_Name: DoorMinigameUI
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &11547392
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 11547391}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreReversedGraphics: 1
+  m_BlockingObjects: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+--- !u!114 &11547393
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 11547391}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_UiScaleMode: 0
+  m_ReferencePixelsPerUnit: 100
+  m_ScaleFactor: 1
+  m_ReferenceResolution: {x: 800, y: 600}
+  m_ScreenMatchMode: 0
+  m_MatchWidthOrHeight: 0
+  m_PhysicalUnit: 3
+  m_FallbackScreenDPI: 96
+  m_DefaultSpriteDPI: 96
+  m_DynamicPixelsPerUnit: 1
+  m_PresetInfoIsWorld: 0
+--- !u!223 &11547394
+Canvas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 11547391}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 0
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 0
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_AdditionalShaderChannelsFlag: 0
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+  m_TargetDisplay: 0
+--- !u!224 &11547395
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 11547391}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0, y: 0, z: 0}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 222879102}
+  m_Father: {fileID: 0}
+  m_RootOrder: 16
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0, y: 0}
 --- !u!114 &14689609
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -387,6 +488,12 @@ MonoBehaviour:
     MaxHP: 5
     HP: 5
     MoveSpeed: 2
+  UnitBuffs:
+    HPBuff: 0
+    MoveSpeedBuff: 0
+    RangeWeaponDamageBuff: 0
+    MeleeWeaponDamageBuff: 0
+    MeleeAttackCDBuff: 0
   _rangeWeapon: {fileID: 603798313}
   _rangeWeaponSlot: {fileID: 1704175456}
   ChanceToDropRangeWeapon: 1
@@ -488,7 +595,14 @@ MonoBehaviour:
     MaxHP: 20
     HP: 20
     MoveSpeed: 5
+  UnitBuffs:
+    HPBuff: 0
+    MoveSpeedBuff: 0
+    RangeWeaponDamageBuff: 0
+    MeleeWeaponDamageBuff: 0
+    MeleeAttackCDBuff: 0
   PlayerBuffs:
+    DefaultPlayerWeaponDamageBuff: 0
     PickableWeaponDamageBuff: 0
     SlomoDurationBuff: 0
   _defaultPlayerWeapon: {fileID: 987668196}
@@ -1264,6 +1378,42 @@ Transform:
   m_Father: {fileID: 782148880}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &222879101
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 222879102}
+  m_Layer: 5
+  m_Name: ProgressBars
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &222879102
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 222879101}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 11547395}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &230851483
 GameObject:
   m_ObjectHideFlags: 0
@@ -3093,7 +3243,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh30688
+  m_Name: pb_Mesh160558
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -5479,6 +5629,10 @@ MonoBehaviour:
   PlayerShootingDelay: 0.3
   WeaponProjectilePrefab: {fileID: 8827768608434931341, guid: 3bccae5e596adfe428a80979030e8fc9, type: 3}
   _isPickable: 0
+  ProjectileStats:
+    Damage: 0
+    ProjectileSpeed: 0
+    ProjectileScale: 0
   PlayerProjectileStats:
     Damage: 5
     ProjectileSpeed: 6
@@ -9333,12 +9487,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Player: {fileID: 25276845}
   DefaultPlayerGunPool: {fileID: 858035582}
-  EnemyPool: {fileID: 1175658464}
   ProjectileManager: {fileID: 1374641222}
+  SaveLoadSceneAssistant: {fileID: 0}
   PlayerUI: {fileID: 1972537448}
-  MainMenuUI: {fileID: 0}
   SettingsMenuUI: {fileID: 0}
   PauseMenu: {fileID: 2931782369515136960}
+  LoseMenu: {fileID: 0}
   Camera: {fileID: 963194227}
 --- !u!114 &1272231296
 MonoBehaviour:
@@ -11122,6 +11276,12 @@ MonoBehaviour:
     MaxHP: 10
     HP: 10
     MoveSpeed: 2
+  UnitBuffs:
+    HPBuff: 0
+    MoveSpeedBuff: 0
+    RangeWeaponDamageBuff: 0
+    MeleeWeaponDamageBuff: 0
+    MeleeAttackCDBuff: 0
   _meleeWeapon: {fileID: 1454373364}
   _meleeAttackCooldown: 5
   _parryInvulTime: 2
@@ -12924,7 +13084,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh31394
+  m_Name: pb_Mesh161290
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2

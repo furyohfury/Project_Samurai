@@ -182,7 +182,29 @@ namespace Samurai
             // PlayerBuffs.SlomoDurationBuff += playerBuffs.SlomoDurationBuff;
 
             // HUH?
-            var playerBuffFields = PlayerBuffs.GetType().GetFields();
+            var unitBuffFields = PlayerBuffs.GetType().GetFields();
+            var newBuffFields = playerBuffs.GetType().GetFields();
+            object box = PlayerBuffs;
+
+            foreach (var newBuffField in newBuffFields)
+            {
+                if (newBuffField.FieldType == typeof(int))
+                {
+                    var corrUnitBuffField = unitBuffFields.Single((f) => f.Name == newBuffField.Name);
+                    corrUnitBuffField.SetValue(box, (int)corrUnitBuffField.GetValue(PlayerBuffs) + (int)newBuffField.GetValue(playerBuffs));
+                }
+                else if (newBuffField.FieldType == typeof(float))
+                {
+                    var corrUnitBuffField = unitBuffFields.Single((f) => f.Name == newBuffField.Name);
+                    corrUnitBuffField.SetValue(box, (float)corrUnitBuffField.GetValue(PlayerBuffs) + (float)newBuffField.GetValue(playerBuffs));
+                }
+            }
+            PlayerBuffs = (PlayerBuffsStruct)box;
+
+            DefaultPlayerWeapon.ApplyBuff(new ProjectileStatsStruct { Damage = PlayerBuffs.DefaultPlayerWeaponDamageBuff });
+
+
+            /* var playerBuffFields = PlayerBuffs.GetType().GetFields();
             var newBuffFields = playerBuffs.GetType().GetFields();
             foreach (var field in playerBuffFields)
             {
@@ -195,11 +217,12 @@ namespace Samurai
                     field.SetValue(this, (float)field.GetValue(this) + (float)(newBuffFields.Single((newbuff) => newbuff.Name == field.Name).GetValue(this)));
                 }
 
-            }
+            } */
         }
         #endregion
 
         // Player only
+        #region Initialization
         private void PlayerInitialization()
         {
             if (RangeWeapon == null)
@@ -230,6 +253,8 @@ namespace Samurai
             EquipPickableRangeWeapon(rWeapon.GetComponent<RangeWeapon>());
             if (RangeWeapon is not Samurai.DefaultPlayerWeapon) RangeWeapon.ApplyBuff(numberOfBullets);
         }
+        #endregion
+
 
         // Player only
         public void Heal(int hp)

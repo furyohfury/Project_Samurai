@@ -15,6 +15,8 @@ namespace Samurai
         private Player _player;
         [SerializeField]
         private Image[] _imagesToChangeColorsAsPlayer;
+        [Inject]
+        private LoseMenu _loseMenu;
 
 
         #region UnityMethods
@@ -27,8 +29,8 @@ namespace Samurai
             _player.OnPlayerMeleeHit += MeleeWeaponCD;
 
             _player.OnPlayerPaused += Paused;
-        }
-
+            _player.OnPlayerDied += PlayerDied;
+        }       
 
         private void Start()
         {
@@ -49,6 +51,7 @@ namespace Samurai
             _player.OnPlayerMeleeHit -= MeleeWeaponCD;
 
             _player.OnPlayerPaused -= Paused;
+            _player.OnPlayerDied += PlayerDied;
         }
 
         public void PlayerChangedColor(PhaseColor color)
@@ -128,7 +131,10 @@ namespace Samurai
         }
         public void MeleeWeaponCD()
         {
-
+            _meleeWeaponImageFillFeedback.Duration = _player.MeleeAttackCooldown;
+            _meleeWeaponImageFillFeedback.FeedbackDuration = _player.MeleeAttackCooldown;
+            _meleeWeaponPauseFeedback.PauseDuration = _player.MeleeAttackCooldown;
+            _meleeWeaponImageFillFeedback.ResetFeedback();
             // _meleeWeaponPauseFeedback.PauseDuration = _playerInput.MeleeAttackCooldown;
             _meleeWeaponCDFeedback?.PlayFeedbacks();
         }
@@ -152,6 +158,14 @@ namespace Samurai
                 Time.timeScale = 1;
                 (_player.UnitInput as PlayerInput).PlayerControls.PlayerMap.Enable();
             }
+        }
+        #endregion
+
+        #region Death
+        private void PlayerDied()
+        {
+            Time.timeScale = 0;
+            _loseMenu.gameObject.SetActive(true);
         }
         #endregion
     }

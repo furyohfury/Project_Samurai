@@ -20,12 +20,14 @@ namespace Samurai
 
         [SerializeField, Space]
         private PlayerUI PlayerUI;
-        [SerializeField]
-        private MainMenu MainMenuUI;
+        // [SerializeField]
+        // private MainMenu MainMenuUI;
         [SerializeField]
         private SettingsMenu SettingsMenuUI;
         [SerializeField]
         private PauseMenu PauseMenu;
+        [SerializeField]
+        private LoseMenu LoseMenu;
 
         [SerializeField, Space]
         private Camera Camera;
@@ -41,9 +43,10 @@ namespace Samurai
             Container.BindInstance(SaveLoadSceneAssistant).AsSingle();
 
             Container.BindInstance(PlayerUI).AsSingle();
-            Container.BindInstance(MainMenuUI).AsSingle();
+            // Container.BindInstance(MainMenuUI).AsSingle();
             Container.BindInstance(SettingsMenuUI).AsSingle();
             Container.BindInstance(PauseMenu).AsSingle();
+            Container.BindInstance(LoseMenu).AsSingle();
         }
     }
 }

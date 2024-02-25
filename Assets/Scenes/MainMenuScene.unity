@@ -1550,11 +1550,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1632c39f5e8f0e4e80f1db5c91dfa97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &1620022523 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2149333405901902049, guid: 9ccdc8dc9a9e9c34ab4878adc6e3189b, type: 3}
-  m_PrefabInstance: {fileID: 2149333405356409882}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1906954844
 GameObject:
   m_ObjectHideFlags: 0
@@ -2025,6 +2020,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9ccdc8dc9a9e9c34ab4878adc6e3189b, type: 3}
+--- !u!114 &2149333405356409883 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2149333405901902106, guid: 9ccdc8dc9a9e9c34ab4878adc6e3189b, type: 3}
+  m_PrefabInstance: {fileID: 2149333405356409882}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6011413a58705641b7dfe495ab7fb25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &2307887454776290400
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2041,7 +2047,7 @@ MonoBehaviour:
   _newGame: {fileID: 2307887456093671136}
   _settings: {fileID: 2307887455039064494}
   _exit: {fileID: 2307887455058535326}
-  _settingsMenu: {fileID: 1620022523}
+  _settingsMenu: {fileID: 2149333405356409883}
   _sureNewGameMenu: {fileID: 1906954844}
   _startGameSceneFeedback: {fileID: 1215237016}
   _bgMusicFeedback: {fileID: 517063698}

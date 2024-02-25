@@ -36,6 +36,7 @@ namespace Samurai
 
         public Unit Owner { get; protected set; }
 
+        [SerializeField]
         protected ProjectileStatsStruct ProjectileStats;
         public ProjectileStatsStruct GetProjectileStats() => ProjectileStats;
 

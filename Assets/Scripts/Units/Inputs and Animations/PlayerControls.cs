@@ -224,6 +224,34 @@ namespace Samurai
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""DoorMinigameMap"",
+            ""id"": ""29a7e1e3-1942-4898-9f05-941d23239ae0"",
+            ""actions"": [
+                {
+                    ""name"": ""Action"",
+                    ""type"": ""Button"",
+                    ""id"": ""cd0a9cc1-dc09-4d23-abb4-039317291c7c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""b29c746a-fac7-4634-b31c-64eb993407f1"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Action"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -239,6 +267,9 @@ namespace Samurai
             // UIMap
             m_UIMap = asset.FindActionMap("UIMap", throwIfNotFound: true);
             m_UIMap_Pause = m_UIMap.FindAction("Pause", throwIfNotFound: true);
+            // DoorMinigameMap
+            m_DoorMinigameMap = asset.FindActionMap("DoorMinigameMap", throwIfNotFound: true);
+            m_DoorMinigameMap_Action = m_DoorMinigameMap.FindAction("Action", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -428,6 +459,52 @@ namespace Samurai
             }
         }
         public UIMapActions @UIMap => new UIMapActions(this);
+
+        // DoorMinigameMap
+        private readonly InputActionMap m_DoorMinigameMap;
+        private List<IDoorMinigameMapActions> m_DoorMinigameMapActionsCallbackInterfaces = new List<IDoorMinigameMapActions>();
+        private readonly InputAction m_DoorMinigameMap_Action;
+        public struct DoorMinigameMapActions
+        {
+            private @PlayerControls m_Wrapper;
+            public DoorMinigameMapActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
+            public InputAction @Action => m_Wrapper.m_DoorMinigameMap_Action;
+            public InputActionMap Get() { return m_Wrapper.m_DoorMinigameMap; }
+            public void Enable() { Get().Enable(); }
+            public void Disable() { Get().Disable(); }
+            public bool enabled => Get().enabled;
+            public static implicit operator InputActionMap(DoorMinigameMapActions set) { return set.Get(); }
+            public void AddCallbacks(IDoorMinigameMapActions instance)
+            {
+                if (instance == null || m_Wrapper.m_DoorMinigameMapActionsCallbackInterfaces.Contains(instance)) return;
+                m_Wrapper.m_DoorMinigameMapActionsCallbackInterfaces.Add(instance);
+                @Action.started += instance.OnAction;
+                @Action.performed += instance.OnAction;
+                @Action.canceled += instance.OnAction;
+            }
+
+            private void UnregisterCallbacks(IDoorMinigameMapActions instance)
+            {
+                @Action.started -= instance.OnAction;
+                @Action.performed -= instance.OnAction;
+                @Action.canceled -= instance.OnAction;
+            }
+
+            public void RemoveCallbacks(IDoorMinigameMapActions instance)
+            {
+                if (m_Wrapper.m_DoorMinigameMapActionsCallbackInterfaces.Remove(instance))
+                    UnregisterCallbacks(instance);
+            }
+
+            public void SetCallbacks(IDoorMinigameMapActions instance)
+            {
+                foreach (var item in m_Wrapper.m_DoorMinigameMapActionsCallbackInterfaces)
+                    UnregisterCallbacks(item);
+                m_Wrapper.m_DoorMinigameMapActionsCallbackInterfaces.Clear();
+                AddCallbacks(instance);
+            }
+        }
+        public DoorMinigameMapActions @DoorMinigameMap => new DoorMinigameMapActions(this);
         public interface IPlayerMapActions
         {
             void OnMovement(InputAction.CallbackContext context);
@@ -440,6 +517,10 @@ namespace Samurai
         public interface IUIMapActions
         {
             void OnPause(InputAction.CallbackContext context);
+        }
+        public interface IDoorMinigameMapActions
+        {
+            void OnAction(InputAction.CallbackContext context);
         }
     }
 }

@@ -35,6 +35,7 @@ namespace Samurai
 
         public void ReloadCheckpointPressed_UnityEvent()
         {
+            Time.timeScale = 1;
             _saveLoadSceneAssistant.LoadLastCheckpoint();
         }
 
@@ -46,6 +47,7 @@ namespace Samurai
         }
         private void SettingsClosed()
         {
+            Time.timeScale = 1;
             _settingsMenu.gameObject.SetActive(false);
             this.GetComponent<Canvas>().enabled = true;
         }
@@ -53,6 +55,7 @@ namespace Samurai
 
         public void MainMenuPressed_UnityEvent()
         {
+            Time.timeScale = 1;
             _sceneSwitchToMainMenuFeedback?.PlayFeedbacks();
         }
     }

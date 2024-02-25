@@ -76,7 +76,7 @@ namespace Samurai
         #region Saving
         private static void SceneChanged(Scene fromScene, Scene toScene)
         {
-            if (toScene.name == "MainMenuScene" || toScene.name == _saveData.GetField("Scene").stringValue) return;
+            if (toScene.name == "MainMenuScene" || toScene.name == "AntiSpill_MainMenuScene" || toScene.name == _saveData.GetField("Scene").stringValue) return;
 
             _saveData.SetField("Scene", toScene.name);
             _saveData.SetField("Arena", string.Empty);
