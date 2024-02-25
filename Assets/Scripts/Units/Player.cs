@@ -209,6 +209,19 @@ namespace Samurai
             EquipRangeWeapon(RangeWeapon);
             MeleeWeaponBindings();            
         }
+        public void SetupPlayer(UnitStatsStruct unitStats)
+        {
+            UnitStats = unitStats;
+        }
+        public void SetupPlayer(UnitBuffsStruct unitBuffs)
+        {
+            UnitBuffs = unitBuffs;
+        }
+        public void SetupPlayer(PlayerBuffsStruct playerBuffs)
+        {
+            PlayerBuffs = playerBuffs;
+        }
+
         // Player only
         public void Heal(int hp)
         {

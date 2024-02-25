@@ -18,6 +18,7 @@ namespace Samurai
         private void Start()
         {
             LoadPlayerPosition();
+            LoadPlayerStats();
             ManageArena();
                        
         }
@@ -33,6 +34,12 @@ namespace Samurai
             _player.UnitPhysics.enabled = false;
             _player.transform.position = SaveLoadManager.CurrentPlayerPosition;
             _player.UnitPhysics.enabled = true;
+        }
+        private void LoadPlayerStats()
+        {
+            _player.SetupPlayer(SaveLoadManager.PlayerStats);
+            _player.SetupPlayer(SaveLoadManager.PlayerUnitBuffs);
+            _player.SetupPlayer(SaveLoadManager.PlayerOnlyBuffs);
         }
         private void ManageArena()
         {

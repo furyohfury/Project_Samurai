@@ -22,6 +22,9 @@ namespace Samurai
         public static string CurrentScene;
         public static string CurrentArena;
         public static bool CurrentArenaIsFinished;
+        public static UnitStatsStruct PlayerStats;
+        public static UnitBuffsStruct PlayerUnitBuffs;
+        public static PlayerBuffsStruct PlayerOnlyBuffs;
 
         public static void UpdateSaveFile()
         {
@@ -160,9 +163,16 @@ namespace Samurai
         public static void LoadLastSave()
         {
             _saveData = new(File.ReadAllText(_saveDataPath));
-            if (_saveData.GetField("Player") != null)
+
+            // Player
+            var playerJSON = _saveData.GetField("Player");
+            if (playerJSON != null)
             {
                 CurrentPlayerPosition = LoadPlayerTransform();
+                PlayerStats = LoadStats<UnitStatsStruct>(playerJSON, "UnitStats");
+                PlayerUnitBuffs = LoadStats<UnitBuffsStruct>(playerJSON, "UnitBuffs");
+                PlayerOnlyBuffs = LoadStats<PlayerBuffsStruct>(playerJSON, "PlayerBuffs");
+
             }
             else
             {
@@ -170,6 +180,7 @@ namespace Samurai
             }
 
 
+            // Arena
             if (_saveData.GetField(out string arenaName, "Arena", string.Empty))
             {
                 CurrentArena = arenaName;
@@ -203,6 +214,22 @@ namespace Samurai
             playerPos.y = position.GetField(out float y, "y", 0) ? y : 0;
             playerPos.z = position.GetField(out float z, "z", 0) ? z : 0;
             return playerPos;
+        }
+        private static T LoadStats<T>(JSONObject unitJsonObj, string fieldName)
+        {
+            var unitStatsJsonObj = unitJsonObj.GetField(fieldName);
+
+            // Reflections SetField doesnt work with structs
+            T stats = (T)Activator.CreateInstance(typeof(T));
+            object box = stats;
+            var ussFields = stats.GetType().GetFields();            
+            for (var i = 0; i < unitStatsJsonObj.count; i++)
+            {
+                var field = ussFields.Single((ussfield) => ussfield.Name == unitStatsJsonObj.keys[i]);
+                if (unitStatsJsonObj.list[i].isInteger) field.SetValue(box, (int) unitStatsJsonObj.list[i].intValue);
+                else if (unitStatsJsonObj.list[i].isNumber) field.SetValue(box, (float) unitStatsJsonObj.list[i].floatValue);
+            }
+            return (T)box;
         }
         #endregion
 
