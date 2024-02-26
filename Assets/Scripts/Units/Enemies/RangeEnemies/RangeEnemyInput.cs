@@ -43,7 +43,7 @@ namespace Samurai
             }
 
             // Is there an obstacle on the way. Obstacle layer is 7
-            if (Physics.Raycast(transform.position, Player.transform.position - transform.position, out RaycastHit hit, AttackRange, 1 << 7)
+            if (Physics.Raycast(transform.position, Player.transform.position - transform.position, out RaycastHit hit, AttackRange, Constants.ObstacleLayer)
                 && (hit.transform.TryGetComponent(out Obstacle _)
                     || (hit.transform.TryGetComponent(out ColorObstacle colObstacle) && colObstacle.CurrentColor != Unit.CurrentColor)))
             {

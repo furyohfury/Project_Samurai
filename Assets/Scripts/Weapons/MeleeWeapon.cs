@@ -46,6 +46,10 @@ namespace Samurai
                 _parryFeedback?.PlayFeedbacks();
                 OnParry?.Invoke();
             }
+            else if (other.TryGetComponent(out Obstacle _) || other.TryGetComponent(out ColorObstacle _))
+            {
+                _hitbox.enabled = false;
+            }
         }        
         /* private void OnTriggerExit(Collider other)
         {

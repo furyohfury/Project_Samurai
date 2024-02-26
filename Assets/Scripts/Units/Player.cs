@@ -28,6 +28,8 @@ namespace Samurai
 
         public bool CanShoot { get; set; } = true;
 
+        public bool CanTurn {get; private set;} = true;
+
         #region UnityMethods
         private void Start()
         {
@@ -141,8 +143,10 @@ namespace Samurai
         }
         public void InMeleeAttack(bool isInMeleeAttack)
         {
-            CanMove = !isInMeleeAttack;
-            CanShoot = !isInMeleeAttack;
+            // CanMove = !isInMeleeAttack;
+            // CanShoot = !isInMeleeAttack;
+            // CanTurn = !isInMeleeAttack;
+            CanMove = CanShoot = CanTurn = !isInMeleeAttack;
         }
 
         // Parry

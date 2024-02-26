@@ -37,6 +37,15 @@ namespace Samurai
                 return distanceToPlayer.sqrMagnitude < PlayerSpotRange * PlayerSpotRange;
             }
         }
+        protected bool CanSeePlayer
+        {
+            get
+            {
+                return !Physics.Raycast(transform.position, Player.transform.position, out RaycastHit _, 
+                    PlayerSpotRange, 
+                        Constants.ObstacleLayer)
+            }
+        }
 
         //Attacking
         [SerializeField]
@@ -178,7 +187,7 @@ namespace Samurai
         public void GeneralAICycle()
         {
             if (SpottedPlayer) BattleCycle();
-            else SpottedPlayer = PlayerIsInSpotRange;
+            else SpottedPlayer = (PlayerIsInSpotRange && CanSeePlayer);
             ActionByState();
         }
         /// <summary>
