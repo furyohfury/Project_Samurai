@@ -13,6 +13,8 @@ namespace Samurai
         [SerializeField]
         private EnemyPool EnemyPool;
 
+        private bool _aggroed = false;
+
         private void Awake()
         {
             if (EnemyPool == null) Debug.LogError($"AIManager {gameObject.name} doesnt have an EnemyPool");
@@ -28,9 +30,19 @@ namespace Samurai
                 foreach (var enemy in EnemyPool.EnemyList)
                 {
                     if (enemy != null && enemy.UnitInput.enabled) (enemy.UnitInput as EnemyInput).GeneralAICycle();
+                    if (!_aggroed && (enemy.UnitInput as EnemyInput).SpottedPlayer)) AggroAllEnemies();
                 }
                 yield return new WaitForFixedUpdate();
             }
+        }
+        
+        private void AggroAllEnemies()
+        {
+            foreach(var enemy in EnemyPool.EnemyList)
+            {
+                if (enemy != null && enemy.UnitInput.enabled) (enemy.UnitInput as EnemyInput).SetSpottedPlayer(true);
+            }
+            _aggroed = true;
         }
     }
 }

@@ -7,9 +7,15 @@ namespace Samurai
 {
     public abstract class Enemy : Unit
     {
+        [SerializeField, Space]
+        protected GameObject[] HealthPacksPrefabs;
+        [SerializeField, Range(0, 1f)]
+        private float _hpPackDropChance = 0.2f;
+
         private EnemyPool EnemyPool;
 
         protected MMHealthBar HPBar;
+        
 
         #region UnityMethods
         protected void OnEnable()
@@ -34,6 +40,8 @@ namespace Samurai
 
             EnemyPool = GetComponentInParent<EnemyPool>();
             if (EnemyPool == null) Debug.LogError($"Enemy {gameObject.name} didnt find its EnemyPool");
+
+            if (HealthPacksPrefabs.Length <= 0) Debug.LogWarning($"Enemy {gameObject.name} doesnt have droppable healthpacks");
         }
 
         #region GetDamaged
@@ -45,10 +53,25 @@ namespace Samurai
         #endregion
 
         #region Death
+        public override void Die()
+        {
+            base.Die();
+            TryToDropHpPack();
+        }
         public override void DiscardUnit()
         {
             EnemyPool.RemoveEnemyFromPool(this);
             Destroy(this.gameObject);
+        }
+
+        private void TryToDropHpPack()
+        {
+            if (Random.value > _hpPackDropChance || HealthPacksPrefabs.Length <= 0) return;
+            if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, 20f, Constants.FloorLayer))
+            {
+                GameObject hpPack = HealthPacksPrefabs[Random.Range(0, HealthPacksPrefabs.Length - 1)];
+                Instantiate(hpPack, hit.point, Quaternion.Euler(Vector3.zero));
+            }
         }
         #endregion
 

@@ -119,7 +119,7 @@ namespace Samurai
             this.transform.rotation = DefaultRotation;
 
             // Raycast floor. Floor layer is 6
-            if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, 20f, 1 << 6))
+            if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, 20f, Constants.FloorLayer))
             {
                 transform.parent = null;
                 transform.position = hit.point;

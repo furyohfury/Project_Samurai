@@ -24,7 +24,9 @@ namespace Samurai
         public Vector3 Target { get; protected set; }
 
         // Spotting        
-        protected bool SpottedPlayer = false;
+        public bool SpottedPlayer {get; protected set} = false;
+        public void SetSpottedPlayer(bool value) => SpottedPlayer = value;
+
         [SerializeField, Space]
         protected float PlayerSpotRange;
         protected bool PlayerIsInSpotRange
