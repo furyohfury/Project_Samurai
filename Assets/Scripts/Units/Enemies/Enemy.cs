@@ -75,12 +75,13 @@ namespace Samurai
         }
         #endregion
 
-
+#if UNITY_EDITOR
         private void OnDrawGizmos()
         {
             Gizmos.color = Color.red;
             Gizmos.DrawRay(transform.position + Vector3.up * 2, Vector3.down);
         }
+#endif
         /// <summary>
         /// Abstract
         /// </summary>

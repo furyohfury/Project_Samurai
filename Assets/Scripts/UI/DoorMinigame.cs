@@ -1,4 +1,5 @@
-﻿using MoreMountains.Tools;
+﻿using MoreMountains.Feedbacks;
+using MoreMountains.Tools;
 using System;
 using System.Collections;
 using UnityEngine;
@@ -11,43 +12,66 @@ namespace Samurai
     {
         [Inject]
         private Player _player;
-        private MMProgressBar _progressBar;
-        private BoxCollider _boxCollider;
 
-        
+        // Bump event is connected to sound and camera aoom
+        private MMProgressBar _progressBar;
+        [SerializeField, Tooltip("Doesnt work now")]
+        private float _decreasingSpeed = 0.0001f;
+        private BoxCollider _boxCollider;
+        [SerializeField]
+        private Canvas _canvas;
+
+        [SerializeField, Space]
+        private MMF_Player _arrowDownFeedback;
+        [SerializeField]
+        private MMF_Player _addValueFeedback;
+
+
         private void Awake()
         {
             _progressBar = GetComponentInChildren<MMProgressBar>();
-            _progressBar.gameObject.SetActive(false);
+            
 
             _boxCollider = GetComponent<BoxCollider>();
+            
+        }
+        private void Start()
+        {
+            _canvas.gameObject.SetActive(false);
             _boxCollider.isTrigger = true;
         }
         private void Update()
         {
             if (_progressBar.BarProgress >= 0.95f)
             {
-                _progressBar.gameObject.SetActive(false);
+                _canvas.gameObject.SetActive(false);
                 (_player.UnitInput as PlayerInput).PlayerControls.DoorMinigameMap.Action.performed -= AddValue;
                 (_player.UnitInput as PlayerInput).PlayerControls.PlayerMap.Enable();
-                
+                OnFinishedDoorMinigame?.Invoke();
                 Destroy(this);
             }
-
-            _progressBar.UpdateBar01(-0.1f * Time.deltaTime);
+            // _progressBar.UpdateBar01(_progressBar.BarProgress - _decreasingSpeed);
         }
         private void OnTriggerEnter(Collider other)
         {
-            _progressBar.gameObject.SetActive(true);
-            (_player.UnitInput as PlayerInput).PlayerControls.PlayerMap.Disable(); 
-            (_player.UnitInput as PlayerInput).PlayerControls.DoorMinigameMap.Action.performed += AddValue;
-            _boxCollider.enabled = false;
+            if (other.TryGetComponent(out Player _))
+            {
+                _canvas.gameObject.SetActive(true);
+                (_player.UnitInput as PlayerInput).PlayerControls.PlayerMap.Disable();
+                (_player.UnitInput as PlayerInput).PlayerControls.DoorMinigameMap.Action.performed += AddValue;
+                _boxCollider.enabled = false;
+                _arrowDownFeedback?.PlayFeedbacks();
+            }
+            
         }
 
 
         private void AddValue(CallbackContext _)
         {
-            _progressBar.UpdateBar01(0.1f * Time.deltaTime);
+            _progressBar.UpdateBar01(_progressBar.BarProgress + 0.1f);
+            _addValueFeedback?.PlayFeedbacks();
         }
+
+        public event SimpleHandle OnFinishedDoorMinigame;
     }
 }
