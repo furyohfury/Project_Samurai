@@ -24,7 +24,7 @@ namespace Samurai
         public Vector3 Target { get; protected set; }
 
         // Spotting        
-        public bool SpottedPlayer {get; protected set} = false;
+        public bool SpottedPlayer { get; protected set; } = false;
         public void SetSpottedPlayer(bool value) => SpottedPlayer = value;
 
         [SerializeField, Space]
@@ -41,9 +41,9 @@ namespace Samurai
         {
             get
             {
-                return !Physics.Raycast(transform.position, Player.transform.position, out RaycastHit _, 
-                    PlayerSpotRange, 
-                        Constants.ObstacleLayer)
+                return !Physics.Raycast(transform.position, Player.transform.position, out RaycastHit _,
+                    PlayerSpotRange,
+                        Constants.ObstacleLayer);
             }
         }
 

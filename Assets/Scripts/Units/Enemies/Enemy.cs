@@ -67,14 +67,20 @@ namespace Samurai
         private void TryToDropHpPack()
         {
             if (Random.value > _hpPackDropChance || HealthPacksPrefabs.Length <= 0) return;
-            if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, 20f, Constants.FloorLayer))
+            if (Physics.Raycast(transform.position + Vector3.up * 2, Vector3.down, out RaycastHit hit, 20f, Constants.FloorLayer))
             {
                 GameObject hpPack = HealthPacksPrefabs[Random.Range(0, HealthPacksPrefabs.Length - 1)];
-                Instantiate(hpPack, hit.point, Quaternion.Euler(Vector3.zero));
+                Instantiate(hpPack, hit.point + Vector3.up * 0.5f, Quaternion.Euler(Vector3.zero));
             }
         }
         #endregion
 
+
+        private void OnDrawGizmos()
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawRay(transform.position + Vector3.up * 2, Vector3.down);
+        }
         /// <summary>
         /// Abstract
         /// </summary>

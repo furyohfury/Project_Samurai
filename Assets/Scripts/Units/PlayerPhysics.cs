@@ -50,7 +50,7 @@ namespace Samurai
             cursorPosition = new Vector3(cursorPosition.x, this.transform.position.y, cursorPosition.z);
             transform.LookAt(cursorPosition); */
 
-            if (!(Unit as Player)CanTurn) return;
+            if (!(Unit as Player).CanTurn) return;
             // Math if too hard (not performance-wise tho), is there easier calculation?
             Ray ray = _camera.ScreenPointToRay(Mouse.current.position.ReadValue());
             if (Physics.Raycast(ray, out RaycastHit hit, 1 << 6))

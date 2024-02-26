@@ -30,7 +30,7 @@ namespace Samurai
                 foreach (var enemy in EnemyPool.EnemyList)
                 {
                     if (enemy != null && enemy.UnitInput.enabled) (enemy.UnitInput as EnemyInput).GeneralAICycle();
-                    if (!_aggroed && (enemy.UnitInput as EnemyInput).SpottedPlayer)) AggroAllEnemies();
+                    if (!_aggroed && (enemy.UnitInput as EnemyInput).SpottedPlayer) AggroAllEnemies();
                 }
                 yield return new WaitForFixedUpdate();
             }
