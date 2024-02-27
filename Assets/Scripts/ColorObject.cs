@@ -11,6 +11,11 @@ namespace Samurai
 
         [SerializeField]
         protected Renderer[] MeshForColorChange;
+        [ContextMenu("Get all mesh from children")]
+        public void GetAllMeshFromChildren()
+        {
+            MeshForColorChange = GetComponentsInChildren<Renderer>();
+        }
 
         [SerializeField]
         protected MaterialColorDictionary MaterialColorsDict;
