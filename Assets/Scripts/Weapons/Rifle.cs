@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 namespace Samurai
 {
-    public class Rifle : RangeWeapon
+    public class Rifle : RangeWeapon, IRangePickableWeapon
     {
         [SerializeField, Space]
         private int _burstNumberOfShells = 5;
@@ -21,6 +21,10 @@ namespace Samurai
 
         // public override Vector3 WeaponRotationWhenPicked => new Vector3(0, 60, 180);
         public override Vector3 WeaponRotationWhenPicked => new Vector3(-11, 90, 90);
+
+        [SerializeField, Space]
+        private MMF_Player _glowingFeedback;
+        public MMF_Player GlowingFeedback { get => _glowingFeedback; }
 
         public override void RangeAttack()
         {

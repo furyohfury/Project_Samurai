@@ -17,6 +17,9 @@ namespace Samurai
         private MMProgressBar _progressBar;
         [SerializeField, Tooltip("Doesnt work now")]
         private float _decreasingSpeed = 0.0001f;
+        [SerializeField]
+        private float _maxAddValue = 0.15f;
+
         private BoxCollider _boxCollider;
         [SerializeField]
         private Canvas _canvas;
@@ -68,7 +71,7 @@ namespace Samurai
 
         private void AddValue(CallbackContext _)
         {
-            _progressBar.UpdateBar01(_progressBar.BarProgress + 0.1f);
+            _progressBar.UpdateBar01(_progressBar.BarProgress + UnityEngine.Random.Range(0, _maxAddValue));
             _addValueFeedback?.PlayFeedbacks();
         }
 

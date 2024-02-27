@@ -740,8 +740,12 @@ MonoBehaviour:
   _numberOfBulletsForPlayer: 2147483647
   EnemyShootingDelay: 0
   PlayerShootingDelay: 0.5
-  WeaponProjectilePrefab: {fileID: 8827768608434931341, guid: 63d6fa4f5e22add409b31b44b4746215, type: 3}
+  WeaponProjectilePrefab: {fileID: 8827768608434931341, guid: 3bccae5e596adfe428a80979030e8fc9, type: 3}
   _isPickable: 1
+  ProjectileStats:
+    Damage: 0
+    ProjectileSpeed: 0
+    ProjectileScale: 0
   PlayerProjectileStats:
     Damage: 2
     ProjectileSpeed: 4
@@ -751,6 +755,8 @@ MonoBehaviour:
     ProjectileSpeed: 2
     ProjectileScale: 1
   _animController: {fileID: 0}
+  _mesh: []
+  ShootingFeedbacks: {fileID: 0}
 --- !u!1 &4562552105092029558
 GameObject:
   m_ObjectHideFlags: 0

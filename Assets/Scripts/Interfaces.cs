@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using MoreMountains.Feedbacks;
+using System.Collections;
 using UnityEngine;
 
 namespace Samurai
@@ -48,6 +49,10 @@ namespace Samurai
         RangeWeapon RangeWeapon { get; }
         bool CanShoot {get;}
         Transform RangeWeaponSlot {get;}
+    }
+    public interface IRangePickableWeapon
+    {
+        MMF_Player GlowingFeedback { get; }
     }
     public interface IMeleeWeapon
     {

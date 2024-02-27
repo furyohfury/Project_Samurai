@@ -80,7 +80,7 @@ namespace Samurai
         }
         #endregion
 
-        //Player only
+        //Player only. PickableWeapon
         #region PickableWeapon
         private RangeWeapon _pickableWeapon;
         public RangeWeapon PickableWeapon

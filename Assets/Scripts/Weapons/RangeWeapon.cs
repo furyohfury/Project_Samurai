@@ -54,6 +54,11 @@ namespace Samurai
         }
         [SerializeField]
         protected Renderer[] _mesh;
+        [ContextMenu("Get all mesh from children")]
+        public void GetAllMeshFromChildren()
+        {
+            _mesh = GetComponentsInChildren<Renderer>();
+        }
 
         [SerializeField, Space]
         protected MMFeedbacks ShootingFeedbacks;
@@ -62,7 +67,7 @@ namespace Samurai
         #region Unity_Methods
         protected void Awake()
         {
-            _mesh = GetComponentsInChildren<Renderer>();
+            if (_mesh == null) _mesh = GetComponentsInChildren<Renderer>();
         }
         protected virtual void OnEnable()
         {
@@ -84,9 +89,13 @@ namespace Samurai
         {            
             Owner = owner;
             if (owner == null) return;
-            if (owner.GetType() == typeof(Player)) ProjectileStats = PlayerProjectileStats;
+
+            if (owner is Player) ProjectileStats = PlayerProjectileStats;
             else ProjectileStats = EnemyProjectileStats;
-            transform.SetLocalPositionAndRotation(WeaponPositionWhenPicked, Quaternion.Euler(WeaponRotationWhenPicked));
+
+            if (owner is Player) transform.SetLocalPositionAndRotation(WeaponPositionWhenPicked, Quaternion.Euler(WeaponRotationWhenPicked));
+
+            if (this is IRangePickableWeapon pickable && pickable.GlowingFeedback.IsPlaying) pickable.GlowingFeedback?.StopFeedbacks();
         }
         /// <summary>
         /// Must be last in RangeAttack()
@@ -123,6 +132,8 @@ namespace Samurai
             {
                 transform.parent = null;
                 transform.position = hit.point;
+
+                if (this is IRangePickableWeapon pickable) pickable.GlowingFeedback?.PlayFeedbacks();
             }
             else
             {
