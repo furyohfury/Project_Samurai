@@ -88,14 +88,20 @@ namespace Samurai
         {
             _floorArray = FindObjectsOfType<GameObject>().Where((go) => go.transform.parent == _floorParent).ToArray();
             if (_floorArray.Length <= 0) Debug.LogError("No floor found in the Floors");
+
+            if (_floorArray.Where((floor) => floor.layer != Constants.FloorLayer).ToArray().Length > 0) 
+                Debug.LogError($"All floors in {gameObject.name} must have floor layer");
+
+            if (_floorArray.Where((floor) => !floor.isStatic).ToArray().Length > 0)
+                Debug.LogError($"All floors in {gameObject.name} must be static");
         }
         private void FloorLayerCheck()
         {
             foreach (var go in _floorArray)
             {
-                if (go.layer != 6)
+                if (go.layer != Constants.FloorLayer)
                 {
-                    go.layer = 6;
+                    go.layer = Constants.FloorLayer;
                     Debug.LogWarning($"Floor {gameObject.name} had no floor layer. It's been fixed for this session but needs to be done after that");
                 }
             }

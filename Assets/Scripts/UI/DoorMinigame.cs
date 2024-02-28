@@ -11,7 +11,7 @@ namespace Samurai
     public class DoorMinigame : MonoBehaviour
     {
         [Inject]
-        private Player _player;
+        private readonly Player _player;
 
         // Bump event is connected to sound and camera aoom
         private MMProgressBar _progressBar;
@@ -23,6 +23,8 @@ namespace Samurai
         private BoxCollider _boxCollider;
         [SerializeField]
         private Canvas _canvas;
+        [SerializeField]
+        private GameObject[] _objectsSpawnOnOpening;
 
         [SerializeField, Space]
         private MMF_Player _arrowDownFeedback;
@@ -33,10 +35,10 @@ namespace Samurai
         private void Awake()
         {
             _progressBar = GetComponentInChildren<MMProgressBar>();
-            
+
 
             _boxCollider = GetComponent<BoxCollider>();
-            
+
         }
         private void Start()
         {
@@ -51,6 +53,8 @@ namespace Samurai
                 (_player.UnitInput as PlayerInput).PlayerControls.DoorMinigameMap.Action.performed -= AddValue;
                 (_player.UnitInput as PlayerInput).PlayerControls.PlayerMap.Enable();
                 OnFinishedDoorMinigame?.Invoke();
+                foreach (var obj in _objectsSpawnOnOpening) obj.SetActive(true);
+
                 Destroy(this);
             }
             // _progressBar.UpdateBar01(_progressBar.BarProgress - _decreasingSpeed);
@@ -65,7 +69,7 @@ namespace Samurai
                 _boxCollider.enabled = false;
                 _arrowDownFeedback?.PlayFeedbacks();
             }
-            
+
         }
 
 
