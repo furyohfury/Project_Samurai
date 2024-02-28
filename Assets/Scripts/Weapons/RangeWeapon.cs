@@ -95,7 +95,7 @@ namespace Samurai
 
             if (owner is Player) transform.SetLocalPositionAndRotation(WeaponPositionWhenPicked, Quaternion.Euler(WeaponRotationWhenPicked));
 
-            if (this is IRangePickableWeapon pickable && pickable.GlowingFeedback.IsPlaying) pickable.GlowingFeedback?.StopFeedbacks();
+            if (this is IRangePickableWeapon pickable) pickable.GlowingFeedback?.StopFeedbacks();
         }
         /// <summary>
         /// Must be last in RangeAttack()

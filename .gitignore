@@ -26,7 +26,11 @@
 /[Aa]ssets/Resources/
 /Assets/Low Polygon potions Pack/
 /Assets/MyAssets/
-
+/Assets/Robot_soldier/
+/Assets/Baseball Bats/
+/Assets/SF Weapons MLX/
+/Assets/Survival Melee Weapons/
+/Assets/Sci Fi Gun Light/
 
 
 # MemoryCaptures can get excessive in size.
@@ -65,6 +69,11 @@ ExportedObj/
 *.mdb
 *.opendb
 *.VC.db
+*.mat
+*.anim
+*.fbx
+*.png
+*.jpg
 
 # Unity3D generated meta files
 *.pidb.meta

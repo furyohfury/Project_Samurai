@@ -20,6 +20,7 @@ namespace Samurai
         public override void RangeAttack()
         {
             if (!CanShoot || Owner == null) return;
+            SetShootingDelay();
             for (var i = 0; i < _numberOfShells; i++)
             {
                 var proj = Instantiate(WeaponProjectilePrefab);
@@ -28,9 +29,8 @@ namespace Samurai
                 proj.transform.eulerAngles = new Vector3(
                     0, Owner.transform.eulerAngles.y + Random.Range(-_shellAngleSpread, _shellAngleSpread), 0);
             }
-            ShootingFeedbacks?.PlayFeedbacks();
+            ShootingFeedbacks?.PlayFeedbacks();            
             
-            SetShootingDelay();
             CheckIfEmpty();
         }
     }

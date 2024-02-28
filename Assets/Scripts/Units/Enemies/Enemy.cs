@@ -41,7 +41,7 @@ namespace Samurai
             EnemyPool = GetComponentInParent<EnemyPool>();
             if (EnemyPool == null) Debug.LogError($"Enemy {gameObject.name} didnt find its EnemyPool");
 
-            if (HealthPacksPrefabs.Length <= 0) Debug.LogWarning($"Enemy {gameObject.name} doesnt have droppable healthpacks");
+            if (HealthPacksPrefabs == null || HealthPacksPrefabs.Length <= 0) Debug.LogWarning($"Enemy {gameObject.name} doesnt have droppable healthpacks");
         }
 
         #region GetDamaged

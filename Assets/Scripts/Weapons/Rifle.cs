@@ -54,16 +54,17 @@ namespace Samurai
         }
         private IEnumerator ShootBurstCor()
         {
+            SetShootingDelay();
             for (var i = 0; i < _burstNumberOfShells; i++)
             {
                 var proj = Instantiate(WeaponProjectilePrefab);
-                proj.GetComponent<Projectile>().SetProjectileStatsOnShoot(Owner);
+                if (Owner != null) proj.GetComponent<Projectile>().SetProjectileStatsOnShoot(Owner);
                 proj.transform.position = this.transform.position + this.transform.forward * 0.1f;
                 proj.transform.eulerAngles = new Vector3(
                     0, Owner.transform.eulerAngles.y + Random.Range(-_burstShellAngleSpread, _burstShellAngleSpread), 0);
                 yield return new WaitForSeconds(_burstDelayBetweenShots);
             }
-            SetShootingDelay();
+            
             CheckIfEmpty();
         }
     }

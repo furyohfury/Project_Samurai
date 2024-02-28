@@ -4,7 +4,7 @@ using Zenject;
 
 namespace Samurai
 {
-    public class GameManager : MonoInstaller
+    public class DIManager : MonoInstaller
     {
         [SerializeField]
         private Player Player;
