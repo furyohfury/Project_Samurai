@@ -19,6 +19,7 @@ namespace Samurai
 
         protected override void BattleCycle()
         {
+            if (_fleeing) return;
             // Pursuit if not in attack range
             if (!PlayerIsInAttackRange) 
             {
@@ -28,7 +29,7 @@ namespace Samurai
 
             // Trying to flee if low HP
             if (Unit.GetUnitStats().HP <= Unit.GetUnitStats().HP * _hpPercentToTryFlee / 100 &&
-                !_fleeing && !_triedToFlee)
+                && !_triedToFlee)
             {
                 if (Random.value < _chanceToFlee)
                 {
@@ -43,9 +44,10 @@ namespace Samurai
             }
 
             // Is there an obstacle on the way. Obstacle layer is 7
-            if (Physics.Raycast(transform.position, Player.transform.position - transform.position, out RaycastHit hit, AttackRange, Constants.ObstacleLayer)
+            /* if (Physics.Raycast(transform.position, Player.transform.position - transform.position, out RaycastHit hit, AttackRange, Constants.ObstacleLayer)
                 && (hit.transform.TryGetComponent(out Obstacle _)
-                    || (hit.transform.TryGetComponent(out ColorObstacle colObstacle) && colObstacle.CurrentColor != Unit.CurrentColor)))
+                    || (hit.transform.TryGetComponent(out ColorObstacle colObstacle) && colObstacle.CurrentColor != Unit.CurrentColor))) */
+            if (!CanSeePlayer)        
             {
                 AIState = AIStateType.Pursuit;
             }
