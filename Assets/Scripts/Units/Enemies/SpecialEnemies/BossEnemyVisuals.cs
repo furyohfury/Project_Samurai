@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Samurai
 {
-    public class BossEnemyVisuals : EnemyVisuals, IMeleeAttack
+    public class BossEnemyVisuals : EnemyVisuals, IMeleeAttack, IRangeAttack
     {
         // IMeleeAttack
         #region MeleeAttack
@@ -36,7 +36,24 @@ namespace Samurai
         #region RangeAttack
         public void RangeAttack()
         {
-            UnitAnimator.SetTrigger("RangeAttack");
+            StartCoroutine(RecoilMinigun());
+        }
+        private IEnumerator RecoilMinigun()
+        {
+            UnitAnimator.SetBool("RangeAttack", true);
+            yield return new WaitForSeconds(2f);
+            UnitAnimator.SetBool("RangeAttack", false);
+        }
+        #endregion
+
+        #region ChargeAttack
+        public void PrepareChargeAttackAnimation()
+        {
+
+        }
+        public void ChargeAttackAnimation()
+        {
+
         }
         #endregion
     }

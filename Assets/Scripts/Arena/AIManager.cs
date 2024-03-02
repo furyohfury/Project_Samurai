@@ -12,6 +12,8 @@ namespace Samurai
     {
         [SerializeField]
         private EnemyPool EnemyPool;
+        [SerializeField]
+        private float _updateLogicTime;
 
         private bool _aggroed = false;
 
@@ -22,6 +24,7 @@ namespace Samurai
         private void Start()
         {
             StartCoroutine(AILogicManagement());
+            if (EnemyPool.EnemyList.Single((enemy => enemy is BossEnemy)) == null) _updateLogicTime = Time.fixedDeltaTime;
         }
         private IEnumerator AILogicManagement()
         {
@@ -32,7 +35,7 @@ namespace Samurai
                     if (enemy != null && enemy.UnitInput.enabled) (enemy.UnitInput as EnemyInput).GeneralAICycle();
                     if (!_aggroed && (enemy.UnitInput as EnemyInput).SpottedPlayer) AggroAllEnemies();
                 }
-                yield return new WaitForFixedUpdate();
+                yield return new WaitForSeconds(_updateLogicTime);
             }
         }
         

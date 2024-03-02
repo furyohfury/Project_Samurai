@@ -170,6 +170,7 @@ namespace Samurai
             }
             _aiManager.enabled = true;
             _arenaEnterTrigger.enabled = false;
+            _arenaEntryDoorClosingTrigger.enabled = false;
 
             // Saving
             SaveGame(false);

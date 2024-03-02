@@ -30,8 +30,13 @@ namespace Samurai
             base.Bindings();
             EnemyHitbox = GetComponent<CapsuleCollider>();
             Agent = GetComponent<NavMeshAgent>();
-            Agent.speed = Unit.GetUnitStats().MoveSpeed;
+            SetAgentSpeed(Unit.GetUnitStats().MoveSpeed);
         }
+        public void SetAgentSpeed(float speed)
+        {
+            Agent.speed = speed;
+        }
+
 
         #region Movement        
         public override void Movement(Vector3 direction)

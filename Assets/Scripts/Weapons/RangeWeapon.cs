@@ -4,7 +4,6 @@ using UnityEditor.Animations;
 using UnityEngine;
 namespace Samurai
 {
-    [RequireComponent(typeof(Unit))]
     public abstract class RangeWeapon : MonoBehaviour
     {
         [SerializeField]

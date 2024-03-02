@@ -15,8 +15,8 @@ namespace Samurai
 
         [SerializeField]
         protected AIStateType AIState = AIStateType.Idle;
-        [SerializeField]
-        protected float LogicUpdateTime;
+        // [SerializeField]
+        // protected float LogicUpdateTime;
 
         /// <summary>
         /// Main property for this component to set
@@ -43,7 +43,7 @@ namespace Samurai
             {
                 return !Physics.Raycast(transform.position, Player.transform.position, out RaycastHit _,
                     PlayerSpotRange,
-                        Constants.ObstacleLayer);
+                        1 << Constants.ObstacleLayer);
             }
         }
 
@@ -76,7 +76,7 @@ namespace Samurai
         protected Coroutine PatrollingDelayCoroutine;
 
         #region UnityMethods
-        protected void Start()
+        protected virtual void Start()
         {
             List<Vector3> pop = new();
             for (var i = 0; i < PatrollingObjectsPoints.Length; i++)
@@ -93,7 +93,6 @@ namespace Samurai
         #endregion
         public override void Movement()
         {
-
             UnitVisuals.Movement(Target);
             UnitPhysics.Movement(Target);
         }
@@ -143,11 +142,11 @@ namespace Samurai
                     break;
             }
         }
-        protected void IdleAction()
+        protected virtual void IdleAction()
         {
             Target = Vector3.zero;
         }
-        protected void PatrollingAction()
+        protected virtual void PatrollingAction()
         {
             var point = PatrollingPoints[CurrentPatrollingPointIndex];
             point.y = this.transform.position.y;
@@ -166,15 +165,15 @@ namespace Samurai
             yield return new WaitForSeconds(PatrollingIdleDelay + Random.Range(-PatrollingIdleRandomStep, PatrollingIdleRandomStep));
             PatrollingDelayCoroutine = null;
         }
-        protected void PursuitAction()
+        protected virtual void PursuitAction()
         {
             Target = Player.transform.position;
         }
-        protected void FleeAction()
+        protected virtual void FleeAction()
         {
             Target = this.transform.position + Vector3.ClampMagnitude(this.transform.position - Player.transform.position, 5);
         }
-        protected void AttackAction()
+        protected virtual void AttackAction()
         {
             transform.LookAt(new Vector3(Player.transform.position.x, this.transform.position.y, Player.transform.position.z));
             Target = Vector3.zero;

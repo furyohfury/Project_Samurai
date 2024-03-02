@@ -28,8 +28,8 @@ namespace Samurai
             }
 
             // Trying to flee if low HP
-            if (Unit.GetUnitStats().HP <= Unit.GetUnitStats().HP * _hpPercentToTryFlee / 100 &&
-                && !_triedToFlee)
+            if (Unit.GetUnitStats().HP <= Unit.GetUnitStats().HP * _hpPercentToTryFlee / 100
+                    && !_triedToFlee)
             {
                 if (Random.value < _chanceToFlee)
                 {
