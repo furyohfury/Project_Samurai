@@ -1,3 +1,5 @@
+using JetBrains.Annotations;
+using MoreMountains.Feedbacks;
 using System.Collections;
 using UnityEngine;
 
@@ -11,7 +13,7 @@ namespace Samurai
         {
             UnitAnimator.SetTrigger("MeleeAttack");
         }
-        
+
 
         public void OnMeleeAttackAnimationStarted_UnityEvent()
         {
@@ -31,7 +33,7 @@ namespace Samurai
             (Unit as IMeleeWeapon).MeleeWeapon.EnableHitbox(false);
         }
         #endregion
-    
+
         // IRangeAttack
         #region RangeAttack
         public void RangeAttack()
@@ -47,13 +49,45 @@ namespace Samurai
         #endregion
 
         #region ChargeAttack
-        public void PrepareChargeAttackAnimation()
+        [SerializeField]
+        public MMF_Player _chargePrepareFeedback;
+        [SerializeField]
+        public MMF_Player _chargeFeedback;
+        [SerializeField, Space]
+        public GameObject _warningArrow;
+        public void PrepareChargeAttackAnimation(bool began)
         {
-
+            _warningArrow.SetActive(began);
+            if (began) _chargePrepareFeedback?.PlayFeedbacks();
         }
-        public void ChargeAttackAnimation()
+        public void ChargeAttackAnimationStarted()
         {
+            UnitAnimator.SetBool("ChargeAttack", true);
+            _chargeFeedback?.PlayFeedbacks();
+        }
+        public void ChargeAttackAnimationEnded()
+        {
+            UnitAnimator.SetBool("ChargeAttack", false);
+            if (_chargeFeedback.IsPlaying) _chargeFeedback.StopFeedbacks();
+        }
 
+        #endregion
+
+        #region JumpToPlayer
+        [SerializeField]
+        private MMF_Player _jumpStartFeedback;
+        [SerializeField]
+        private MMF_Player _jumpEndFeedback;
+        public void JumpStart()
+        {
+            UnitAnimator.SetBool("Jumping", true);
+            _jumpStartFeedback?.PlayFeedbacks();
+        }
+        public void JumpEnd()
+        {
+            UnitAnimator.SetBool("Jumping", false);
+            if (_jumpStartFeedback.isActiveAndEnabled) _jumpStartFeedback?.StopFeedbacks();
+            _jumpEndFeedback?.PlayFeedbacks();
         }
         #endregion
     }

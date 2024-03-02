@@ -80,10 +80,13 @@ namespace Samurai
 
 
         #region Death
+        [SerializeField, Space]
+        protected MMF_Player DieFeedback;
         public bool DeathAnimationEnded { get; protected set; } = false;
         public void Die()
         {
             if (StepsFeedback.IsPlaying) StepsFeedback.StopFeedbacks();
+            DieFeedback?.PlayFeedbacks();
             UnitAnimator.SetTrigger("Die");
         }
         public void UnitDieAnimationEnded_UnityEvent() //bind w/ all death animation

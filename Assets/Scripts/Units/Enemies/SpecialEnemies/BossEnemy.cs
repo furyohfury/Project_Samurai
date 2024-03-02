@@ -1,3 +1,4 @@
+using DG.Tweening;
 using MoreMountains.Feedbacks;
 using System;
 using System.Collections;
@@ -8,7 +9,7 @@ namespace Samurai
     public class BossEnemy : Enemy, IMeleeAttack, IMeleeWeapon, IRangeAttack, IRangeWeapon
     {
         [Inject]
-        private readonly Player _player;
+        public readonly Player Player;
 
         protected override void Bindings()
         {
@@ -129,17 +130,15 @@ namespace Samurai
         public bool CanChargeAttack = true;
         [SerializeField, Space, Range(0, 5f)]
         private float _chargePrepareTime = 2f;
-        [SerializeField, Range(0, 10f)]
+        [SerializeField, Range(0, 20f)]
         private float _chargeSpeedMultiplier = 5;
-
-        [SerializeField, Space]
-        private GameObject _warningArrow;
+        [SerializeField]
+        private int _maxNumberOfChargeAttacks = 3;
+        [SerializeField]
+        private float _timeBetweenCharges = 1f;
         [SerializeField]
         private MeleeWeapon _chargeMeleeWeapon;
-        [SerializeField]
-        private MMF_Player _startingChargeFeedback;
-        [SerializeField]
-        private MMF_Player _chargeFeedback;
+
         public void ChargeAttack()
         {
             CanMove = false;
@@ -150,43 +149,94 @@ namespace Samurai
         }
         private IEnumerator ChargeAttackCoroutine()
         {
-            // Prepare            
-            _warningArrow.SetActive(true);
-            _startingChargeFeedback?.PlayFeedbacks();
-
-            (UnitVisuals as BossEnemyVisuals).PrepareChargeAttackAnimation();
-
-            float count = 0f;
-            while (count < _chargePrepareTime)
+            // _chargeMeleeWeapon.gameObject.SetActive(true);
+            for (var i = 0; i < UnityEngine.Random.Range(1, _maxNumberOfChargeAttacks); i++)
             {
-                // Look at player
-                Vector3 v = new(_player.transform.position.x, this.transform.position.y, _player.transform.position.z);
-                transform.LookAt(v);
-                count += Time.deltaTime;
-                yield return null;
-            }
-            _warningArrow.SetActive(false);
+                // Prepare                
+                (UnitVisuals as BossEnemyVisuals).PrepareChargeAttackAnimation(true);
 
-            // Charge
-            _chargeMeleeWeapon.gameObject.SetActive(true);
-            _chargeMeleeWeapon.EnableHitbox(true);
-            (UnitVisuals as BossEnemyVisuals).ChargeAttackAnimation();
-            _chargeFeedback?.PlayFeedbacks();
-            Vector3 forward = transform.forward;
-            while (!(UnitPhysics as BossEnemyPhysics).CrashedIntoWall)
-            {
-                Physics.Raycast(transform.position, forward, out RaycastHit hit, float.MaxValue, 1 << Constants.ObstacleLayer);
-                transform.position += Time.deltaTime * UnitStats.MoveSpeed * _chargeSpeedMultiplier * forward;
-                yield return null;
-            }
-            (UnitPhysics as BossEnemyPhysics).CrashedIntoWall = false;
+                float count = 0f;
+                while (count < _chargePrepareTime)
+                {
+                    // Look at player
+                    Vector3 v = new(Player.transform.position.x, this.transform.position.y, Player.transform.position.z);
+                    transform.LookAt(v);
+                    count += Time.deltaTime;
+                    yield return null;
+                }
+                (UnitVisuals as BossEnemyVisuals).PrepareChargeAttackAnimation(false);
 
-            _chargeMeleeWeapon.EnableHitbox(false);
+                // Charge
+                _chargeMeleeWeapon.EnableHitbox(true);
+                (UnitVisuals as BossEnemyVisuals).ChargeAttackAnimationStarted();
+
+                // Getting end position in wall
+                Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, float.MaxValue, 1 << Constants.ObstacleLayer);
+                Vector3 endpos = hit.point;
+                endpos.y = transform.position.y;
+
+                // Moving
+                while ((transform.position - endpos).sqrMagnitude > 25f)
+                {
+                    transform.position = Vector3.MoveTowards(transform.position, endpos, UnitStats.MoveSpeed * _chargeSpeedMultiplier * Time.deltaTime);
+                    yield return null;
+                }
+
+                _chargeMeleeWeapon.EnableHitbox(false);
+                (UnitVisuals as BossEnemyVisuals).ChargeAttackAnimationEnded();
+
+                yield return new WaitForSeconds(_timeBetweenCharges);
+            }
+
 
             CanMove = true;
             CanShoot = true;
             CanHit = true;
             CanChargeAttack = true;
+        }
+        #endregion
+
+        #region JumpToPlayer
+        [SerializeField, Space]
+        private float _jumpHeight = 10f;
+        [SerializeField]
+        private float _jumpDuration = 2f;
+        [SerializeField]
+        private AnimationCurve _jumpCurve;
+        [SerializeField]
+        private MeleeWeapon _jumpMeleeWeapon;
+        
+        public void JumpToPlayer()
+        {
+            CanShoot = false;
+            CanMove = false;
+            CanHit = false;
+            CanChargeAttack = false;
+            StartCoroutine(JumpToPlayerCor());
+        }
+        private IEnumerator JumpToPlayerCor()
+        {
+            var startPos = transform.position;
+            var endPos = Player.transform.position;
+            (UnitVisuals as BossEnemyVisuals).JumpStart();
+            // DOTween.To(() => transform.position.x, (x) => transform.position.x = x, playerPos.x, _jumpDuration);
+            float time = 0;
+            while (time <  _jumpDuration)
+            {
+                time += Time.deltaTime;
+                Vector3 pos = Vector3.Lerp(startPos, endPos, time / _jumpDuration);
+                pos.y += _jumpCurve.Evaluate(time / _jumpDuration) * _jumpHeight;
+                transform.position = pos;
+                yield return null;
+            }            
+            (UnitVisuals as BossEnemyVisuals).JumpEnd();
+            CanShoot = true;
+            CanMove = true;
+            CanHit = true;
+            CanChargeAttack = true;
+            _jumpMeleeWeapon.EnableHitbox(true);
+            yield return new WaitForSeconds(0.3f);
+            _jumpMeleeWeapon.EnableHitbox(false);
         }
         #endregion
 

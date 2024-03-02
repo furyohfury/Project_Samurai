@@ -33,27 +33,34 @@ namespace Samurai
 
         private void SpecialAttack()
         {
-            int r = UnityEngine.Random.Range(0, 2);
+            int r = UnityEngine.Random.Range(0, 3);
+            // int r = 2;
             switch (r)
             {
                 case 0:
-                    if ((Unit as IRangeWeapon).CanShoot && (Unit as BossEnemy).RangeWeapon.CanShoot) RangeAttack();
+                    if ((Unit as IRangeWeapon).CanShoot && (Unit as BossEnemy).RangeWeapon.CanShoot)
+                    {
+                        var p = Player.transform.position;
+                        p.y = transform.position.y;
+                        transform.LookAt(p);
+                        RangeAttack();
+                    }
                     break;
                 case 1:
-                    if ((Unit as BossEnemy).CanChargeAttack && !(Unit as BossEnemy).RangeWeapon.CanShoot) ChargeAttack();
+                    if ((Unit as BossEnemy).CanChargeAttack) ChargeAttack();
                     break;
                 case 2:
-                    DistantSlashAttack();
+                    if (Unit.CanMove) JumpToPlayer();
                     break;
                 case 3:
-                    ChangeLocation();
+                    DistantSlashAttack();                    
                     break;
             }
         }
 
-        private void ChangeLocation()
+        private void JumpToPlayer()
         {
-            
+            (Unit as BossEnemy).JumpToPlayer();
         }
 
         private void DistantSlashAttack()
