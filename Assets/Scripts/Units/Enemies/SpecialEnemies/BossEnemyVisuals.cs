@@ -1,5 +1,6 @@
 using JetBrains.Annotations;
 using MoreMountains.Feedbacks;
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -7,6 +8,41 @@ namespace Samurai
 {
     public class BossEnemyVisuals : EnemyVisuals, IMeleeAttack, IRangeAttack
     {
+        #region UnityMethods
+        protected override void Start()
+        {
+            base.Start();
+            StartSwappingColors();
+        }
+        #endregion
+
+
+        [SerializeField, Space]
+        private float _swapColorMaxTime = 9f;
+        [SerializeField]
+        private MMF_Player _swapColorFeedback;
+        #region SwapColor
+        private void StartSwappingColors() => StartCoroutine(SwapColorsCor());
+
+        private IEnumerator SwapColorsCor()
+        {
+            while (true)
+            {
+                _swapColorFeedback?.PlayFeedbacks();
+                if (CurrentColor == PhaseColor.Blue)
+                {
+                    ChangeColor(PhaseColor.Red);
+                }
+                else
+                {
+                    ChangeColor(PhaseColor.Blue);
+                }
+                yield return new WaitForSeconds(_swapColorMaxTime);
+            }            
+        }
+        #endregion
+
+
         // IMeleeAttack
         #region MeleeAttack
         public void MeleeAttack()
@@ -90,5 +126,6 @@ namespace Samurai
             _jumpEndFeedback?.PlayFeedbacks();
         }
         #endregion
+        
     }
 }

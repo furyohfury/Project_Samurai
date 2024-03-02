@@ -1,5 +1,6 @@
 using DG.Tweening;
 using MoreMountains.Feedbacks;
+using MoreMountains.Tools;
 using System;
 using System.Collections;
 using UnityEngine;
@@ -10,6 +11,8 @@ namespace Samurai
     {
         [Inject]
         public readonly Player Player;
+        [SerializeField]
+        private MMProgressBar _hpBar;
 
         protected override void Bindings()
         {
@@ -18,7 +21,10 @@ namespace Samurai
             if (RangeWeapon == null) RangeWeapon = GetComponentInChildren<RangeWeapon>();
             EquipRangeWeapon(RangeWeapon);
         }
-
+        protected override void ChangeHP(int delta)
+        {
+            base.ChangeHP(delta);
+        }
         // For IMeleeWeapon
         #region GetDamaged
         public override void GetDamagedByMelee(MeleeWeapon weapon)
@@ -48,15 +54,14 @@ namespace Samurai
         {
             if (CanHit)
             {
+                CanHit = false;
                 (UnitVisuals as IMeleeAttack).MeleeAttack();
                 MeleeWeapon.MeleeAttack();
-
                 StartCoroutine(MeleeAttackCD());
             }
         }
         private IEnumerator MeleeAttackCD()
         {
-            CanHit = false;
             yield return new WaitForSeconds(MeleeAttackCooldown);
             CanHit = true;
         }
@@ -205,7 +210,7 @@ namespace Samurai
         private AnimationCurve _jumpCurve;
         [SerializeField]
         private MeleeWeapon _jumpMeleeWeapon;
-        
+
         public void JumpToPlayer()
         {
             CanShoot = false;
@@ -221,14 +226,14 @@ namespace Samurai
             (UnitVisuals as BossEnemyVisuals).JumpStart();
             // DOTween.To(() => transform.position.x, (x) => transform.position.x = x, playerPos.x, _jumpDuration);
             float time = 0;
-            while (time <  _jumpDuration)
+            while (time < _jumpDuration)
             {
                 time += Time.deltaTime;
                 Vector3 pos = Vector3.Lerp(startPos, endPos, time / _jumpDuration);
                 pos.y += _jumpCurve.Evaluate(time / _jumpDuration) * _jumpHeight;
                 transform.position = pos;
                 yield return null;
-            }            
+            }
             (UnitVisuals as BossEnemyVisuals).JumpEnd();
             CanShoot = true;
             CanMove = true;
