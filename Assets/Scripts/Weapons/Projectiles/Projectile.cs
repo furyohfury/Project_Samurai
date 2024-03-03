@@ -21,7 +21,7 @@ namespace Samurai
             Owner = owner;
             ProjectileStats = (owner as IRangeWeapon).RangeWeapon.GetProjectileStats();
             transform.localScale *= ProjectileStats.ProjectileScale;
-            ChangeCurrentColor(owner.CurrentColor);
+            ChangeColor(owner.CurrentColor);
         }
 
 

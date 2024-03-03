@@ -13,8 +13,8 @@ EditorBuildSettings:
     guid: 00c744a71ab12864eaae7cbd69d9a7ab
   - enabled: 1
     path: Assets/Scenes/StartGameScene.unity
-    guid: 9fc0d4010bbf28b4594072e72b8655ab
+    guid: ce1eeed8e9597374ba7597764886cbd2
   - enabled: 1
-    path: Assets/Scenes/ArenaTestScene.unity
-    guid: dd24163657da06240ad443782c8d8486
+    path: Assets/Scenes/TestLevel.unity
+    guid: 9fc0d4010bbf28b4594072e72b8655ab
   m_configObjects: {}

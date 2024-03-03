@@ -8,7 +8,6 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using Zenject;
 
 namespace Samurai
 {
@@ -16,7 +15,7 @@ namespace Samurai
     {
         private static readonly string _saveDataPath = Application.persistentDataPath + "/SaveFile.json";
 
-        public static JSONObject _saveData;
+        public static JSONObject SaveData;
 
         public static Vector3 CurrentPlayerPosition = new();
         public static string CurrentScene;
@@ -33,7 +32,7 @@ namespace Samurai
         {
             if (File.Exists(_saveDataPath))
             {
-                File.WriteAllText(_saveDataPath, _saveData.ToString());
+                File.WriteAllText(_saveDataPath, SaveData.ToString());
             }
         }
 
@@ -54,7 +53,7 @@ namespace Samurai
                     File.WriteAllText(_saveDataPath, string.Empty);
                 }
                 // Buffering save file in SaveLoadManager
-                _saveData = new(File.ReadAllText(_saveDataPath));
+                SaveData = new(File.ReadAllText(_saveDataPath));
             }
             else
             {
@@ -76,24 +75,27 @@ namespace Samurai
         #region Saving
         private static void SceneChanged(Scene fromScene, Scene toScene)
         {
-            if (toScene.name == "MainMenuScene" || toScene.name == "AntiSpill_MainMenuScene" || toScene.name == _saveData.GetField("Scene").stringValue) return;
+            if (toScene.name == "MainMenuScene" || toScene.name == "AntiSpill_MainMenuScene" || (SaveData.GetField(out string endSceneName, "Scene", "") && toScene.name == endSceneName))
+            {
+                return;
+            }
 
-            _saveData.SetField("Scene", toScene.name);
-            _saveData.SetField("Arena", string.Empty);
-            _saveData.SetField("ArenaIsFinished", false);
+            SaveData.SetField("Scene", toScene.name);
+            SaveData.SetField("Arena", string.Empty);
+            SaveData.SetField("ArenaIsFinished", false);
             UpdateSaveFile();
         }
 
         public static void ArenaSaving(string arenaName, bool isArenaFinished, Player player)
         {
 #if UNITY_EDITOR
-            _saveData = new(File.ReadAllText(_saveDataPath));
+            SaveData = new(File.ReadAllText(_saveDataPath));
 #endif
-            _saveData.SetField("Scene", $"{SceneManager.GetActiveScene().name}");
-            _saveData.SetField("Arena", arenaName);
-            _saveData.SetField("ArenaIsFinished", isArenaFinished);
+            SaveData.SetField("Scene", $"{SceneManager.GetActiveScene().name}");
+            SaveData.SetField("Arena", arenaName);
+            SaveData.SetField("ArenaIsFinished", isArenaFinished);
 
-            _saveData.SetField("Player", PlayerJSON(player));
+            SaveData.SetField("Player", PlayerJSON(player));
 
             UpdateSaveFile();
         }
@@ -165,10 +167,10 @@ namespace Samurai
         #region Loading
         public static void LoadLastSave()
         {
-            _saveData = new(File.ReadAllText(_saveDataPath));
+            SaveData = new(File.ReadAllText(_saveDataPath));
 
             // Player
-            var playerJSON = _saveData.GetField("Player");
+            var playerJSON = SaveData.GetField("Player");
             if (playerJSON != null)
             {
                 CurrentPlayerPosition = LoadPlayerTransform();
@@ -184,16 +186,16 @@ namespace Samurai
 
 
             // Arena
-            if (_saveData.GetField(out string arenaName, "Arena", string.Empty))
+            if (SaveData.GetField(out string arenaName, "Arena", string.Empty))
             {
                 CurrentArena = arenaName;
             }
-            if (_saveData.GetField(out bool arenaIsFinished, "ArenaIsFinished", false))
+            if (SaveData.GetField(out bool arenaIsFinished, "ArenaIsFinished", false))
             {
                 CurrentArenaIsFinished = arenaIsFinished;
             }
 
-            if (_saveData.GetField(out string sceneName, "Scene", "MainMenu"))
+            if (SaveData.GetField(out string sceneName, "Scene", "MainMenu"))
             {
                 SceneManager.LoadSceneAsync(sceneName);
 
@@ -209,7 +211,7 @@ namespace Samurai
         // Mb do for rotation and scale
         private static Vector3 LoadPlayerTransform()
         {
-            JSONObject player = _saveData.GetField("Player");
+            JSONObject player = SaveData.GetField("Player");
             JSONObject transform = player.GetField("PlayerTransform");
             JSONObject position = transform.GetField("Position");
             Vector3 playerPos = new();
@@ -248,48 +250,6 @@ namespace Samurai
         }
         #endregion
 
-        public static void Test(string encodedString)
-        {
-            // var encodedString = "{\"field1\": 0.5,\"field2\": \"sampletext\",\"field3\": [1,2,3]}";
-            var jsonObject = new JSONObject(encodedString);
-            AccessData(jsonObject);
-        }
-
-        public static void AccessData(JSONObject jsonObject)
-        {
-            switch (jsonObject.type)
-            {
-                case JSONObject.Type.Object:
-                    for (var i = 0; i < jsonObject.list.Count; i++)
-                    {
-                        var key = jsonObject.keys[i];
-                        var value = jsonObject.list[i];
-                        Debug.Log(key);
-                        AccessData(value);
-                    }
-                    break;
-                case JSONObject.Type.Array:
-                    foreach (JSONObject element in jsonObject.list)
-                    {
-                        AccessData(element);
-                    }
-                    break;
-                case JSONObject.Type.String:
-                    Debug.Log(jsonObject.stringValue);
-                    break;
-                case JSONObject.Type.Number:
-                    Debug.Log(jsonObject.floatValue);
-                    break;
-                case JSONObject.Type.Bool:
-                    Debug.Log(jsonObject.boolValue);
-                    break;
-                case JSONObject.Type.Null:
-                    Debug.Log("Null");
-                    break;
-                case JSONObject.Type.Baked:
-                    Debug.Log(jsonObject.stringValue);
-                    break;
-            }
-        }
     }
 }
+

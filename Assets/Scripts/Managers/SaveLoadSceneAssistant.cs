@@ -11,20 +11,20 @@ namespace Samurai
         private Player _player;
 
         #region UnityMethods
-        private void OnEnable()
+        private void Awake()
         {
-
+#if UNITY_EDITOR
+            SaveLoadManager.SaveLoadManagerInitialization(true);
+#endif 
         }
         private void Start()
         {
+            var playerData = SaveLoadManager.SaveData.GetField("Player");
+            if (playerData.isNull || playerData.count <= 0) return;
             LoadPlayerPosition();
             LoadPlayerRangeWeapon();
             LoadPlayerStats();            
             ManageArena();
-        }
-        private void OnDisable()
-        {
-
         }
         #endregion
 

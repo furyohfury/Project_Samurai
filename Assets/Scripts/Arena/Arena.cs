@@ -73,6 +73,7 @@ namespace Samurai
         }
         private void Start()
         {
+            EntryExitDoorsNonstaticCheck();
             AIManagerCheck();
         }
         private void OnDisable()
@@ -88,7 +89,7 @@ namespace Samurai
             var floorArray = FindObjectsOfType<GameObject>().Where((go) => go.transform.parent == _floorParent).ToArray();
             if (floorArray.Length <= 0) Debug.LogError("No floor found in the Floors");
 
-            if (floorArray.Where((floor) => floor.layer != Constants.FloorLayer).ToArray().Length > 0) 
+            if (floorArray.Where((floor) => floor.layer != Constants.FloorLayer).ToArray().Length > 0)
                 Debug.LogError($"All floors in {gameObject.name} must have floor layer");
 
             if (floorArray.Where((floor) => !floor.isStatic).ToArray().Length > 0)
@@ -107,6 +108,25 @@ namespace Samurai
 
             if (obstaclesArray.Where((obs) => !obs.isStatic).ToArray().Length > 0)
                 Debug.LogError($"All obstacles in {gameObject.name} must be static");
+        }
+        #endregion
+
+        #region Doors
+        private void EntryExitDoorsNonstaticCheck()
+        {
+            var posFeedback = _entryDoorCloseFeedback.GetFeedbackOfType<MMF_Position>();
+            if (posFeedback != null && posFeedback.AnimatePositionTarget.isStatic)
+            {
+                posFeedback.AnimatePositionTarget.isStatic = false;
+                Debug.LogError($"Entry door of arena {gameObject.name} was static");
+            }
+
+            posFeedback = _exitDoorOpenFeedback.GetFeedbackOfType<MMF_Position>();
+            if (posFeedback != null && posFeedback.AnimatePositionTarget.isStatic)
+            {
+                posFeedback.AnimatePositionTarget.isStatic = false;
+                Debug.LogError($"Exit door of arena {gameObject.name} was static");
+            }
         }
         #endregion
 
@@ -159,6 +179,7 @@ namespace Samurai
         public void EntryDoorClose()
         {
             _entryDoorCloseFeedback?.PlayFeedbacks();
+            _arenaEntryDoorClosingTrigger.gameObject.GetComponent<Collider>().enabled = false;
         }
 
         private void PlayerEnteredArena()

@@ -9,8 +9,11 @@ namespace Samurai
 {
     public abstract class Unit : MonoBehaviour
     {
+        [Inject]
         public UnitVisuals UnitVisuals { get; protected set; }
+        [Inject]
         public UnitPhysics UnitPhysics { get; protected set; }
+        [Inject]
         public UnitInput UnitInput { get; protected set; }
 
         [Inject]
@@ -48,9 +51,9 @@ namespace Samurai
         /// </summary>
         protected virtual void Bindings()
         {
-            UnitVisuals = GetComponent<UnitVisuals>();
-            UnitPhysics = GetComponent<UnitPhysics>();
-            UnitInput = GetComponent<UnitInput>();
+            // UnitVisuals = GetComponent<UnitVisuals>();
+            // UnitPhysics = GetComponent<UnitPhysics>();
+            // UnitInput = GetComponent<UnitInput>();
             if (UnitStats.HP <= 0 || UnitStats.MaxHP <= 0 || UnitStats.MoveSpeed <= 0) Debug.LogError($"Unit {gameObject.name} has wrong UnitStats");            
         }
 

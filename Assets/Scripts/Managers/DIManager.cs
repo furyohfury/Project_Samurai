@@ -8,6 +8,12 @@ namespace Samurai
     {
         [SerializeField]
         private Player Player;
+        /* [SerializeField]
+        private PlayerVisuals PlayerVisuals;
+        [SerializeField]
+        private PlayerPhysics PlayerPhysics;
+        [SerializeField]
+        private PlayerInput PlayerInput; */
 
         [SerializeField, Space]
         private DefaultPlayerGunPool DefaultPlayerGunPool;
@@ -34,7 +40,10 @@ namespace Samurai
         public override void InstallBindings()
         {
             Container.BindInstance(Player).AsSingle();
-            Container.BindInstance(Camera).AsSingle();
+
+            Container.Bind<UnitVisuals>().FromComponentSibling();
+            Container.Bind<UnitPhysics>().FromComponentSibling();
+            Container.Bind<UnitInput>().FromComponentSibling();
 
             Container.BindInstance(DefaultPlayerGunPool).AsSingle();
             // Container.BindInstance(EnemyPool).AsSingle();
@@ -47,6 +56,8 @@ namespace Samurai
             Container.BindInstance(SettingsMenuUI).AsSingle();
             Container.BindInstance(PauseMenu).AsSingle();
             Container.BindInstance(LoseMenu).AsSingle();
+
+            Container.BindInstance(Camera).AsSingle();
         }
     }
 }

@@ -38,7 +38,7 @@ namespace Samurai
 
             if (GUILayout.Button("Decode string"))
             {
-                SaveLoadManager.Test(_encString.ToString());
+                // SaveLoadManager.Test(_encString.ToString());
             }
 
             if (GUILayout.Button("LoadScene"))

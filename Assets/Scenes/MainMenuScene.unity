@@ -1899,6 +1899,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2059218548}
   m_CullTransparentMesh: 1
+--- !u!114 &2069880581 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1861644474498847713, guid: 9ccdc8dc9a9e9c34ab4878adc6e3189b, type: 3}
+  m_PrefabInstance: {fileID: 2149333405356409882}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6011413a58705641b7dfe495ab7fb25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &2149333405356409882
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2036,7 +2047,7 @@ MonoBehaviour:
   _newGame: {fileID: 2307887456093671136}
   _settings: {fileID: 2307887455039064494}
   _exit: {fileID: 2307887455058535326}
-  _settingsMenu: {fileID: 0}
+  _settingsMenu: {fileID: 2069880581}
   _sureNewGameMenu: {fileID: 1906954844}
   _startGameSceneFeedback: {fileID: 1215237016}
   _bgMusicFeedback: {fileID: 517063698}
