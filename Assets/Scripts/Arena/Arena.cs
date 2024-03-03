@@ -11,15 +11,15 @@ namespace Samurai
     public class Arena : MonoBehaviour
     {
         [Inject]
-        private Player _player;
-        [Inject]
         private SaveLoadSceneAssistant _saveloadSceneAssistant;
 
 
         [SerializeField]
         private Transform _floorParent;
         // [SerializeField]
-        private GameObject[] _floorArray;
+        // private GameObject[] _floorArray;
+        [SerializeField]
+        private Transform _obstaclesParent;
 
         [SerializeField, Space]
         private EnemyPool _enemyPool;
@@ -63,7 +63,7 @@ namespace Samurai
         private void Awake()
         {
             FloorInit();
-
+            ObstaclesInit();
             FinishedArenaInit();
         }
         private void OnEnable()
@@ -73,7 +73,6 @@ namespace Samurai
         }
         private void Start()
         {
-            FloorLayerCheck();
             AIManagerCheck();
         }
         private void OnDisable()
@@ -86,25 +85,28 @@ namespace Samurai
         #region Floor
         private void FloorInit()
         {
-            _floorArray = FindObjectsOfType<GameObject>().Where((go) => go.transform.parent == _floorParent).ToArray();
-            if (_floorArray.Length <= 0) Debug.LogError("No floor found in the Floors");
+            var floorArray = FindObjectsOfType<GameObject>().Where((go) => go.transform.parent == _floorParent).ToArray();
+            if (floorArray.Length <= 0) Debug.LogError("No floor found in the Floors");
 
-            if (_floorArray.Where((floor) => floor.layer != Constants.FloorLayer).ToArray().Length > 0) 
+            if (floorArray.Where((floor) => floor.layer != Constants.FloorLayer).ToArray().Length > 0) 
                 Debug.LogError($"All floors in {gameObject.name} must have floor layer");
 
-            if (_floorArray.Where((floor) => !floor.isStatic).ToArray().Length > 0)
+            if (floorArray.Where((floor) => !floor.isStatic).ToArray().Length > 0)
                 Debug.LogError($"All floors in {gameObject.name} must be static");
         }
-        private void FloorLayerCheck()
+        #endregion
+
+        #region Obstacles
+        private void ObstaclesInit()
         {
-            foreach (var go in _floorArray)
-            {
-                if (go.layer != Constants.FloorLayer)
-                {
-                    go.layer = Constants.FloorLayer;
-                    Debug.LogWarning($"Floor {gameObject.name} had no floor layer. It's been fixed for this session but needs to be done after that");
-                }
-            }
+            var obstaclesArray = FindObjectsOfType<GameObject>().Where((obs) => obs.transform.parent == _obstaclesParent).ToArray();
+            if (obstaclesArray.Length <= 0) Debug.LogError("No obstacle found in the Obstacles");
+
+            if (obstaclesArray.Where((obs) => obs.layer != Constants.ObstacleLayer).ToArray().Length > 0)
+                Debug.LogError($"All obstacles in {gameObject.name} must have obstacle layer");
+
+            if (obstaclesArray.Where((obs) => !obs.isStatic).ToArray().Length > 0)
+                Debug.LogError($"All obstacles in {gameObject.name} must be static");
         }
         #endregion
 
