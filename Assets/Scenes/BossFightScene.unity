@@ -281,7 +281,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-2762
+  m_Name: pb_Mesh-372574
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -445,7 +445,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-431246
+  m_Name: pb_Mesh-372038
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -1545,7 +1545,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-2792
+  m_Name: pb_Mesh-372604
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -1836,7 +1836,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-2822
+  m_Name: pb_Mesh-372634
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -2837,9 +2837,13 @@ PrefabInstance:
     m_TransformParent: {fileID: 863736736}
     m_Modifications:
     - target: {fileID: 1376921836239520529, guid: 5fd34356827704e40b16f5e8aa5f822e, type: 3}
+      propertyPath: MeshForColorChange.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1376921836239520529, guid: 5fd34356827704e40b16f5e8aa5f822e, type: 3}
       propertyPath: MeshForColorChange.Array.data[3]
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 2345635308777647625}
     - target: {fileID: 1376921836239520531, guid: 5fd34356827704e40b16f5e8aa5f822e, type: 3}
       propertyPath: TargetProgressBar
       value: 
@@ -2942,6 +2946,11 @@ PrefabInstance:
       objectReference: {fileID: 1935791040}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5fd34356827704e40b16f5e8aa5f822e, type: 3}
+--- !u!23 &2345635308777647625 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 2345635308569243462, guid: 5fd34356827704e40b16f5e8aa5f822e, type: 3}
+  m_PrefabInstance: {fileID: 2345635308777647624}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &3717319070547651866 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1376921836239520530, guid: 5fd34356827704e40b16f5e8aa5f822e, type: 3}

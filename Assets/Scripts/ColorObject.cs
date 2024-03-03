@@ -35,7 +35,8 @@ namespace Samurai
         {
             foreach (var mesh in MeshForColorChange)
             {
-                mesh.material = MaterialColorsDict[color];
+                // mesh.material = MaterialColorsDict[color];
+                mesh.material.color = PhaseColorToColor(color);
             }
         }
         public virtual void ChangeCurrentColor(PhaseColor color) => CurrentColor = color;
@@ -43,6 +44,24 @@ namespace Samurai
         {
             ChangeCurrentColor(color);
             ChangeColorVisual(color);
+        }
+
+        private Color PhaseColorToColor(PhaseColor color)
+        {
+            switch (color)
+            {
+                case PhaseColor.Blue:
+                    return Color.blue;
+                case PhaseColor.Red:
+                    return Color.red;
+                case PhaseColor.Damaged:
+                    return Color.yellow;
+                case PhaseColor.Green:
+                    return Color.green;
+                case PhaseColor.Default:
+                    return Color.white;
+            }
+            return Color.white;
         }
     }
 }
