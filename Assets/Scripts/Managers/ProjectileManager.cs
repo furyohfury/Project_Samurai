@@ -6,14 +6,8 @@ namespace Samurai
 {
     public class ProjectileManager : MonoBehaviour
     {
-        public static ProjectileManager Instance;
-
+        [HideInInspector]
         public List<Projectile> ProjectileList = new();
-        private void Awake()
-        {
-            if (Instance == null) Instance = this;
-            else Destroy(this);
-        }
         private void Update()
         {
             foreach (var proj in ProjectileList)

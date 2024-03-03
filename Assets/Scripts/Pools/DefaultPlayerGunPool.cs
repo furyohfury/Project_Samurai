@@ -1,12 +1,12 @@
 using UnityEngine;
 using UnityEngine.Pool;
+using Zenject;
 namespace Samurai
 {
-    // This example spans a random number of ParticleSystems using a pool so that old systems can be reused.
     public class DefaultPlayerGunPool : MonoBehaviour
     {
-        [SerializeField]
-        private GameObject ProjectilePrefab;
+        [Inject]
+        private DefaultPlayerWeaponProjectile.Factory _factory;
 
         public enum PoolType
         {
@@ -41,7 +41,8 @@ namespace Samurai
 
         DefaultPlayerWeaponProjectile CreatePooledItem()
         {
-            GameObject proj = Instantiate(ProjectilePrefab);
+            // GameObject proj = Instantiate(ProjectilePrefab);
+            GameObject proj = _factory.Create().gameObject;
             return proj.GetComponent<DefaultPlayerWeaponProjectile>();
         }
 

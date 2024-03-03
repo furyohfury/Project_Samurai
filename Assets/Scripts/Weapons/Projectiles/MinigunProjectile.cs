@@ -1,14 +1,14 @@
-using UnityEngine;
-using Zenject;
+﻿using Zenject;
+
 namespace Samurai
 {
-    public class ShotgunProjectile : Projectile
+    public class MinigunProjectile : Projectile
     {
         [Inject]
         public void Construct(ProjectileManager pmanager)
         {
             ProjectileManager = pmanager;
         }
-        public class Factory : PlaceholderFactory<ShotgunProjectile> { }
+        public class Factory : PlaceholderFactory<MinigunProjectile> { }
     }
 }

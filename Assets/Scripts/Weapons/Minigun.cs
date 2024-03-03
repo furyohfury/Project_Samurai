@@ -1,11 +1,15 @@
 ﻿using MoreMountains.Feedbacks;
 using System.Collections;
 using UnityEngine;
+using Zenject;
 
 namespace Samurai
 {
     public class Minigun : RangeWeapon
     {
+        [Inject]
+        private MinigunProjectile.Factory _factory;
+
         [SerializeField]
         private Animator _minigunAnimator;
 
@@ -46,7 +50,7 @@ namespace Samurai
 
             for (var i = 0; i < _burstNumberOfShells; i++)
             {
-                var proj = Instantiate(WeaponProjectilePrefab);
+                var proj = _factory.Create().gameObject;
                 if (Owner != null) proj.GetComponent<Projectile>().SetProjectileStatsOnShoot(Owner);
                 proj.transform.position = this.transform.position + this.transform.forward * 0.1f;
                 proj.transform.eulerAngles = new Vector3(

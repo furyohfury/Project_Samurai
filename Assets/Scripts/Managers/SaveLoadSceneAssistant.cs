@@ -11,19 +11,18 @@ namespace Samurai
         private Player _player;
 
         #region UnityMethods
-        private void Awake()
+        private void Start()
         {
 #if UNITY_EDITOR
             SaveLoadManager.SaveLoadManagerInitialization(true);
+            // SaveLoadManager.LoadLastSave();
 #endif 
-        }
-        private void Start()
-        {
             var playerData = SaveLoadManager.SaveData.GetField("Player");
-            if (playerData.isNull || playerData.count <= 0) return;
+            var sceneData = SaveLoadManager.SaveData.GetField("Scene");
+            if (playerData.isNull || sceneData.isNull || playerData.count <= 0 || sceneData.count <= 0) return;
             LoadPlayerPosition();
             LoadPlayerRangeWeapon();
-            LoadPlayerStats();            
+            LoadPlayerStats();
             ManageArena();
         }
         #endregion

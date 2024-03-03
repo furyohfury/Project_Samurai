@@ -7,8 +7,7 @@ namespace Samurai
 {
     public class Projectile : ColorObject
     {
-        // [Inject]
-        // protected ProjectileManager ProjectileManager;
+        protected ProjectileManager ProjectileManager;
         [SerializeField]
         protected Unit _owner;
         public Unit Owner { get => _owner; protected set => _owner = value; }
@@ -27,7 +26,7 @@ namespace Samurai
 
         protected virtual void OnEnable()
         {
-            if (ProjectileManager.Instance != null) ProjectileManager.Instance.ProjectileList.Add(this);
+            if (ProjectileManager != null) ProjectileManager.ProjectileList.Add(this);
             else Debug.LogWarning("Projectile didnt find ProjectileManager");
         }
         protected override void Start()
@@ -44,11 +43,9 @@ namespace Samurai
         }
         protected virtual void OnDisable()
         {
-            ProjectileManager.Instance.ProjectileList.Remove(this);
+            ProjectileManager.ProjectileList.Remove(this);
         }
-        protected virtual void OnDestroy()
-        {
 
-        }
+        
     }
 }

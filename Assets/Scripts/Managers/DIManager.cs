@@ -17,7 +17,15 @@ namespace Samurai
 
         [SerializeField, Space]
         private DefaultPlayerGunPool DefaultPlayerGunPool;
-        
+        [SerializeField]
+        private GameObject _defPlayerWeaponProjPrefab;
+        [SerializeField]
+        private GameObject _shotgunProjectilePrefab;
+        [SerializeField]
+        private GameObject _rifleProjectilePrefab;
+        [SerializeField]
+        private GameObject _minigunProjectilePrefab;
+
 
         [SerializeField, Space]
         private ProjectileManager ProjectileManager;
@@ -58,6 +66,11 @@ namespace Samurai
             Container.BindInstance(LoseMenu).AsSingle();
 
             Container.BindInstance(Camera).AsSingle();
+
+            Container.BindFactory<DefaultPlayerWeaponProjectile, DefaultPlayerWeaponProjectile.Factory>().FromComponentInNewPrefab(_defPlayerWeaponProjPrefab);
+            Container.BindFactory<ShotgunProjectile, ShotgunProjectile.Factory>().FromComponentInNewPrefab(_shotgunProjectilePrefab);
+            Container.BindFactory<RifleProjectile, RifleProjectile.Factory>().FromComponentInNewPrefab(_rifleProjectilePrefab);
+            Container.BindFactory<MinigunProjectile, MinigunProjectile.Factory>().FromComponentInNewPrefab(_minigunProjectilePrefab);
         }
     }
 }

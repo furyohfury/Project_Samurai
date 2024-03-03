@@ -2,10 +2,12 @@ using MoreMountains.Feedbacks;
 using System.Collections;
 using UnityEditor.Animations;
 using UnityEngine;
+using Zenject;
 namespace Samurai
 {
     public abstract class RangeWeapon : MonoBehaviour
     {
+
         [SerializeField]
         protected int _numberOfBulletsForPlayer = int.MaxValue;
         public int NumberOfBulletsForPlayer { get => _numberOfBulletsForPlayer; protected set => _numberOfBulletsForPlayer = value; }

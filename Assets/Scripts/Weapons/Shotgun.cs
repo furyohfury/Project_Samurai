@@ -1,9 +1,13 @@
 using MoreMountains.Feedbacks;
 using UnityEngine;
+using Zenject;
 namespace Samurai
 {
     public class Shotgun : RangeWeapon, IRangePickableWeapon
     {
+        [Inject]
+        private ShotgunProjectile.Factory _factory;
+
         [SerializeField]
         private int _numberOfShells;
         [SerializeField, Range(0, 15f)]
@@ -23,7 +27,7 @@ namespace Samurai
             SetShootingDelay();
             for (var i = 0; i < _numberOfShells; i++)
             {
-                var proj = Instantiate(WeaponProjectilePrefab);
+                var proj = _factory.Create().gameObject;
                 proj.GetComponent<Projectile>().SetProjectileStatsOnShoot(Owner);
                 proj.transform.position = this.transform.position + this.transform.forward * 0.1f;
                 proj.transform.eulerAngles = new Vector3(

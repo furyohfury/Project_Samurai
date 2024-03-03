@@ -7,6 +7,7 @@ namespace Samurai
     {
         private void OnEnable()
         {
+            // Creating save file if empty and subscribing on scene change
             SaveLoadManager.SaveLoadManagerInitialization(true);
         }
         private void OnDisable()

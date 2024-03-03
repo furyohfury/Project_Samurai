@@ -1,11 +1,8 @@
 ﻿using Defective.JSON;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -46,8 +43,6 @@ namespace Samurai
                 // On first launch
                 if (!File.Exists(_saveDataPath))
                 {
-                    // string defaultSaveFileText = LoadResourceTextfile("DefaultSaveFile.json");
-                    // File.WriteAllText(_saveFilePath, defaultSaveFileText);
 
                     // Creating empty save file
                     File.WriteAllText(_saveDataPath, string.Empty);
@@ -75,7 +70,8 @@ namespace Samurai
         #region Saving
         private static void SceneChanged(Scene fromScene, Scene toScene)
         {
-            if (toScene.name == "MainMenuScene" || toScene.name == "AntiSpill_MainMenuScene" || (SaveData.GetField(out string endSceneName, "Scene", "") && toScene.name == endSceneName))
+            if (toScene.name == "MainMenuScene" || toScene.name == "AntiSpill_MainMenuScene" || 
+                (SaveData.GetField(out string endSceneName, "Scene", "") && toScene.name == endSceneName))
             {
                 return;
             }
