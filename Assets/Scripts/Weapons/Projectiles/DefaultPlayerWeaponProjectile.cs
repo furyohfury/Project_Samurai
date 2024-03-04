@@ -14,11 +14,7 @@ namespace Samurai
             transform.localScale = Vector3.one;
         }
 
-        [Inject]
-        public void Construct(ProjectileManager pmanager)
-        {
-            ProjectileManager = pmanager;
-        }
+        
         public class Factory : PlaceholderFactory<DefaultPlayerWeaponProjectile> { }
     }
 }

@@ -47,6 +47,12 @@ namespace Samurai
             transform.localScale *= ProjectileStats.ProjectileScale;
             ChangeColor(owner.CurrentColor);
         }
+
+        [Inject]
+        public void Construct(ProjectileManager pmanager)
+        {
+            ProjectileManager = pmanager;
+        }
         
     }
 }
