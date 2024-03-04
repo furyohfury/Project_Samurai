@@ -3,7 +3,9 @@ namespace Samurai
 {
     public abstract class UnitPhysics : MonoBehaviour
     {
+        [Inject]
         protected Unit Unit;
+        [Inject]
         protected UnitVisuals UnitVisuals;
 
 
@@ -22,8 +24,8 @@ namespace Samurai
 
         protected virtual void Bindings()
         {
-            Unit = GetComponent<Unit>();
-            UnitVisuals = GetComponent<UnitVisuals>();
+            // Unit = GetComponent<Unit>();
+            // UnitVisuals = GetComponent<UnitVisuals>();
         }
 
 

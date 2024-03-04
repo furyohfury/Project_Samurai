@@ -21,9 +21,9 @@ namespace Samurai
         [SerializeField]
         private Transform _obstaclesParent;
 
-        [SerializeField, Space]
+        [Inject]
         private EnemyPool _enemyPool;
-        [SerializeField]
+        [Inject]
         private AIManager _aiManager;
 
         [SerializeField, Space]

@@ -8,7 +8,7 @@ namespace Samurai
     public class CameraComponent : MonoBehaviour
     {
         [Inject]
-        private Player _player;
+        private readonly Player _player;
         [SerializeField]
         private Vector3 _offset;
         [SerializeField]

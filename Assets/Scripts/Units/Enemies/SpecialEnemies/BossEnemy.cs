@@ -11,8 +11,6 @@ namespace Samurai
     {
         [Inject]
         public readonly Player Player;
-        [SerializeField]
-        private MMProgressBar _hpBar;
 
         protected override void Bindings()
         {
@@ -21,10 +19,8 @@ namespace Samurai
             if (RangeWeapon == null) RangeWeapon = GetComponentInChildren<RangeWeapon>();
             EquipRangeWeapon(RangeWeapon);
         }
-        protected override void ChangeHP(int delta)
-        {
-            base.ChangeHP(delta);
-        }
+
+
         // For IMeleeWeapon
         #region GetDamaged
         public override void GetDamagedByMelee(MeleeWeapon weapon)
@@ -224,7 +220,7 @@ namespace Samurai
             var startPos = transform.position;
             var endPos = Player.transform.position;
             (UnitVisuals as BossEnemyVisuals).JumpStart();
-            // DOTween.To(() => transform.position.x, (x) => transform.position.x = x, playerPos.x, _jumpDuration);
+            
             float time = 0;
             while (time < _jumpDuration)
             {

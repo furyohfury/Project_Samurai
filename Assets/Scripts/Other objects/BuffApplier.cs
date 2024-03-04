@@ -6,7 +6,8 @@ namespace Samurai
     [RequireComponent(typeof(BoxCollider))]
     public class BuffApplier : MonoBehaviour
     {
-        private BoxCollider _boxCollider;
+        [Inject]
+        private Collider _boxCollider;
 
         [SerializeField]
         private UnitBuffsStruct _unitBuffs;
@@ -15,7 +16,6 @@ namespace Samurai
 
         private void Awake()
         {
-            _boxCollider = GetComponent<BoxCollider>();
             _boxCollider.isTrigger = true;
         }
         private void OnTriggerEnter(Collider other)

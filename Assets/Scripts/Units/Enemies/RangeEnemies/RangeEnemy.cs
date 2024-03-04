@@ -29,7 +29,7 @@ namespace Samurai
         {
             base.Bindings();
             if (RangeWeapon == null) RangeWeapon = GetComponentInChildren<RangeWeapon>();
-            EquipRangeWeapon(RangeWeapon);
+            EquipRangeWeapon();
         }
 
         public override void Attack() => RangeAttack();
@@ -45,9 +45,9 @@ namespace Samurai
             }
         }
 
-        public void EquipRangeWeapon(RangeWeapon rWeapon)
+        public void EquipRangeWeapon()
         {
-            RangeWeapon = rWeapon;
+            // RangeWeapon = rWeapon;
             // RangeWeapon.transform.SetLocalPositionAndRotation(RangeWeapon.WeaponPositionWhenPicked, Quaternion.Euler(RangeWeapon.WeaponRotationWhenPicked));
 
             RangeWeapon.Equipped(this);

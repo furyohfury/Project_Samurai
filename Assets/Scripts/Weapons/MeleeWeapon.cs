@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 namespace Samurai
 {
-    public class MeleeWeapon : MonoBehaviour, IMeleeAttack
+    public class MeleeWeapon : MonoBehaviour
     {
         [SerializeField]
         private int _damage;
@@ -33,7 +33,7 @@ namespace Samurai
 
 
         #region UnityMethods
-        private void Start()
+        private void Awake()
         {
             Owner = GetComponentInParent<Unit>();
         }
@@ -61,12 +61,6 @@ namespace Samurai
             }
         } */
         #endregion
-
-
-        public void MeleeAttack()
-        {
-            
-        }
 
         public void EnableHitbox(bool isEnabled)
         {

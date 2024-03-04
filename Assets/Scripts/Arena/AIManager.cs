@@ -10,7 +10,7 @@ namespace Samurai
 {
     public class AIManager : MonoBehaviour
     {
-        [SerializeField]
+        [Inject]
         private EnemyPool EnemyPool;
         [SerializeField]
         private bool _setFixedTimeUpdateLogicForBots = true;

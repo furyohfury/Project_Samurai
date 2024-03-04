@@ -8,7 +8,9 @@ namespace Samurai
     [RequireComponent(typeof(NavMeshAgent))]
     public class EnemyPhysics : UnitPhysics
     {
+        [Inject]
         protected CapsuleCollider EnemyHitbox;
+        [Inject]
         protected NavMeshAgent Agent;
 
         #region UnityMethods
@@ -28,8 +30,8 @@ namespace Samurai
         protected override void Bindings()
         {
             base.Bindings();
-            EnemyHitbox = GetComponent<CapsuleCollider>();
-            Agent = GetComponent<NavMeshAgent>();
+            // EnemyHitbox = GetComponent<CapsuleCollider>();
+            // Agent = GetComponent<NavMeshAgent>();
             SetAgentSpeed(Unit.GetUnitStats().MoveSpeed);
         }
         public void SetAgentSpeed(float speed)

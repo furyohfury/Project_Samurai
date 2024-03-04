@@ -8,7 +8,7 @@ namespace Samurai
     public class SaveLoadSceneAssistant : MonoBehaviour
     {
         [Inject]
-        private Player _player;
+        private readonly Player _player;
 
         #region UnityMethods
         private void Start()

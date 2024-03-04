@@ -7,8 +7,9 @@ namespace Samurai
 {
     public abstract class UnitVisuals : ColorObject
     {
+        [Inject]
         protected Unit Unit;
-
+        [Inject]
         protected Animator UnitAnimator;
 
         [SerializeField]
@@ -26,8 +27,8 @@ namespace Samurai
 
         protected virtual void Bindings()
         {
-            Unit = GetComponent<Unit>();
-            UnitAnimator = GetComponent<Animator>();
+            // Unit = GetComponent<Unit>();
+            // UnitAnimator = GetComponent<Animator>();
         }
 
         #region Color

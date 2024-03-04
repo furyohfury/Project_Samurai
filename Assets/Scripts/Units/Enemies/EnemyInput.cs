@@ -201,6 +201,7 @@ namespace Samurai
         #region Gizmos
         protected void OnDrawGizmos()
         {
+            // Spot range and attack range
             Gizmos.color = new Color(1, 1, 0, 0.2f);
             Gizmos.DrawSphere(transform.position, PlayerSpotRange);
             Gizmos.color = new Color(1, 0, 0, 0.2f);

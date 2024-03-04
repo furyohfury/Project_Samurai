@@ -9,7 +9,7 @@ namespace Samurai
         [Inject]
         private readonly DefaultPlayerGunPool _defaultPlayerGunPool;
 
-        [SerializeField]
+        /* [SerializeField]
         private bool _switchesColorWithPlayer = false;
 
 
@@ -20,7 +20,7 @@ namespace Samurai
         private void OnDisable()
         {
             if (_switchesColorWithPlayer) (Player.UnitVisuals as PlayerVisuals).OnPlayerSwapColor -= ChangeColor;
-        }        
+        } */        
         private void OnTriggerEnter(Collider other)
         {
             if (other.TryGetComponent(out Projectile proj) && proj.CurrentColor != this.CurrentColor)

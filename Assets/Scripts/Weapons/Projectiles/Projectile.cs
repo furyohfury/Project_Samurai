@@ -15,19 +15,13 @@ namespace Samurai
         [SerializeField]
         protected ProjectileStatsStruct ProjectileStats;
         public ProjectileStatsStruct GetProjectileStats() => ProjectileStats;
-        public void SetProjectileStatsOnShoot(Unit owner)
-        {
-            Owner = owner;
-            ProjectileStats = (owner as IRangeWeapon).RangeWeapon.GetProjectileStats();
-            transform.localScale *= ProjectileStats.ProjectileScale;
-            ChangeColor(owner.CurrentColor);
-        }
 
 
+
+        #region UnityMethods
         protected virtual void OnEnable()
         {
-            if (ProjectileManager != null) ProjectileManager.ProjectileList.Add(this);
-            else Debug.LogWarning("Projectile didnt find ProjectileManager");
+            ProjectileManager.ProjectileList.Add(this);
         }
         protected override void Start()
         {
@@ -35,7 +29,6 @@ namespace Samurai
         }
         protected virtual void OnTriggerEnter(Collider other)
         {
-            //if (other.TryGetComponent(out MeleeWeapon weapon) && weapon.Owner.GetType() == typeof(Player))
             if (other.TryGetComponent(out MeleeWeapon weapon) && !(Owner is Enemy == weapon.Owner is Enemy))
             {
                 Destroy(this.gameObject);
@@ -45,7 +38,15 @@ namespace Samurai
         {
             ProjectileManager.ProjectileList.Remove(this);
         }
+#endregion
 
+        public void SetProjectileStatsOnShoot(Unit owner)
+        {
+            Owner = owner;
+            ProjectileStats = (owner as IRangeWeapon).RangeWeapon.GetProjectileStats();
+            transform.localScale *= ProjectileStats.ProjectileScale;
+            ChangeColor(owner.CurrentColor);
+        }
         
     }
 }
