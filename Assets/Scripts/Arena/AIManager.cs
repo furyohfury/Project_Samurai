@@ -16,6 +16,8 @@ namespace Samurai
         private bool _setFixedTimeUpdateLogicForBots = true;
         [SerializeField]
         private float _updateLogicTime;
+        [SerializeField]
+        private bool _aggroEveryoneIfOneAggroed = true;
 
         private bool _aggroed = false;
 
@@ -26,7 +28,7 @@ namespace Samurai
         private void Start()
         {
             StartCoroutine(AILogicManagement());
-            if (_setFixedTimeUpdateLogicForBots) _updateLogicTime = Time.fixedDeltaTime;
+            // if (_setFixedTimeUpdateLogicForBots) _updateLogicTime = Time.fixedDeltaTime;
         }
         private IEnumerator AILogicManagement()
         {
@@ -35,9 +37,9 @@ namespace Samurai
                 foreach (var enemy in EnemyPool.EnemyList)
                 {
                     if (enemy != null && enemy.UnitInput.enabled) (enemy.UnitInput as EnemyInput).GeneralAICycle();
-                    if (!_aggroed && (enemy.UnitInput as EnemyInput).SpottedPlayer) AggroAllEnemies();
+                    if (_aggroEveryoneIfOneAggroed && !_aggroed && (enemy.UnitInput as EnemyInput).SpottedPlayer) AggroAllEnemies();
                 }
-                yield return new WaitForSeconds(_updateLogicTime);
+                yield return _setFixedTimeUpdateLogicForBots ? new WaitForFixedUpdate() : new WaitForSeconds(_updateLogicTime);
             }
         }
         
