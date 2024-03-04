@@ -12,6 +12,8 @@ namespace Samurai
     {
         [Inject]
         private readonly Player _player;
+        [Inject]
+        private readonly Camera _camera;
 
         // Bump event is connected to sound and camera aoom
         private MMProgressBar _progressBar;
@@ -44,6 +46,7 @@ namespace Samurai
         {
             _canvas.gameObject.SetActive(false);
             _boxCollider.isTrigger = true;
+            _canvas.gameObject.transform.LookAt(_player.transform);
         }
         private void Update()
         {

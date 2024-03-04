@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using UnityEditor;
 using UnityEngine;
+using Zenject;
 using static UnityEngine.InputSystem.InputAction;
 
 namespace Samurai

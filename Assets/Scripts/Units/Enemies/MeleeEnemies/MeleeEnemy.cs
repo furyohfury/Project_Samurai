@@ -44,7 +44,6 @@ namespace Samurai
             if (CanHit)
             {
                 (UnitVisuals as IMeleeAttack).MeleeAttack();
-                MeleeWeapon.MeleeAttack();
 
                 StartCoroutine(MeleeAttackCD());
             }

@@ -27,7 +27,7 @@ namespace Samurai
             SetShootingDelay();
             for (var i = 0; i < _numberOfShells; i++)
             {
-                var proj = _factory.Create()
+                var proj = _factory.Create();
                 proj.SetProjectileStatsOnShoot(Owner);
                 proj.transform.position = this.transform.position + this.transform.forward * 0.1f;
                 proj.transform.eulerAngles = new Vector3(

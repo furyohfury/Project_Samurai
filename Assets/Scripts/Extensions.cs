@@ -15,4 +15,9 @@ namespace Samurai
 
     [System.Serializable]
     public class WeaponSpriteDictionary : SerializableDictionaryBase<RangeWeaponEnum, Sprite> { }
+
+    public static class StructsTransformer<T>
+    {
+
+    }
 }

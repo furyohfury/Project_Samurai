@@ -1,4 +1,5 @@
 using UnityEngine;
+using Zenject;
 namespace Samurai
 {
     public abstract class UnitPhysics : MonoBehaviour

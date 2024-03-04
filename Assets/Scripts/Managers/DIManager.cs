@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.AI;
 using Zenject;
 
 namespace Samurai
@@ -55,10 +56,10 @@ namespace Samurai
             Container.Bind<UnitVisuals>().FromComponentSibling();
             Container.Bind<UnitPhysics>().FromComponentSibling();
             Container.Bind<UnitInput>().FromComponentSibling();
-            Container.Bind<UnitAnimator>().FromComponentSibling();
+            Container.Bind<Animator>().FromComponentSibling();
 
             // Enemies
-            Container.Bind<Collider>().FromComponentSibling();
+            Container.Bind<CapsuleCollider>().FromComponentSibling().WhenInjectedInto<EnemyPhysics>();
             Container.Bind<NavMeshAgent>().FromComponentSibling();
 
             // Pools
@@ -85,6 +86,9 @@ namespace Samurai
             Container.BindFactory<ShotgunProjectile, ShotgunProjectile.Factory>().FromComponentInNewPrefab(_shotgunProjectilePrefab);
             Container.BindFactory<RifleProjectile, RifleProjectile.Factory>().FromComponentInNewPrefab(_rifleProjectilePrefab);
             Container.BindFactory<MinigunProjectile, MinigunProjectile.Factory>().FromComponentInNewPrefab(_minigunProjectilePrefab);
+
+            // Other
+            Container.Bind<Collider>().FromComponentSibling();
         }
     }
 }

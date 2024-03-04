@@ -52,7 +52,6 @@ namespace Samurai
             {
                 CanHit = false;
                 (UnitVisuals as IMeleeAttack).MeleeAttack();
-                MeleeWeapon.MeleeAttack();
                 StartCoroutine(MeleeAttackCD());
             }
         }

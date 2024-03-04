@@ -9,6 +9,8 @@ namespace Samurai
     {
         [Inject]
         private readonly Player _player;
+        [Inject]
+        private readonly PlayerUI _playerUI;
 
         #region UnityMethods
         private void Start()
@@ -19,11 +21,14 @@ namespace Samurai
 #endif 
             var playerData = SaveLoadManager.SaveData.GetField("Player");
             var sceneData = SaveLoadManager.SaveData.GetField("Scene");
-            if (playerData.isNull || sceneData.isNull || playerData.count <= 0 || sceneData.count <= 0) return;
-            LoadPlayerPosition();
-            LoadPlayerRangeWeapon();
-            LoadPlayerStats();
-            ManageArena();
+            if (!(playerData.isNull || sceneData.isNull || playerData.count <= 0 || sceneData.count <= 0))
+            {
+                LoadPlayerPosition();
+                LoadPlayerRangeWeapon();
+                LoadPlayerStats();
+                ManageArena();
+            }
+            _playerUI.Initialize();
         }
         #endregion
 

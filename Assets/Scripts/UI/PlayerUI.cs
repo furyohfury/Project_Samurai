@@ -16,7 +16,7 @@ namespace Samurai
         [SerializeField]
         private Image[] _imagesToChangeColorsAsPlayer;
         [Inject]
-        private LoseMenu _loseMenu;
+        private readonly LoseMenu _loseMenu;
 
 
         #region UnityMethods
@@ -32,16 +32,6 @@ namespace Samurai
             _player.OnPlayerDied += PlayerDied;
         }       
 
-        private void Start()
-        {
-            HealthChanged();
-            PlayerChangedColor(_player.CurrentColor);
-            if (Enum.TryParse(_player.RangeWeapon.GetType().Name, out RangeWeaponEnum rWeapon))
-            {
-                RangeWeaponChanged(rWeapon);
-            }
-            MeleeWeaponUIInit();
-        }
         private void OnDisable()
         {
             (_player.UnitVisuals as PlayerVisuals).OnPlayerSwapColor -= PlayerChangedColor;
@@ -72,6 +62,17 @@ namespace Samurai
             }
         }
         #endregion
+
+        public void Initialize()
+        {
+            HealthChanged();
+            PlayerChangedColor(_player.CurrentColor);
+            if (Enum.TryParse(_player.RangeWeapon.GetType().Name, out RangeWeaponEnum rWeapon))
+            {
+                RangeWeaponChanged(rWeapon);
+            }
+            MeleeWeaponUIInit();
+        }
 
         #region Health
         [SerializeField, Space]

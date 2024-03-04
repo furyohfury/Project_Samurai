@@ -73,11 +73,11 @@ namespace Samurai
         protected virtual void OnEnable()
         {
             Equipped(GetComponentInParent<Unit>());
-            if (Owner is RangeEnemy) (Owner as RangeEnemy).OnDroppedWeapon += Dropped;
+            if (Owner is RangeEnemy rEnemy) rEnemy.OnDroppedWeapon += Dropped;
         }
         protected virtual void OnDisable()
         {
-            if (Owner is RangeEnemy) (Owner as RangeEnemy).OnDroppedWeapon -= Dropped;
+            if (Owner is RangeEnemy rEnemy) rEnemy.OnDroppedWeapon -= Dropped;
         }
         #endregion
 
@@ -129,7 +129,7 @@ namespace Samurai
             this.transform.rotation = DefaultRotation;
 
             // Raycast floor. Floor layer is 6
-            if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, 20f, Constants.FloorLayer))
+            if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, 20f, 1 << Constants.FloorLayer))
             {
                 transform.parent = null;
                 transform.position = hit.point;
@@ -156,6 +156,7 @@ namespace Samurai
         {
             NumberOfBulletsForPlayer = numberOfBullets;
         }
+
 
         public SimpleHandle OnBulletsEnded;
     }

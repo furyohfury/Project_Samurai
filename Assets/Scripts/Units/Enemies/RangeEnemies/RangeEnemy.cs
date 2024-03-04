@@ -29,7 +29,7 @@ namespace Samurai
         {
             base.Bindings();
             if (RangeWeapon == null) RangeWeapon = GetComponentInChildren<RangeWeapon>();
-            EquipRangeWeapon();
+            // EquipRangeWeapon();
         }
 
         public override void Attack() => RangeAttack();
