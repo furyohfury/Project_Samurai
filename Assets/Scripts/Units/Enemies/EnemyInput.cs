@@ -1,6 +1,7 @@
 using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
 using Zenject;
@@ -76,9 +77,15 @@ namespace Samurai
         protected Coroutine PatrollingDelayCoroutine;
 
         #region UnityMethods
+        protected override void Awake()
+        {
+            base.Awake();
+            PatrollingObjectsPoints = GetComponentsInChildren<Transform>().Where((t) => t.parent.name == "PatrollingPoints").ToArray();
+        }
         protected virtual void Start()
         {
             List<Vector3> pop = new();
+            
             for (var i = 0; i < PatrollingObjectsPoints.Length; i++)
             {
                 pop.Add(PatrollingObjectsPoints[i].transform.position);

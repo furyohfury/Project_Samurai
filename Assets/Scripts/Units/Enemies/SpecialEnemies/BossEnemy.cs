@@ -12,6 +12,14 @@ namespace Samurai
         [Inject]
         public readonly Player Player;
 
+        #region UnityMethods
+        protected override void OnEnable()
+        {
+            base.OnEnable();
+            HPBar.transform.parent.gameObject.SetActive(true);
+        }
+        #endregion
+
         protected override void Bindings()
         {
             base.Bindings();

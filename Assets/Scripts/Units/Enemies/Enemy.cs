@@ -18,13 +18,9 @@ namespace Samurai
         
 
         #region UnityMethods
-        protected void OnEnable()
+        protected virtual void OnEnable()
         {
             HPBar.enabled = true;
-        }
-        protected void OnDisable()
-        {
-            
         }
         #endregion
 

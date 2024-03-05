@@ -21,7 +21,7 @@ namespace Samurai
 #endif 
             var playerData = SaveLoadManager.SaveData.GetField("Player");
             var sceneData = SaveLoadManager.SaveData.GetField("Scene");
-            if (!(playerData.isNull || sceneData.isNull || playerData.count <= 0 || sceneData.count <= 0))
+            if (!(playerData.isNull || sceneData.isNull || playerData.count <= 0 || sceneData.stringValue.Length <= 0))
             {
                 LoadPlayerPosition();
                 LoadPlayerRangeWeapon();

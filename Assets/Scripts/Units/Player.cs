@@ -185,7 +185,7 @@ namespace Samurai
             // PlayerBuffs.SlomoDurationBuff += playerBuffs.SlomoDurationBuff;
 
             // HUH?
-            var unitBuffFields = PlayerBuffs.GetType().GetFields();
+            var playerBuffFields = PlayerBuffs.GetType().GetFields();
             var newBuffFields = playerBuffs.GetType().GetFields();
             object box = PlayerBuffs;
 
@@ -193,12 +193,12 @@ namespace Samurai
             {
                 if (newBuffField.FieldType == typeof(int))
                 {
-                    var corrUnitBuffField = unitBuffFields.Single((f) => f.Name == newBuffField.Name);
+                    var corrUnitBuffField = playerBuffFields.Single((f) => f.Name == newBuffField.Name);
                     corrUnitBuffField.SetValue(box, (int)corrUnitBuffField.GetValue(PlayerBuffs) + (int)newBuffField.GetValue(playerBuffs));
                 }
                 else if (newBuffField.FieldType == typeof(float))
                 {
-                    var corrUnitBuffField = unitBuffFields.Single((f) => f.Name == newBuffField.Name);
+                    var corrUnitBuffField = playerBuffFields.Single((f) => f.Name == newBuffField.Name);
                     corrUnitBuffField.SetValue(box, (float)corrUnitBuffField.GetValue(PlayerBuffs) + (float)newBuffField.GetValue(playerBuffs));
                 }
             }

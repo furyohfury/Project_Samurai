@@ -18,7 +18,7 @@ namespace Samurai
         protected float PlayerShootingDelay;
 
         private bool _canShoot = true;
-        public bool CanShoot { get => _canShoot; set => _canShoot = value; } // todo incapsulation
+        public bool CanShoot { get => _canShoot; set => _canShoot = value; }
 
         [SerializeField]
         protected GameObject WeaponProjectilePrefab;
