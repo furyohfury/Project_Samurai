@@ -73,6 +73,12 @@ namespace Samurai
             SaveData.SetField("Scene", toScene.name);
             SaveData.SetField("Arena", string.Empty);
             SaveData.SetField("ArenaIsFinished", false);
+
+            // var playerData = SaveData.GetField("Player");
+            var playerPos = SaveData.GetField("Player").GetField("Position");
+            playerPos.SetField("x", 0);
+            playerPos.SetField("y", 0);
+            playerPos.SetField("z", 0);
             UpdateSaveFile();
         }
 

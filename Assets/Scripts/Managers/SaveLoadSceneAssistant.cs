@@ -20,11 +20,12 @@ namespace Samurai
             SaveLoadManager.SaveLoadManagerInitialization(true);
             if (!UseSaveFile) return;
 
-            LoadAndApplyPlayerPosition();
+            if (SaveLoadManager.CurrentPlayerPosition != Vector3.zero) LoadAndApplyPlayerPosition();
             LoadAndApplyPlayerRangeWeapon();
             LoadAndApplyPlayerStatsAndBuffs();
             ManageArena();
             
+            // WCYD
             _playerUI.Initialize();
         }
         #endregion
