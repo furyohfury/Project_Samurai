@@ -4,6 +4,7 @@ using System.Linq;
 using UnityEngine;
 using Zenject;
 using static UnityEngine.InputSystem.InputAction;
+using MoreMountains.Tools;
 
 namespace Samurai
 {
@@ -38,6 +39,7 @@ namespace Samurai
 
         public bool CanMove { get; set; } = true;
 
+        [Inject]
         public MMHealthBar HPBar {get; protected set;}
 
 
@@ -71,8 +73,8 @@ namespace Samurai
                 UnitVisuals.GetDamagedByProjectile();
 
                 ChangeHP(-proj.GetProjectileStats().Damage);
-                var defProj = proj as DefaultPlayerWeaponProjectile;
-                if (defProj != null) DefPlayerGunPool.Pool.Release(defProj);
+                // var defProj = proj as DefaultPlayerWeaponProjectile;
+                if (proj is DefaultPlayerWeaponProjectile defProj) DefPlayerGunPool.Pool.Release(defProj);
                 else Destroy(proj.gameObject);
             }
         }

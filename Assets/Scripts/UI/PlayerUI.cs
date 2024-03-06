@@ -6,6 +6,7 @@ using System;
 using TMPro;
 using MoreMountains.Feedbacks;
 using Unity.VisualScripting.Antlr3.Runtime;
+using MoreMountains.Tools;
 
 namespace Samurai
 {
@@ -15,15 +16,21 @@ namespace Samurai
         private Player _player;
         [SerializeField]
         private Image[] _imagesToChangeColorsAsPlayer;
+        [SerializeField]
+        private MMProgressBar _progressBar;
         [Inject]
         private readonly LoseMenu _loseMenu;
 
 
         #region UnityMethods
+        private void Awake()
+        {
+            _player.HPBar.TargetProgressBar = _progressBar;
+        }
         private void OnEnable()
         {
             (_player.UnitVisuals as PlayerVisuals).OnPlayerSwapColor += PlayerChangedColor;
-            _player.OnUnitHealthChanged += HealthChanged;
+            // _player.OnUnitHealthChanged += HealthChanged;
             _player.OnPlayerChangedWeapon += RangeWeaponChanged;
             _player.OnPlayerShot += RangeWeaponNumberOfBulletsChanged;
             _player.OnPlayerMeleeHit += MeleeWeaponCD;
@@ -35,7 +42,7 @@ namespace Samurai
         private void OnDisable()
         {
             (_player.UnitVisuals as PlayerVisuals).OnPlayerSwapColor -= PlayerChangedColor;
-            _player.OnUnitHealthChanged -= HealthChanged;
+            // _player.OnUnitHealthChanged -= HealthChanged;
             _player.OnPlayerChangedWeapon -= RangeWeaponChanged;
             _player.OnPlayerShot -= RangeWeaponNumberOfBulletsChanged;
             _player.OnPlayerMeleeHit -= MeleeWeaponCD;
@@ -65,7 +72,7 @@ namespace Samurai
 
         public void Initialize()
         {
-            HealthChanged();
+            // HealthChanged();
             PlayerChangedColor(_player.CurrentColor);
             if (Enum.TryParse(_player.RangeWeapon.GetType().Name, out RangeWeaponEnum rWeapon))
             {
@@ -126,19 +133,21 @@ namespace Samurai
         private void MeleeWeaponUIInit()
         {
             _meleeWeaponImageFillFeedback = _meleeWeaponCDFeedback.GetFeedbackOfType<MMF_ImageFill>();
-            _meleeWeaponPauseFeedback = _meleeWeaponCDFeedback.GetFeedbackOfType<MMF_Pause>();
+            // _meleeWeaponPauseFeedback = _meleeWeaponCDFeedback.GetFeedbackOfType<MMF_Pause>();
+
             _meleeWeaponImageFillFeedback.Duration = _player.MeleeAttackCooldown;
             _meleeWeaponImageFillFeedback.FeedbackDuration = _player.MeleeAttackCooldown;
-            _meleeWeaponPauseFeedback.PauseDuration = _player.MeleeAttackCooldown;
+            // _meleeWeaponPauseFeedback.PauseDuration = _player.MeleeAttackCooldown;
+
             _meleeWeaponImageFillFeedback.ResetFeedback();
         }
         public void MeleeWeaponCD()
         {
             _meleeWeaponImageFillFeedback.Duration = _player.MeleeAttackCooldown;
             _meleeWeaponImageFillFeedback.FeedbackDuration = _player.MeleeAttackCooldown;
-            _meleeWeaponPauseFeedback.PauseDuration = _player.MeleeAttackCooldown;
+            // _meleeWeaponPauseFeedback.PauseDuration = _player.MeleeAttackCooldown;
             _meleeWeaponImageFillFeedback.ResetFeedback();
-            // _meleeWeaponPauseFeedback.PauseDuration = _playerInput.MeleeAttackCooldown;
+
             _meleeWeaponCDFeedback?.PlayFeedbacks();
         }
         #endregion

@@ -16,7 +16,7 @@ namespace Samurai
         protected override void OnEnable()
         {
             base.OnEnable();
-            HPBar.transform.parent.gameObject.SetActive(true);
+            HPBar.TargetProgressBar.transform.parent.gameObject.SetActive(true);
         }
         #endregion
 

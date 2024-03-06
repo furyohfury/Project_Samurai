@@ -61,8 +61,8 @@ namespace Samurai
             SetShootingDelay();
             for (var i = 0; i < _burstNumberOfShells; i++)
             {
-                var proj = _factory.Create().gameObject;
-                if (Owner != null) proj.GetComponent<Projectile>().SetProjectileStatsOnShoot(Owner);
+                var proj = _factory.Create();
+                if (Owner != null) proj.SetProjectileStatsOnShoot(Owner);
                 proj.transform.position = this.transform.position + this.transform.forward * 0.1f;
                 proj.transform.eulerAngles = new Vector3(
                     0, Owner.transform.eulerAngles.y + Random.Range(-_burstShellAngleSpread, _burstShellAngleSpread), 0);

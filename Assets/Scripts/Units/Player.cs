@@ -28,10 +28,10 @@ namespace Samurai
 
         public bool CanShoot { get; set; } = true;
 
-        public bool CanTurn {get; private set;} = true;
+        public bool CanTurn { get; private set; } = true;
 
         #region UnityMethods
-        private override void Awake()
+        protected override void Awake()
         {
             PlayerInitialization();
         }
@@ -100,7 +100,7 @@ namespace Samurai
             // To throw away empty gun
             RangeWeapon.OnBulletsEnded += UnequipPickableWeaponToDefault;
             // Buffs
-            RangeWeapon.ApplyBuff(new ProjectileStatsStruct {Damage = PlayerBuffs.PickableWeaponDamageBuff });
+            RangeWeapon.ApplyBuff(new ProjectileStatsStruct { Damage = PlayerBuffs.PickableWeaponDamageBuff });
             PickableWeapon = null;
         }
 

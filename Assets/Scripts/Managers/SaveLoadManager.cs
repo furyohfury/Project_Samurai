@@ -18,6 +18,8 @@ namespace Samurai
         public static string CurrentScene;
         public static string CurrentArena;
         public static bool CurrentArenaIsFinished;
+
+        public static bool PlayerDataExist = false;
         public static UnitStatsStruct PlayerStats;
         public static UnitBuffsStruct PlayerUnitBuffs;
         public static PlayerBuffsStruct PlayerOnlyBuffs;
@@ -43,9 +45,12 @@ namespace Samurai
                 // On first launch
                 if (!File.Exists(_saveDataPath))
                 {
-
-                    // Creating empty save file
-                    File.WriteAllText(_saveDataPath, string.Empty);
+                    var save = new JSONObject(_saveDataPath);
+                    if (save == null || save.count == 0)
+                    {
+                        // Creating empty save file
+                        File.WriteAllText(_saveDataPath, string.Empty);
+                    }                    
                 }
                 // Buffering save file and all data in SaveLoadManager
                 LoadLastSave();
@@ -57,7 +62,7 @@ namespace Samurai
             }
         }
 
-        
+
 
         #region Saving
         private static void SceneChanged(Scene fromScene, Scene toScene)
@@ -67,18 +72,30 @@ namespace Samurai
             {
                 return;
             } */
-            if (toScene.name.Contains("MainMenu", StringComparison.OrdinalIgnoreCase) 
-                || toScene.name.Contains("LoadingScreen",StringComparison.OrdinalIgnoreCase)) return;
+            if (toScene.name.Contains("MainMenu", StringComparison.OrdinalIgnoreCase)
+                || toScene.name.Contains("LoadingScreen", StringComparison.OrdinalIgnoreCase)) return;
 
             SaveData.SetField("Scene", toScene.name);
+            CurrentScene = toScene.name;
             SaveData.SetField("Arena", string.Empty);
+            CurrentArena = string.Empty;
             SaveData.SetField("ArenaIsFinished", false);
+            CurrentArenaIsFinished = false;
 
-            // var playerData = SaveData.GetField("Player");
-            var playerPos = SaveData.GetField("Player").GetField("Position");
-            playerPos.SetField("x", 0);
-            playerPos.SetField("y", 0);
-            playerPos.SetField("z", 0);
+            var playerData = SaveData.GetField("Player");
+            if (playerData != null)
+            {
+                var playerPos = playerData.GetField("PlayerTransform").GetField("Position");
+                if (playerPos != null)
+                {
+                    playerPos.SetField("x", 0);
+                    playerPos.SetField("y", 0);
+                    playerPos.SetField("z", 0);
+                    CurrentPlayerPosition = Vector3.zero;
+                }
+            }
+
+            
             UpdateSaveFile();
         }
 
@@ -186,6 +203,7 @@ namespace Samurai
             var playerJSON = SaveData.GetField("Player");
             if (playerJSON != null)
             {
+                PlayerDataExist = true;
                 CurrentPlayerPosition = LoadPlayerTransform();
                 PlayerStats = LoadStats<UnitStatsStruct>(playerJSON, "UnitStats");
                 PlayerUnitBuffs = LoadStats<UnitBuffsStruct>(playerJSON, "UnitBuffs");
@@ -245,6 +263,12 @@ namespace Samurai
             TextAsset targetFile = Resources.Load<TextAsset>(filePath);
 
             return targetFile.text;
+        }
+
+        public static void NewGameStart()
+        {
+            SaveData.Clear();
+            File.WriteAllText(_saveDataPath, string.Empty);
         }
     }
 }

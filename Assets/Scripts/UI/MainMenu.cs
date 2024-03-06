@@ -6,10 +6,10 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 namespace Samurai
 {
-    [RequireComponent(typeof(SaveLoadSceneAssistant))]
     public class MainMenu : MonoBehaviour
     {
-        private SaveLoadSceneAssistant _saveLoadSceneAssistant;
+        // [SerializeField]
+        // private SaveLoadSceneAssistant _saveLoadSceneAssistant;
 
         [SerializeField]
         private Button _continue;
@@ -32,13 +32,15 @@ namespace Samurai
         #region UnityMethods
         private void OnEnable()
         {
-            _saveLoadSceneAssistant.UseSaveFile = false;
+            // _saveLoadSceneAssistant.UseSaveFile = false;
             _settingsMenu.OnSettingsBackMenuButtonPressed += SettingsPressed_UnityEvent;
         }
         private void Start()
         {
             _bgMusicFeedback?.PlayFeedbacks();
             Application.targetFrameRate = 60;
+
+            SaveLoadManager.SaveLoadManagerInitialization(true);
         }
         private void OnDisable()
         {
@@ -49,22 +51,22 @@ namespace Samurai
         public void ContinuePressed_UnityEvent()
         {
             if (SaveLoadManager.SaveData.GetField(out string sceneName, "Scene", string.Empty) && sceneName.Length > 0)
-            {                
+            {
                 StartCoroutine(ContinueLoading(sceneName));
             }
         }
         private IEnumerator ContinueLoading(string sceneName)
         {
             SceneManager.LoadScene("AdditiveLoadingScreen", LoadSceneMode.Additive);
-            AsyncOperation startGameLoading = SceneManager.LoadSceneAsync("sceneName", LoadSceneMode.Additive);
+            AsyncOperation startGameLoading = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
             while (!startGameLoading.isDone)
             {
                 yield return null;
             }
-            SceneManager.SetActiveScene(SceneManager.GetSceneByName("sceneName"));
-            SceneManager.UnloadSceneAsync(SceneManager.GetSceneByName("AdditiveLoadingScreen"), 
+            SceneManager.SetActiveScene(SceneManager.GetSceneByName(sceneName));
+            SceneManager.UnloadSceneAsync(SceneManager.GetSceneByName("AdditiveLoadingScreen"),
                 UnloadSceneOptions.UnloadAllEmbeddedSceneObjects);
-            SceneManager.UnloadSceneAsync(SceneManager.GetSceneByName("MainMenuScene"), 
+            SceneManager.UnloadSceneAsync(SceneManager.GetSceneByName("MainMenuScene"),
                 UnloadSceneOptions.UnloadAllEmbeddedSceneObjects);
         }
 
@@ -75,22 +77,28 @@ namespace Samurai
 
         public void SureMenuYesPressed_UnityEvent()
         {
-            
-            StartCoroutine(StartGameSceneLoading());
+            SaveLoadManager.NewGameStart();
+            // StartCoroutine(StartGameSceneLoading());
+            SceneManager.LoadScene("StartGameScene");
             // _startGameSceneFeedback?.PlayFeedbacks();
         }
         private IEnumerator StartGameSceneLoading()
         {
-            SceneManager.LoadScene("AdditiveLoadingScreen", LoadSceneMode.Additive);
+            var loadingScreenLoad = SceneManager.LoadSceneAsync("AdditiveLoadingScreen", LoadSceneMode.Additive);
+            while (!loadingScreenLoad.isDone)
+            {
+                yield return null;
+            }
+            SceneManager.SetActiveScene(SceneManager.GetSceneByName("AdditiveLoadingScreen"));
             AsyncOperation startGameLoading = SceneManager.LoadSceneAsync("StartGameScene", LoadSceneMode.Additive);
             while (!startGameLoading.isDone)
             {
                 yield return null;
             }
             SceneManager.SetActiveScene(SceneManager.GetSceneByName("StartGameScene"));
-            SceneManager.UnloadSceneAsync(SceneManager.GetSceneByName("AdditiveLoadingScreen"), 
+            SceneManager.UnloadSceneAsync(SceneManager.GetSceneByName("AdditiveLoadingScreen"),
                 UnloadSceneOptions.UnloadAllEmbeddedSceneObjects);
-            SceneManager.UnloadSceneAsync(SceneManager.GetSceneByName("MainMenuScene"), 
+            SceneManager.UnloadSceneAsync(SceneManager.GetSceneByName("MainMenuScene"),
                 UnloadSceneOptions.UnloadAllEmbeddedSceneObjects);
         }
 

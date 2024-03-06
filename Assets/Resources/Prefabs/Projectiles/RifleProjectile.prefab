@@ -111,7 +111,7 @@ Rigidbody:
   m_Drag: 0
   m_AngularDrag: 0
   m_UseGravity: 0
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
@@ -160,3 +160,7 @@ MonoBehaviour:
     - {fileID: 2100000, guid: 6fc962880b38ad24d86428442fce17f6, type: 2}
     - {fileID: 2100000, guid: 99719b2fa31b3184c9d117ba958214a6, type: 2}
   _owner: {fileID: 0}
+  ProjectileStats:
+    Damage: 0
+    ProjectileSpeed: 0
+    ProjectileScale: 0

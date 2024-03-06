@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Zenject;
 
 namespace Samurai
@@ -18,13 +19,19 @@ namespace Samurai
         private void Start()
         {
             SaveLoadManager.SaveLoadManagerInitialization(true);
-            if (!UseSaveFile) return;
 
-            if (SaveLoadManager.CurrentPlayerPosition != Vector3.zero) LoadAndApplyPlayerPosition();
-            LoadAndApplyPlayerRangeWeapon();
-            LoadAndApplyPlayerStatsAndBuffs();
-            ManageArena();
-            
+            if (UseSaveFile)
+            {
+                if (SaveLoadManager.PlayerDataExist)
+                {
+                    if (SaveLoadManager.CurrentPlayerPosition != Vector3.zero) LoadAndApplyPlayerPosition();
+                    LoadAndApplyPlayerRangeWeapon();
+                    LoadAndApplyPlayerStatsAndBuffs();
+                }
+
+                ManageArena();
+            }
+
             // WCYD
             _playerUI.Initialize();
         }
@@ -49,7 +56,7 @@ namespace Samurai
             _player.SetupPlayer(SaveLoadManager.PlayerUnitBuffs);
             _player.SetupPlayer(SaveLoadManager.PlayerOnlyBuffs);
         }
-        
+
         private void ManageArena()
         {
             if (SaveLoadManager.CurrentArena == string.Empty) return;
@@ -60,7 +67,7 @@ namespace Samurai
                 GameObject arena = GameObject.Find(SaveLoadManager.CurrentArena);
                 if (arena.TryGetComponent(out Arena arenaComponent))
                 {
-                    arena.FinishArenaFromSaveFile();
+                    arenaComponent.FinishArenaFromSaveFile();
                 }
                 else Debug.LogError("Didnt find arena component on arena from savefile");
             }
@@ -75,7 +82,7 @@ namespace Samurai
         // Referenced by PlayerUI
         public void LoadLastCheckpoint()
         {
-            SceneManager.LoadSceneAsync(SaveLoadManager.CurrentScene);
+            SceneManager.LoadScene(SaveLoadManager.CurrentScene);
         }
 
     }
