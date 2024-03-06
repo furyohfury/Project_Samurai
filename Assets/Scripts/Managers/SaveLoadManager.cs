@@ -47,8 +47,8 @@ namespace Samurai
                     // Creating empty save file
                     File.WriteAllText(_saveDataPath, string.Empty);
                 }
-                // Buffering save file in SaveLoadManager
-                SaveData = new(File.ReadAllText(_saveDataPath));
+                // Buffering save file and all data in SaveLoadManager
+                LoadLastSave();
             }
             else
             {
@@ -57,15 +57,7 @@ namespace Samurai
             }
         }
 
-        public static string LoadResourceTextfile(string path)
-        {
-
-            string filePath = path.Replace(".json", "");
-
-            TextAsset targetFile = Resources.Load<TextAsset>(filePath);
-
-            return targetFile.text;
-        }
+        
 
         #region Saving
         private static void SceneChanged(Scene fromScene, Scene toScene)
@@ -160,26 +152,11 @@ namespace Samurai
         }
         #endregion
 
-        #region Loading
+        // Loads everything from save file to this class fields
+        #region Loading        
         public static void LoadLastSave()
         {
             SaveData = new(File.ReadAllText(_saveDataPath));
-
-            // Player
-            var playerJSON = SaveData.GetField("Player");
-            if (playerJSON != null)
-            {
-                CurrentPlayerPosition = LoadPlayerTransform();
-                PlayerStats = LoadStats<UnitStatsStruct>(playerJSON, "UnitStats");
-                PlayerUnitBuffs = LoadStats<UnitBuffsStruct>(playerJSON, "UnitBuffs");
-                PlayerOnlyBuffs = LoadStats<PlayerBuffsStruct>(playerJSON, "PlayerBuffs");
-                LoadPlayerRangeWeapon(playerJSON);
-            }
-            else
-            {
-                CurrentPlayerPosition = Vector3.zero;
-            }
-
 
             // Arena
             if (SaveData.GetField(out string arenaName, "Arena", string.Empty))
@@ -191,17 +168,22 @@ namespace Samurai
                 CurrentArenaIsFinished = arenaIsFinished;
             }
 
-            if (SaveData.GetField(out string sceneName, "Scene", "MainMenu"))
+            // Scene
+            if (SaveData.GetField(out string sceneName, "Scene", string.Empty))
             {
-                SceneManager.LoadSceneAsync(sceneName);
-
-                // todo enable finish arena soomehow
-            }
-            else
-            {
-                Debug.LogError("No scene found in save file");
+                CurrentScene = sceneName;
             }
 
+            // Player
+            var playerJSON = SaveData.GetField("Player");
+            if (playerJSON != null)
+            {
+                CurrentPlayerPosition = LoadPlayerTransform();
+                PlayerStats = LoadStats<UnitStatsStruct>(playerJSON, "UnitStats");
+                PlayerUnitBuffs = LoadStats<UnitBuffsStruct>(playerJSON, "UnitBuffs");
+                PlayerOnlyBuffs = LoadStats<PlayerBuffsStruct>(playerJSON, "PlayerBuffs");
+                LoadPlayerRangeWeapon(playerJSON);
+            }
         }
 
         // Mb do for rotation and scale
@@ -220,7 +202,7 @@ namespace Samurai
         {
             var unitStatsJsonObj = unitJsonObj.GetField(fieldName);
 
-            // Reflections SetField doesnt work with structs
+            // Reflections SetField doesnt work with structs. Have to use a box
             T stats = (T)Activator.CreateInstance(typeof(T));
             object box = stats;
             var ussFields = stats.GetType().GetFields();
@@ -246,6 +228,16 @@ namespace Samurai
         }
         #endregion
 
+
+        public static string LoadResourceTextfile(string path)
+        {
+
+            string filePath = path.Replace(".json", "");
+
+            TextAsset targetFile = Resources.Load<TextAsset>(filePath);
+
+            return targetFile.text;
+        }
     }
 }
 

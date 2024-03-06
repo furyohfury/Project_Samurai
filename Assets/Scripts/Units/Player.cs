@@ -31,7 +31,7 @@ namespace Samurai
         public bool CanTurn {get; private set;} = true;
 
         #region UnityMethods
-        private void Start()
+        private override void Awake()
         {
             PlayerInitialization();
         }
@@ -233,7 +233,7 @@ namespace Samurai
                 RangeWeapon = GetComponentInChildren<RangeWeapon>();
             }
             EquipRangeWeapon(RangeWeapon);
-            MeleeWeaponBindings();            
+            MeleeWeaponBindings();
         }
         public void SetupPlayer(UnitStatsStruct unitStats)
         {

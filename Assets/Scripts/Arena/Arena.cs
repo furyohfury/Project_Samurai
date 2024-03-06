@@ -207,16 +207,10 @@ namespace Samurai
         #region Finishing
         private void FinishedArenaInit()
         {
-            /* if (_arenaEndActions.Contains(ArenaEndAction.OpenDoor) && (_exitDoor == null || _exitDoorEndLocation == null))
-            {
-                Debug.LogError($"Arena {gameObject.name} must open door but doesnt have one");
-            } */
-
             if (_arenaEndActions.Contains(ArenaEndAction.SwitchScene) && _switchSceneFeedback == null)
             {
                 Debug.LogError($"Arena {gameObject.name} must switch scene but doesnt have corresponding feedback");
             }
-
         }
 
         private void ClearArena()
@@ -263,5 +257,13 @@ namespace Samurai
             }
         }
         #endregion
+    
+
+        // Referenced by SaveLoadSceneAssistant
+        public void FinishArenaFromSaveFile()
+        {
+            EntryDoorClose();
+            FinishedArena();
+        }
     }
 }

@@ -6,8 +6,11 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 namespace Samurai
 {
+    [RequireComponent(typeof(SaveLoadSceneAssistant))]
     public class MainMenu : MonoBehaviour
     {
+        private SaveLoadSceneAssistant _saveLoadSceneAssistant;
+
         [SerializeField]
         private Button _continue;
         [SerializeField]
@@ -29,6 +32,7 @@ namespace Samurai
         #region UnityMethods
         private void OnEnable()
         {
+            _saveLoadSceneAssistant.UseSaveFile = false;
             _settingsMenu.OnSettingsBackMenuButtonPressed += SettingsPressed_UnityEvent;
         }
         private void Start()
@@ -44,9 +48,25 @@ namespace Samurai
 
         public void ContinuePressed_UnityEvent()
         {
-            if (SaveLoadManager.SaveData.count > 0) SaveLoadManager.LoadLastSave();
+            if (SaveLoadManager.SaveData.GetField(out string sceneName, "Scene", string.Empty) && sceneName.Length > 0)
+            {                
+                StartCoroutine(ContinueLoading(sceneName));
+            }
         }
-
+        private IEnumerator ContinueLoading(string sceneName)
+        {
+            SceneManager.LoadScene("AdditiveLoadingScreen", LoadSceneMode.Additive);
+            AsyncOperation startGameLoading = SceneManager.LoadSceneAsync("sceneName", LoadSceneMode.Additive);
+            while (!startGameLoading.isDone)
+            {
+                yield return null;
+            }
+            SceneManager.SetActiveScene(SceneManager.GetSceneByName("sceneName"));
+            SceneManager.UnloadSceneAsync(SceneManager.GetSceneByName("AdditiveLoadingScreen"), 
+                UnloadSceneOptions.UnloadAllEmbeddedSceneObjects);
+            SceneManager.UnloadSceneAsync(SceneManager.GetSceneByName("MainMenuScene"), 
+                UnloadSceneOptions.UnloadAllEmbeddedSceneObjects);
+        }
 
         public void NewGamePressed_UnityEvent()
         {
@@ -55,18 +75,24 @@ namespace Samurai
 
         public void SureMenuYesPressed_UnityEvent()
         {
-            // StartCoroutine(LoadGameStart());
-            _startGameSceneFeedback?.PlayFeedbacks();
+            
+            StartCoroutine(StartGameSceneLoading());
+            // _startGameSceneFeedback?.PlayFeedbacks();
         }
-        /* private IEnumerator LoadGameStart()
+        private IEnumerator StartGameSceneLoading()
         {
-            var loadedScene = SceneManager.LoadSceneAsync("StartGameScene", LoadSceneMode.Additive);
-            SceneManager.LoadScene("LoadingScreen");
-            while (!loadedScene.isDone)
+            SceneManager.LoadScene("AdditiveLoadingScreen", LoadSceneMode.Additive);
+            AsyncOperation startGameLoading = SceneManager.LoadSceneAsync("StartGameScene", LoadSceneMode.Additive);
+            while (!startGameLoading.isDone)
             {
                 yield return null;
             }
-        }*/
+            SceneManager.SetActiveScene(SceneManager.GetSceneByName("StartGameScene"));
+            SceneManager.UnloadSceneAsync(SceneManager.GetSceneByName("AdditiveLoadingScreen"), 
+                UnloadSceneOptions.UnloadAllEmbeddedSceneObjects);
+            SceneManager.UnloadSceneAsync(SceneManager.GetSceneByName("MainMenuScene"), 
+                UnloadSceneOptions.UnloadAllEmbeddedSceneObjects);
+        }
 
         public void SureMenuNoPressed_UnityEvent()
         {
