@@ -75,13 +75,15 @@ namespace Samurai
         }
 
         #region Health
-        [SerializeField, Space]
+        /* [SerializeField, Space]
         private Slider _hpSlider;
+        [SerializeField]
+        private MMHealthBar HPBar;
         public void HealthChanged()
         {
             // w/out float cast just makes it 0
-            _hpSlider.value = (float)_player.GetUnitStats().HP / (float)_player.GetUnitStats().MaxHP;
-        }
+            // _hpSlider.value = (float)_player.GetUnitStats().HP / (float)_player.GetUnitStats().MaxHP;
+        } */
         #endregion
 
 

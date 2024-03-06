@@ -38,6 +38,8 @@ namespace Samurai
 
         public bool CanMove { get; set; } = true;
 
+        public MMHealthBar HPBar {get; protected set;}
+
 
         #region UnityMethods
         protected virtual void Awake()
@@ -55,6 +57,9 @@ namespace Samurai
             // UnitPhysics = GetComponent<UnitPhysics>();
             // UnitInput = GetComponent<UnitInput>();
             if (UnitStats.HP <= 0 || UnitStats.MaxHP <= 0 || UnitStats.MoveSpeed <= 0) Debug.LogError($"Unit {gameObject.name} has wrong UnitStats");            
+            
+            // if (TryGetComponent(out MMHealthBar hpbar)) HPBar = hpbar;
+            // else Debug.LogError($"No hpbar on {gameObject.name}");
         }
 
         #region Damaged
@@ -91,6 +96,7 @@ namespace Samurai
             else UnitStats.HP += delta;
 
             // For hpbar
+            HPBar.UpdateBar(UnitStats.HP, 0f, UnitStats.MaxHP, true);
             OnUnitHealthChanged?.Invoke();
 
             if (UnitStats.HP <= 0)

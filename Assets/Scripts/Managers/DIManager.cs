@@ -57,6 +57,7 @@ namespace Samurai
             Container.Bind<UnitPhysics>().FromComponentSibling();
             Container.Bind<UnitInput>().FromComponentSibling();
             Container.Bind<Animator>().FromComponentSibling();
+            Container.Bind<MMHealthBar>().FromComponentSibling().WhenInjectedInto<Unit>();
 
             // Enemies
             Container.Bind<CapsuleCollider>().FromComponentSibling().WhenInjectedInto<EnemyPhysics>();

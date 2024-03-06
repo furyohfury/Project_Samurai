@@ -14,9 +14,6 @@ namespace Samurai
 
         private EnemyPool EnemyPool;
 
-        protected MMHealthBar HPBar;
-        
-
         #region UnityMethods
         protected virtual void OnEnable()
         {
@@ -27,27 +24,14 @@ namespace Samurai
 
         protected override void Bindings()
         {
-            base.Bindings();
-            if (TryGetComponent(out MMHealthBar hpbar))
-            {
-                HPBar = hpbar;
-            }
-            else Debug.LogError($"No hpbar on {gameObject.name}");
+            base.Bindings();            
 
             EnemyPool = GetComponentInParent<EnemyPool>();
             if (EnemyPool == null) Debug.LogError($"Enemy {gameObject.name} didnt find its EnemyPool");
 
             if (HealthPacksPrefabs == null || HealthPacksPrefabs.Length <= 0) Debug.LogWarning($"Enemy {gameObject.name} doesnt have droppable healthpacks");
         }
-
-        #region GetDamaged
-        protected override void ChangeHP(int delta)
-        {
-            base.ChangeHP(delta);
-            HPBar.UpdateBar(UnitStats.HP, 0f, UnitStats.MaxHP, true);
-        }
-        #endregion
-
+        
         #region Death
         public override void Die()
         {
