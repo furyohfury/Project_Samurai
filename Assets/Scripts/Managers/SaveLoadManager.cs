@@ -10,14 +10,14 @@ namespace Samurai
 {
     public static class SaveLoadManager
     {
-        private static readonly string _saveDataPath = Application.persistentDataPath + "/SaveFile.json";
+        private static readonly string _saveDataPath = Constants.SaveDataPath;
 
         public static JSONObject SaveData;
 
         public static Vector3 CurrentPlayerPosition = new();
-        public static string CurrentScene;
-        public static string CurrentArena;
-        public static bool CurrentArenaIsFinished;
+        public static string CurrentScene {get => SaveData.GetField("Scene");}
+        public static string CurrentArena {get => SaveData.GetField("Arena");}
+        public static bool CurrentArenaIsFinished {get => SaveData.GetField("ArenaIsFinished");}
 
         public static bool PlayerDataExist = false;
         public static UnitStatsStruct PlayerStats;
@@ -45,15 +45,13 @@ namespace Samurai
                 // On first launch
                 if (!File.Exists(_saveDataPath))
                 {
-                    var save = new JSONObject(_saveDataPath);
-                    if (save == null || save.count == 0)
-                    {
-                        // Creating empty save file
-                        File.WriteAllText(_saveDataPath, string.Empty);
-                    }                    
+                    File.WriteAllText(_saveDataPath, string.Empty);
                 }
-                // Buffering save file and all data in SaveLoadManager
-                LoadLastSave();
+                else 
+                {
+                    SaveData = ReadAllText(_saveDataPath);
+                    LoadLastSave();
+                }
             }
             else
             {
@@ -67,36 +65,45 @@ namespace Samurai
         #region Saving
         private static void SceneChanged(Scene fromScene, Scene toScene)
         {
-            /* if (toScene.name == "MainMenuScene" || toScene.name == "AntiSpill_MainMenuScene" || 
-                (SaveData.GetField(out string endSceneName, "Scene", "") && toScene.name == endSceneName))
+            if (fromScene.name.Contains("MainMenu", StringComparison.OrdinalIgnoreCase)) 
+                || fromScene.name == toScene.name)
+            // Loading and applying everything
             {
-                return;
-            } */
-            if (toScene.name.Contains("MainMenu", StringComparison.OrdinalIgnoreCase)
-                || toScene.name.Contains("LoadingScreen", StringComparison.OrdinalIgnoreCase)) return;
+                /* SaveData = ReadAllText(_saveDataPath);
 
-            SaveData.SetField("Scene", toScene.name);
-            CurrentScene = toScene.name;
-            SaveData.SetField("Arena", string.Empty);
-            CurrentArena = string.Empty;
-            SaveData.SetField("ArenaIsFinished", false);
-            CurrentArenaIsFinished = false;
+                SaveData.SetField("Scene", toScene.name);
+                CurrentScene = toScene.name;
+                SaveData.GetField(out string CurrentArena, "Arena", string.Empty);
+                SaveData.SetField(out string CurrentArenaIsFinished, "ArenaIsFinished", false);
 
-            var playerData = SaveData.GetField("Player");
-            if (playerData != null)
-            {
-                var playerPos = playerData.GetField("PlayerTransform").GetField("Position");
-                if (playerPos != null)
+                var playerData = SaveData.GetField("Player");
+                if (playerData != null)
                 {
-                    playerPos.SetField("x", 0);
-                    playerPos.SetField("y", 0);
-                    playerPos.SetField("z", 0);
-                    CurrentPlayerPosition = Vector3.zero;
-                }
+                    var playerPos = playerData.GetField("PlayerTransform").GetField("Position");
+                    if (playerPos != null)
+                    {
+                        playerPos.GetField(out float x, "x", 0);
+                        playerPos.GetField(out float y, "y", 0);
+                        playerPos.GetField(out float z, "z", 0);
+                        CurrentPlayerPosition = new Vector3(x, y, z);
+                    }
+                } */
+                LoadLastSave();
             }
+            else
+            {
+                // SaveData = ReadAllText(_saveDataPath);
+                SaveData.SetField("Scene", toScene.name);
+                SaveData.SetField("Arena", string.Empty);
+                SaveData.SetField("ArenaIsFinished", false);
+                
+                var playerTransform = SaveData.GetField("Player").GetField("PlayerTransform");
+                
+                playerTransform.SetField("Position");
 
+                UpdateSaveFile();
+            }           
             
-            UpdateSaveFile();
         }
 
         public static void ArenaSaving(string arenaName, bool isArenaFinished, Player player)
