@@ -47,14 +47,14 @@ namespace Samurai
 
         private void LoadAndApplyPlayerRangeWeapon()
         {
-            _player.SetupPlayer(SaveLoadManager.PlayerRangeWeapon, SaveLoadManager.PlayerPickableWeaponNumberOfBullets);
+            _player.SetupPlayer(SaveLoadManager.PlayerRangeWeapon, SaveLoadManager.NumberOfBulletsForPlayer);
         }
 
         private void LoadAndApplyPlayerStatsAndBuffs()
         {
             _player.SetupPlayer(SaveLoadManager.PlayerStats);
             _player.SetupPlayer(SaveLoadManager.PlayerUnitBuffs);
-            _player.SetupPlayer(SaveLoadManager.PlayerOnlyBuffs);
+            _player.SetupPlayer(SaveLoadManager.PlayerBuffs);
         }
 
         private void ManageArena()

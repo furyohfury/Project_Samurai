@@ -43,7 +43,7 @@ namespace Samurai
 
             if (GUILayout.Button("LoadScene"))
             {
-                SaveLoadManager.LoadLastSave();
+                SaveLoadManager.LoadSaveFile();
             }
             serializedObject.ApplyModifiedProperties();
         }

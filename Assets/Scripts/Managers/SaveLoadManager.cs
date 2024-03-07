@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -10,23 +11,35 @@ namespace Samurai
 {
     public static class SaveLoadManager
     {
+        public static LoadingType LoadingType = LoadingType.None;
+
         private static readonly string _saveDataPath = Constants.SaveDataPath;
 
         public static JSONObject SaveData;
 
-        public static Vector3 CurrentPlayerPosition = new();
-        public static string CurrentScene {get => SaveData.GetField("Scene");}
-        public static string CurrentArena {get => SaveData.GetField("Arena");}
-        public static bool CurrentArenaIsFinished {get => SaveData.GetField("ArenaIsFinished");}
+        /* public static Vector3 CurrentPlayerPosition { get => LoadPlayerTransform(); private set; }
+        public static string CurrentScene { get => SaveData.GetField("Scene").stringValue; }
+        public static string CurrentArena { get => SaveData.GetField("Arena").stringValue; }
+        public static bool CurrentArenaIsFinished { get => SaveData.GetField("ArenaIsFinished").boolValue; }
 
         public static bool PlayerDataExist = false;
+        public static UnitStatsStruct PlayerStats { get => LoadStats<UnitStatsStruct>(SaveData.GetField("Player").GetField("UnitStats"), "UnitStats"); }
+        public static UnitBuffsStruct PlayerUnitBuffs { get => LoadStats<UnitBuffsStruct>(SaveData.GetField("Player").GetField("UnitBuffs"), "UnitBuffs"); }
+        public static PlayerBuffsStruct PlayerOnlyBuffs { get => LoadStats<PlayerBuffsStruct>(SaveData.GetField("Player").GetField("PlayerBuffs"), "PlayerBuffs"); }
+
+        public static string PlayerRangeWeapon { get => LoadPlayerRangeWeapon(SaveData.GetField("Player"), out PlayerPickableWeaponNumberOfBullets); }
+        public static int PlayerPickableWeaponNumberOfBullets; */
+
+        public static string CurrentScene;
+        public static string CurrentArena;
+        public static bool CurrentArenaIsFinished;
+
+        public static Vector3 CurrentPlayerPosition;
         public static UnitStatsStruct PlayerStats;
         public static UnitBuffsStruct PlayerUnitBuffs;
-        public static PlayerBuffsStruct PlayerOnlyBuffs;
-
+        public static PlayerBuffsStruct PlayerBuffs;
         public static string PlayerRangeWeapon;
-        public static int PlayerPickableWeaponNumberOfBullets;
-
+        public static int NumberOfBulletsForPlayer;
         public static void UpdateSaveFile()
         {
             if (File.Exists(_saveDataPath))
@@ -47,10 +60,10 @@ namespace Samurai
                 {
                     File.WriteAllText(_saveDataPath, string.Empty);
                 }
-                else 
+                else
                 {
-                    SaveData = ReadAllText(_saveDataPath);
-                    LoadLastSave();
+                    SaveData = new(_saveDataPath);
+                    LoadSaveFile();
                 }
             }
             else
@@ -65,45 +78,16 @@ namespace Samurai
         #region Saving
         private static void SceneChanged(Scene fromScene, Scene toScene)
         {
-            if (fromScene.name.Contains("MainMenu", StringComparison.OrdinalIgnoreCase)) 
-                || fromScene.name == toScene.name)
-            // Loading and applying everything
+            if (fromScene.name != toScene.name &&
+                !(fromScene.name.Contains("MainMenu", StringComparison.OrdinalIgnoreCase) || toScene.name.Contains("MainMenu", StringComparison.OrdinalIgnoreCase)))
             {
-                /* SaveData = ReadAllText(_saveDataPath);
-
-                SaveData.SetField("Scene", toScene.name);
-                CurrentScene = toScene.name;
-                SaveData.GetField(out string CurrentArena, "Arena", string.Empty);
-                SaveData.SetField(out string CurrentArenaIsFinished, "ArenaIsFinished", false);
-
-                var playerData = SaveData.GetField("Player");
-                if (playerData != null)
-                {
-                    var playerPos = playerData.GetField("PlayerTransform").GetField("Position");
-                    if (playerPos != null)
-                    {
-                        playerPos.GetField(out float x, "x", 0);
-                        playerPos.GetField(out float y, "y", 0);
-                        playerPos.GetField(out float z, "z", 0);
-                        CurrentPlayerPosition = new Vector3(x, y, z);
-                    }
-                } */
-                LoadLastSave();
-            }
-            else
-            {
-                // SaveData = ReadAllText(_saveDataPath);
                 SaveData.SetField("Scene", toScene.name);
                 SaveData.SetField("Arena", string.Empty);
                 SaveData.SetField("ArenaIsFinished", false);
-                
-                var playerTransform = SaveData.GetField("Player").GetField("PlayerTransform");
-                
-                playerTransform.SetField("Position");
+            }
+            else if ()
 
-                UpdateSaveFile();
-            }           
-            
+
         }
 
         public static void ArenaSaving(string arenaName, bool isArenaFinished, Player player)
@@ -186,9 +170,15 @@ namespace Samurai
 
         // Loads everything from save file to this class fields
         #region Loading        
-        public static void LoadLastSave()
+        public static void LoadSaveFile()
         {
             SaveData = new(File.ReadAllText(_saveDataPath));
+
+            // Scene
+            if (SaveData.GetField(out string sceneName, "Scene", string.Empty))
+            {
+                CurrentScene = sceneName;
+            }
 
             // Arena
             if (SaveData.GetField(out string arenaName, "Arena", string.Empty))
@@ -200,22 +190,15 @@ namespace Samurai
                 CurrentArenaIsFinished = arenaIsFinished;
             }
 
-            // Scene
-            if (SaveData.GetField(out string sceneName, "Scene", string.Empty))
-            {
-                CurrentScene = sceneName;
-            }
-
             // Player
             var playerJSON = SaveData.GetField("Player");
             if (playerJSON != null)
             {
-                PlayerDataExist = true;
                 CurrentPlayerPosition = LoadPlayerTransform();
                 PlayerStats = LoadStats<UnitStatsStruct>(playerJSON, "UnitStats");
                 PlayerUnitBuffs = LoadStats<UnitBuffsStruct>(playerJSON, "UnitBuffs");
-                PlayerOnlyBuffs = LoadStats<PlayerBuffsStruct>(playerJSON, "PlayerBuffs");
-                LoadPlayerRangeWeapon(playerJSON);
+                PlayerBuffs = LoadStats<PlayerBuffsStruct>(playerJSON, "PlayerBuffs");
+                PlayerRangeWeapon = LoadPlayerRangeWeapon(playerJSON, out NumberOfBulletsForPlayer);
             }
         }
 
@@ -247,17 +230,13 @@ namespace Samurai
             }
             return (T)box;
         }
-        private static void LoadPlayerRangeWeapon(JSONObject unitJsonObj)
+        private static string LoadPlayerRangeWeapon(JSONObject unitJsonObj, out int numberOfBullets)
         {
             var rWeaponJson = unitJsonObj.GetField("RangeWeapon");
-            if (rWeaponJson.GetField(out string type, "Type", ""))
-            {
-                PlayerRangeWeapon = type;
-                if (rWeaponJson.GetField(out int numberOfBullets, "NumberOfBulletsForPlayer", 0) && numberOfBullets != 0)
-                {
-                    PlayerPickableWeaponNumberOfBullets = numberOfBullets;
-                }
-            }
+            rWeaponJson.GetField(out string type, "Type", "");
+            rWeaponJson.GetField(out int bullets, "NumberOfBulletsForPlayer", 0);
+            numberOfBullets = bullets;
+            return type;
         }
         #endregion
 
@@ -279,4 +258,5 @@ namespace Samurai
         }
     }
 }
+
 

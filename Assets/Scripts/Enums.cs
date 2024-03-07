@@ -32,4 +32,12 @@ namespace Samurai
         SwitchScene = 1,
         None = 10
     }
+    public enum LoadingType
+    {
+        SwitchBetweenLevels,
+        CheckpointReload,
+        ContinueFromMainMenu,
+        NewGameFromMainMenu,
+        None
+    }
 }
