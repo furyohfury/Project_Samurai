@@ -71,5 +71,7 @@ namespace Samurai
             
             CheckIfEmpty();
         }
+
+        public class Factory : PlaceholderFactory<Rifle> { }
     }
 }

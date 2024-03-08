@@ -25,5 +25,7 @@ namespace Samurai
             ShootingFeedbacks?.PlayFeedbacks();
             SetShootingDelay();
         }
+
+        public class Factory : PlaceholderFactory<DefaultPlayerWeapon> { }
     }
 }

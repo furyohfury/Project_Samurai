@@ -20,8 +20,8 @@ namespace Samurai
         private bool _canShoot = true;
         public bool CanShoot { get => _canShoot; set => _canShoot = value; }
 
-        [SerializeField]
-        protected GameObject WeaponProjectilePrefab;
+        // [SerializeField]
+        // protected GameObject WeaponProjectilePrefab;
 
         [SerializeField]
         protected bool _isPickable = true;

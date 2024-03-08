@@ -11,6 +11,8 @@ namespace Samurai
         [Inject]
         private readonly SaveLoadManager SaveLoadManager;
         [Inject]
+        private readonly RuntimeObjectsCreator _runtimeObjectsCreator;
+        [Inject]
         private readonly Player _player;
         [Inject]
         private readonly PlayerUI _playerUI;
@@ -73,7 +75,10 @@ namespace Samurai
 
         private void LoadAndApplyPlayerRangeWeapon()
         {
-            _player.SetupPlayer(SaveLoadManager.PlayerRangeWeapon, SaveLoadManager.NumberOfBulletsForPlayer);
+            if (SaveLoadManager.PlayerRangeWeapon == "DefaultPlayerWeapon") return;
+
+            RangeWeapon rWeapon = _runtimeObjectsCreator.CreateWeapon(SaveLoadManager.PlayerRangeWeapon);
+            _player.SetupPlayer(rWeapon, SaveLoadManager.NumberOfBulletsForPlayer);
         }
 
         private void LoadAndApplyPlayerStatsAndBuffs()
