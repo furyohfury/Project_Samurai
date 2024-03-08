@@ -8,33 +8,22 @@ using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Reflection;
 
 namespace Samurai
 {
     public class SaveLoadManager : MonoBehaviour
     {
         public LoadingType LoadingType = LoadingType.None;
+        public Coroutine LoadingCoroutine;
 
         [SerializeField]
-        private MMF_Player _loadingPlayer;        
+        private MMF_Player _loadingPlayer;
         private MMF_LoadScene _loadSceneFeedback;
 
         private string _saveDataPath;
 
         public JSONObject SaveData;
-
-        /* public Vector3 CurrentPlayerPosition { get => LoadPlayerTransform(); private set; }
-        public string CurrentScene { get => SaveData.GetField("Scene").stringValue; }
-        public string CurrentArena { get => SaveData.GetField("Arena").stringValue; }
-        public bool CurrentArenaIsFinished { get => SaveData.GetField("ArenaIsFinished").boolValue; }
-
-        public bool PlayerDataExist = false;
-        public UnitStatsStruct PlayerStats { get => LoadStats<UnitStatsStruct>(SaveData.GetField("Player").GetField("UnitStats"), "UnitStats"); }
-        public UnitBuffsStruct PlayerUnitBuffs { get => LoadStats<UnitBuffsStruct>(SaveData.GetField("Player").GetField("UnitBuffs"), "UnitBuffs"); }
-        public PlayerBuffsStruct PlayerOnlyBuffs { get => LoadStats<PlayerBuffsStruct>(SaveData.GetField("Player").GetField("PlayerBuffs"), "PlayerBuffs"); }
-
-        public string PlayerRangeWeapon { get => LoadPlayerRangeWeapon(SaveData.GetField("Player"), out PlayerPickableWeaponNumberOfBullets); }
-        public int PlayerPickableWeaponNumberOfBullets; */
 
         public string CurrentScene;
         public string CurrentArena;
@@ -54,7 +43,7 @@ namespace Samurai
         }
         private void Start()
         {
-            SaveLoadManagerInitialization(true);
+            SaveLoadManagerInitialization();
         }
         #endregion
 
@@ -66,48 +55,43 @@ namespace Samurai
             }
         }
 
-
-        public void SaveLoadManagerInitialization(bool on)
+        public void SaveLoadManagerInitialization()
         {
-            if (on)
+            _loadSceneFeedback = _loadingPlayer.GetFeedbackOfType<MMF_LoadScene>();
+
+            // On first launch
+            if (!File.Exists(_saveDataPath))
             {
-                _loadSceneFeedback = _loadingPlayer.GetFeedbackOfType<MMF_LoadScene>();
-
-                // SceneManager.activeSceneChanged += SceneChangedOnEvent;
-
-                // On first launch
-                if (!File.Exists(_saveDataPath))
-                {
-                    File.WriteAllText(_saveDataPath, string.Empty);
-                }
-                else
-                {
-                    SaveData = new(_saveDataPath);
-                    LoadSaveFile();
-                }
+                File.WriteAllText(_saveDataPath, string.Empty);
             }
             else
             {
-                // todo Useless?
-                // SceneManager.activeSceneChanged -= SceneChangedOnEvent;
+                SaveData = new(_saveDataPath);
+                LoadSaveFile();
             }
         }
 
-        public void ChangeScene(LoadingType type, string destinationScene)
+        public void ChangeScene(LoadingType type, string destinationScene = "MainMenu")
         {
             LoadingType = type;
             switch (type)
             {
                 case LoadingType.SwitchBetweenLevels:
-                    StartCoroutine(SwitchBetweenLevels(destinationScene));
+                    LoadingCoroutine = StartCoroutine(SwitchBetweenLevels(destinationScene));
                     break;
-                case LoadingType.NewGameFromMainMenu:                    
-                    StartCoroutine(NewGameCoroutine(destinationScene));                    
+                case LoadingType.NewGameFromMainMenu:
+                    LoadingCoroutine = StartCoroutine(NewGameCoroutine());
                     break;
-                default : break;
+                default:
+                    LoadingCoroutine = StartCoroutine(DefaultLoadCoroutine(CurrentScene));
+                    break;
             }
-
+        }
+        private void FinishingLoad()
+        {
+            LoadingCoroutine = null;
             UpdateSaveFile();
+            FindObjectOfType<SaveLoadSceneAssistant>().InitializeScene(LoadingType);
         }
 
         private IEnumerator SwitchBetweenLevels(string destinationScene)
@@ -124,85 +108,34 @@ namespace Samurai
             SaveData.GetField("Player")
                 .GetField("Transform")
                 .SetField("Position", $"x: {playerPosition.x}, y: {playerPosition.y}, z: {playerPosition.z}");
+
+            FinishingLoad();
         }
-        private IEnumerator NewGameCoroutine(string destinationScene)
+        private IEnumerator NewGameCoroutine()
         {
             SaveData = new(string.Empty);
-            var loadingTask = SceneManager.LoadSceneAsync(destinationScene);            
+            var loadingTask = SceneManager.LoadSceneAsync(Constants.StartGameSceneName);
             while (!loadingTask.isDone) yield return null;
 
             SaveData = new(string.Empty);
-            SaveData.SetField("Scene", destinationScene);
+            SaveData.SetField("Scene", Constants.StartGameSceneName);
             SaveData.SetField("Arena", string.Empty);
             SaveData.SetField("ArenaIsFinished", false);
-
             var player = FindObjectOfType<Player>();
-            SaveData.GetField("Player")
-                .GetField("Transform")
-                .SetField("Position", $"x: {player.transform.position.x}, y: {player.transform.position.y}, z: {player.transform.position.z}");
+            SaveData.SetField("Player", PlayerJSON(player));
 
-            PlayerUnitStats = player.GetUnitStats();
-            PlayerUnitBuffs = player.GetUnitBuffs();
-            PlayerBuffs = player.GetPlayerBuffs();
-            PlayerRangeWeapon = player.RangeWeapon.GetType().Name;
-            NumberOfBulletsForPlayer = player.RangeWeapon.NumberOfBulletsForPlayer;
+            FinishingLoad();
+        }
+        private IEnumerator DefaultLoadCoroutine(string _)
+        {
+            var loadingTask = SceneManager.LoadSceneAsync(CurrentScene);
+            while (!loadingTask.isDone) yield return null;
+            FinishingLoad();
         }
 
 
 
         #region Saving
-        // Inactive rn
-        private void SceneChangedOnEvent(Scene fromScene, Scene toScene)
-        {
-            // New game
-            if (SaveData.count <= 0)
-            {
-                LoadingType = LoadingType.NewGameFromMainMenu;
-
-                SaveData = new(string.Empty);
-                SaveData.SetField("Scene", toScene.name);
-                SaveData.SetField("Arena", string.Empty);
-                SaveData.SetField("ArenaIsFinished", false);
-
-                var player = FindObjectOfType<Player>();
-                SaveData.GetField("Player")
-                    .GetField("Transform")
-                    .SetField("Position", $"x: {player.transform.position.x}, y: {player.transform.position.y}, z: {player.transform.position.z}");
-
-                PlayerUnitStats = player.GetUnitStats();
-                PlayerUnitBuffs = player.GetUnitBuffs();
-                PlayerBuffs = player.GetPlayerBuffs();
-                PlayerRangeWeapon = player.RangeWeapon.GetType().Name;
-                NumberOfBulletsForPlayer = player.RangeWeapon.NumberOfBulletsForPlayer;
-            }
-            // Switch Between Levels
-            else if (fromScene.name != toScene.name &&
-                !(fromScene.name.Contains("MainMenu", StringComparison.OrdinalIgnoreCase) || toScene.name.Contains("MainMenu", StringComparison.OrdinalIgnoreCase)))
-            {
-                LoadingType = LoadingType.SwitchBetweenLevels;
-
-                SaveData.SetField("Scene", toScene.name);
-                SaveData.SetField("Arena", string.Empty);
-                SaveData.SetField("ArenaIsFinished", false);
-
-                var playerPosition = FindObjectOfType<Player>().transform.position;
-                SaveData.GetField("Player")
-                    .GetField("Transform")
-                    .SetField("Position", $"x: {playerPosition.x}, y: {playerPosition.y}, z: {playerPosition.z}");
-            }
-            // Continue
-            else if (fromScene.name.Contains("MainMenu", StringComparison.OrdinalIgnoreCase))
-            {
-                LoadingType = LoadingType.ContinueFromMainMenu;
-            }
-            // Checkpoint Reload
-            else if (fromScene.name != toScene.name)
-            {
-                LoadingType = LoadingType.CheckpointReload;
-            }
-
-            UpdateSaveFile();
-        }
 
         public void ArenaSaving(string arenaName, bool isArenaFinished, Player player)
         {
@@ -219,21 +152,21 @@ namespace Samurai
         }
         private JSONObject PlayerJSON(Player player)
         {
-            JSONObject UnitStats = UnitStatsToJson(player.GetUnitStats());
-            JSONObject UnitBuffs = UnitBuffsToJson(player.GetUnitBuffs());
-            JSONObject PlayerBuffs = PlayerBuffsToJson(player.GetPlayerBuffs());
             JSONObject Transform = TransformToJson(player.transform);
+            JSONObject UnitStats = StructToJson(player.GetUnitStats());
+            JSONObject UnitBuffs = StructToJson(player.GetUnitBuffs());
+            JSONObject PlayerBuffs = StructToJson(player.GetPlayerBuffs());
 
             JSONObject RangeWeapon = RangeWeaponToJson(player.RangeWeapon);
-            Dictionary<string, JSONObject> jsonDic = new(){
+            Dictionary<string, JSONObject> jsonDic = new()
+            {
                 { nameof(UnitStats), UnitStats },
                 { nameof(UnitBuffs), UnitBuffs },
                 { nameof(PlayerBuffs), PlayerBuffs },
                 { nameof(RangeWeapon), RangeWeapon },
-                { nameof(Transform), Transform}
+                { nameof(Transform), Transform }
             };
 
-            // _saveData.SetField("Player", $"{{\"UnitStats\" : {UnitStats}, \"UnitBuffs\": {UnitBuffs}, \"PlayerBuffs\": {PlayerBuffs}, \"RangeWeapon\": {RangeWeapon}");
             JSONObject playerJSON = new("");
             foreach (var key in jsonDic.Keys)
             {
@@ -241,29 +174,32 @@ namespace Samurai
             }
             return playerJSON;
         }
-        private JSONObject UnitStatsToJson(UnitStatsStruct unitStats)
+        private JSONObject StructToJson<T>(T @struct)
         {
-            return new($"{{\r\n      \"HP\": {unitStats.HP},\r\n      \"MaxHP\": {unitStats.MaxHP},\r\n      \"MoveSpeed\": {unitStats.MoveSpeed}\r\n    }}");
-        }
-        private JSONObject UnitBuffsToJson(UnitBuffsStruct unitBuffs)
-        {
-            return new($"{{\r\n      \"MeleeWeaponDamageBuff\": {unitBuffs.MeleeWeaponDamageBuff},\r\n      \"MeleeAttackCDBuff\": {unitBuffs.MeleeAttackCDBuff}\r\n    }}");
-        }
-        private JSONObject PlayerBuffsToJson(PlayerBuffsStruct playerBuffs)
-        {
-            return new($"{{\r\n      \"PickableWeaponDamageBuff\": {playerBuffs.PickableWeaponDamageBuff},\r\n      \"SlomoDurationBuff\": {playerBuffs.SlomoDurationBuff}\r\n    }}, \"DefaultPlayerWeaponDamageBuff\": {playerBuffs.DefaultPlayerWeaponDamageBuff}}}");
+            var jsonObj = new JSONObject();
+            var fields = @struct.GetType().GetFields();
+            foreach (var field in fields)
+            {
+                if (field.FieldType == typeof(int))
+                {
+                    jsonObj.AddField(field.Name, (int)field.GetValue(@struct));
+                }
+                if (field.FieldType == typeof(float))
+                {
+                    jsonObj.AddField(field.Name, (float)field.GetValue(@struct));
+                }
+            }
+            return jsonObj;
         }
         private JSONObject RangeWeaponToJson(RangeWeapon rweapon)
         {
             JSONObject rw = new();
             if (rweapon is DefaultPlayerWeapon)
             {
-                // return new("{ \"Type\": DefaultPlayerWeapon }");
                 rw.AddField("Type", "DefaultPlayerWeapon");
             }
             else
             {
-                // return new($"{{ \"Type\": {rweapon.GetType().Name}, \"NumberOfbulletsForPlayer\": {rweapon.NumberOfBulletsForPlayer}}}\r\n}}");
                 rw.AddField("Type", rweapon.GetType().Name);
                 rw.AddField("NumberOfBulletsForPlayer", rweapon.NumberOfBulletsForPlayer);
             }
@@ -309,9 +245,9 @@ namespace Samurai
             if (playerJSON != null)
             {
                 CurrentPlayerPosition = LoadPlayerTransform();
-                PlayerUnitStats = LoadStats<UnitStatsStruct>(playerJSON, "UnitStats");
-                PlayerUnitBuffs = LoadStats<UnitBuffsStruct>(playerJSON, "UnitBuffs");
-                PlayerBuffs = LoadStats<PlayerBuffsStruct>(playerJSON, "PlayerBuffs");
+                PlayerUnitStats = LoadJSONtoStruct<UnitStatsStruct>(playerJSON, "UnitStats");
+                PlayerUnitBuffs = LoadJSONtoStruct<UnitBuffsStruct>(playerJSON, "UnitBuffs");
+                PlayerBuffs = LoadJSONtoStruct<PlayerBuffsStruct>(playerJSON, "PlayerBuffs");
                 PlayerRangeWeapon = LoadPlayerRangeWeapon(playerJSON, out NumberOfBulletsForPlayer);
             }
         }
@@ -328,7 +264,7 @@ namespace Samurai
             playerPos.z = position.GetField(out float z, "z", 0) ? z : 0;
             return playerPos;
         }
-        private T LoadStats<T>(JSONObject unitJsonObj, string fieldName)
+        private T LoadJSONtoStruct<T>(JSONObject unitJsonObj, string fieldName)
         {
             var unitStatsJsonObj = unitJsonObj.GetField(fieldName);
 
@@ -353,23 +289,6 @@ namespace Samurai
             return type;
         }
         #endregion
-
-
-        public string LoadResourceTextfile(string path)
-        {
-
-            string filePath = path.Replace(".json", "");
-
-            TextAsset targetFile = Resources.Load<TextAsset>(filePath);
-
-            return targetFile.text;
-        }
-
-        public void NewGameStart()
-        {
-            SaveData.Clear();
-            File.WriteAllText(_saveDataPath, string.Empty);
-        }
     }
 }
 

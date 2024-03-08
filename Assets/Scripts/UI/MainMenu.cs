@@ -41,7 +41,7 @@ namespace Samurai
             _bgMusicFeedback?.PlayFeedbacks();
             Application.targetFrameRate = 60;
 
-            SaveLoadManager.SaveLoadManagerInitialization(true);
+            // SaveLoadManager.SaveLoadManagerInitialization(true);
         }
         private void OnDisable()
         {
@@ -51,10 +51,7 @@ namespace Samurai
 
         public void ContinuePressed_UnityEvent()
         {
-            if (SaveLoadManager.SaveData.GetField(out string sceneName, "Scene", string.Empty) && sceneName.Length > 0)
-            {
-                StartCoroutine(ContinueLoading(sceneName));
-            }
+            SaveLoadManager.ChangeScene(LoadingType.ContinueFromMainMenu);
         }
         private IEnumerator ContinueLoading(string sceneName)
         {
@@ -78,11 +75,6 @@ namespace Samurai
 
         public void SureMenuYesPressed_UnityEvent()
         {
-            // SaveLoadManager.NewGameStart();
-            // StartCoroutine(StartGameSceneLoading());
-            // SceneManager.LoadScene("StartGameScene");
-            // SaveLoadManager.SaveData = new(string.Empty);
-            // _startGameSceneFeedback?.PlayFeedbacks();
             SaveLoadManager.ChangeScene(LoadingType.NewGameFromMainMenu, "StartGameScene");
         }
         private IEnumerator StartGameSceneLoading()

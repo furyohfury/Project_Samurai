@@ -20,21 +20,48 @@ namespace Samurai
         #region UnityMethods
         private void Start()
         {
-            SaveLoadManager.SaveLoadManagerInitialization(true);
-
+#if UNITY_EDITOR
             if (UseSaveFile)
             {
-                if (SaveLoadManager.CurrentPlayerPosition != Vector3.zero) LoadAndApplyPlayerPosition();
+                SaveLoadManager.SaveLoadManagerInitialization();
                 LoadAndApplyPlayerRangeWeapon();
                 LoadAndApplyPlayerStatsAndBuffs();
+            }
+#endif
+        }
+        #endregion
 
-                ManageArena();
+        public void InitializeScene(LoadingType type)
+        {
+            if (UseSaveFile)
+            {
+                switch (type)
+                {
+                    case LoadingType.SwitchBetweenLevels:
+                        LoadAndApplyPlayerRangeWeapon();
+                        LoadAndApplyPlayerStatsAndBuffs();
+                        break;
+                    case LoadingType.CheckpointReload:
+                        LoadAndApplyPlayerPosition();
+                        LoadAndApplyPlayerRangeWeapon();
+                        LoadAndApplyPlayerStatsAndBuffs();
+                        ManageArena();
+                        break;
+                    case LoadingType.ContinueFromMainMenu:
+                        LoadAndApplyPlayerPosition();
+                        LoadAndApplyPlayerRangeWeapon();
+                        LoadAndApplyPlayerStatsAndBuffs();
+                        ManageArena();
+                        break;
+                    case LoadingType.NewGameFromMainMenu:
+                        break;
+                    default: break;
+                }
             }
 
             // WCYD
             _playerUI.Initialize();
         }
-        #endregion
 
         private void LoadAndApplyPlayerPosition()
         {
@@ -51,7 +78,7 @@ namespace Samurai
 
         private void LoadAndApplyPlayerStatsAndBuffs()
         {
-            _player.SetupPlayer(SaveLoadManager.PlayerUnitStats);
+            // _player.SetupPlayer(SaveLoadManager.PlayerUnitStats);
             _player.SetupPlayer(SaveLoadManager.PlayerUnitBuffs);
             _player.SetupPlayer(SaveLoadManager.PlayerBuffs);
         }

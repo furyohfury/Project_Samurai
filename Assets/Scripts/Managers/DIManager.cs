@@ -19,14 +19,6 @@ namespace Samurai
 
         [SerializeField, Space]
         private DefaultPlayerGunPool DefaultPlayerGunPool;
-        [SerializeField]
-        private GameObject _defPlayerWeaponProjPrefab;
-        [SerializeField]
-        private GameObject _shotgunProjectilePrefab;
-        [SerializeField]
-        private GameObject _rifleProjectilePrefab;
-        [SerializeField]
-        private GameObject _minigunProjectilePrefab;
 
 
         [SerializeField, Space]
@@ -82,12 +74,6 @@ namespace Samurai
 
             // Camera related
             Container.BindInstance(Camera).AsSingle();
-
-            // Factories
-            Container.BindFactory<DefaultPlayerWeaponProjectile, DefaultPlayerWeaponProjectile.Factory>().FromComponentInNewPrefab(_defPlayerWeaponProjPrefab);
-            Container.BindFactory<ShotgunProjectile, ShotgunProjectile.Factory>().FromComponentInNewPrefab(_shotgunProjectilePrefab);
-            Container.BindFactory<RifleProjectile, RifleProjectile.Factory>().FromComponentInNewPrefab(_rifleProjectilePrefab);
-            Container.BindFactory<MinigunProjectile, MinigunProjectile.Factory>().FromComponentInNewPrefab(_minigunProjectilePrefab);
 
             // Other
             Container.Bind<Collider>().FromComponentSibling();

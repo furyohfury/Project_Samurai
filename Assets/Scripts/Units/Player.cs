@@ -251,7 +251,7 @@ namespace Samurai
         }
         public void SetupPlayer(string rWeaponName, int numberOfBullets)
         {
-            if (RangeWeapon is Samurai.DefaultPlayerWeapon) return;
+            if (rWeaponName == "DefaultPlayerWeapon") return;
 
             var path = string.Concat("Prefabs/Weapons/", rWeaponName, "_Prefab");
             var rWeapon = Instantiate(Resources.Load<GameObject>(path));

@@ -12,7 +12,8 @@ namespace Samurai
     {
         [Inject]
         private SaveLoadSceneAssistant _saveloadSceneAssistant;
-
+        [Inject]
+        private SaveLoadManager _saveLoadManager;
 
         [SerializeField]
         private Transform _floorParent;
@@ -45,6 +46,8 @@ namespace Samurai
         private float _durationToMoveExitDoor = 2; 
         [SerializeField]
         private string _sceneNameToSwitchTo; */
+        [SerializeField]
+        private string _destinationSceneName;
 
 
         [SerializeField, Space]
@@ -239,17 +242,12 @@ namespace Samurai
             {
                 switch (arenaEndAction)
                 {
-                    case ArenaEndAction.OpenDoor:
-                        /* if (_exitDoor == null || _exitDoorOpenFeedback == null)
-                        {
-                            Debug.LogError($"Arena {gameObject.name} tried to open exit door but doesn't have it or it's feedback");
-                            break;
-                        }
-                         DOTween.To(() => _exitDoor.transform.position, x => _exitDoor.transform.position = x, _exitDoorEndLocation.transform.position, _durationToMoveExitDoor); */
+                    case ArenaEndAction.OpenDoor:                        
                         _exitDoorOpenFeedback?.PlayFeedbacks();
                         break;
                     case ArenaEndAction.SwitchScene:
-                        _switchSceneFeedback?.PlayFeedbacks();
+                        // _switchSceneFeedback?.PlayFeedbacks();
+                        _saveLoadManager.ChangeScene(LoadingType.SwitchBetweenLevels, _destinationSceneName);
                         break;
                     case ArenaEndAction.None:
                         break;

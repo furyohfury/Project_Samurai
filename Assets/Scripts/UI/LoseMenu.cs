@@ -7,6 +7,10 @@ namespace Samurai
     {
         [Inject]
         private readonly SaveLoadSceneAssistant _saveLoadSceneAssistant;
+        [Inject]
+        private readonly SaveLoadManager _saveLoadManager;
+
+
         [SerializeField]
         private MMF_Player _sceneSwitchToMainMenuFeedback;
 
@@ -19,7 +23,8 @@ namespace Samurai
         public void MainMenuPressed_UnityEvent()
         {
             Time.timeScale = 1;
-            _sceneSwitchToMainMenuFeedback?.PlayFeedbacks();
+            // _sceneSwitchToMainMenuFeedback?.PlayFeedbacks();
+            _saveLoadManager.ChangeScene(LoadingType.CheckpointReload);
         }
     }
 }
