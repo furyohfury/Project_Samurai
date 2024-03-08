@@ -16,6 +16,15 @@ namespace Samurai
         private PlayerPhysics PlayerPhysics;
         [SerializeField]
         private PlayerInput PlayerInput; */
+        [SerializeField, Space]
+        private GameObject _defaultPlayerWeaponPrefab;
+        [SerializeField]
+        private GameObject _shotgunPrefab;
+        [SerializeField]
+        private GameObject _riflePrefab;
+        [SerializeField]
+        private GameObject _minigunPrefab;
+
 
         [SerializeField, Space]
         private GameObject _defPlayerWeaponProjPrefab;
@@ -33,6 +42,8 @@ namespace Samurai
         private ProjectileManager ProjectileManager;
         [SerializeField]
         private SaveLoadSceneAssistant SaveLoadSceneAssistant;
+        [SerializeField]
+        private RuntimeObjectsCreator _runtimeObjectsCreator;
 
         [SerializeField, Space]
         private PlayerUI PlayerUI;
@@ -72,6 +83,7 @@ namespace Samurai
             // Scene managers
             Container.BindInstance(ProjectileManager).AsSingle();
             Container.BindInstance(SaveLoadSceneAssistant).AsSingle();
+            Container.BindInstance(_runtimeObjectsCreator).AsSingle().NonLazy();
 
             // UI
             Container.BindInstance(PlayerUI).AsSingle();
@@ -82,6 +94,14 @@ namespace Samurai
 
             // Camera related
             Container.BindInstance(Camera).AsSingle();
+
+            
+
+            // Factories           
+            Container.BindFactory<DefaultPlayerWeapon, DefaultPlayerWeapon.Factory>().FromComponentInNewPrefab(_defaultPlayerWeaponPrefab);
+            Container.BindFactory<Shotgun, Shotgun.Factory>().FromComponentInNewPrefab(_shotgunPrefab);
+            Container.BindFactory<Rifle, Rifle.Factory>().FromComponentInNewPrefab(_riflePrefab);
+            Container.BindFactory<Minigun, Minigun.Factory>().FromComponentInNewPrefab(_minigunPrefab);
 
             Container.BindFactory<DefaultPlayerWeaponProjectile, DefaultPlayerWeaponProjectile.Factory>().FromComponentInNewPrefab(_defPlayerWeaponProjPrefab);
             Container.BindFactory<ShotgunProjectile, ShotgunProjectile.Factory>().FromComponentInNewPrefab(_shotgunProjectilePrefab);
