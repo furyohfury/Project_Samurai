@@ -9,6 +9,8 @@ namespace Samurai
     public class SaveLoadSceneAssistant : MonoBehaviour
     {
         [Inject]
+        private readonly SaveLoadManager SaveLoadManager;
+        [Inject]
         private readonly Player _player;
         [Inject]
         private readonly PlayerUI _playerUI;
@@ -22,12 +24,9 @@ namespace Samurai
 
             if (UseSaveFile)
             {
-                if (SaveLoadManager.PlayerDataExist)
-                {
-                    if (SaveLoadManager.CurrentPlayerPosition != Vector3.zero) LoadAndApplyPlayerPosition();
-                    LoadAndApplyPlayerRangeWeapon();
-                    LoadAndApplyPlayerStatsAndBuffs();
-                }
+                if (SaveLoadManager.CurrentPlayerPosition != Vector3.zero) LoadAndApplyPlayerPosition();
+                LoadAndApplyPlayerRangeWeapon();
+                LoadAndApplyPlayerStatsAndBuffs();
 
                 ManageArena();
             }
@@ -52,7 +51,7 @@ namespace Samurai
 
         private void LoadAndApplyPlayerStatsAndBuffs()
         {
-            _player.SetupPlayer(SaveLoadManager.PlayerStats);
+            _player.SetupPlayer(SaveLoadManager.PlayerUnitStats);
             _player.SetupPlayer(SaveLoadManager.PlayerUnitBuffs);
             _player.SetupPlayer(SaveLoadManager.PlayerBuffs);
         }

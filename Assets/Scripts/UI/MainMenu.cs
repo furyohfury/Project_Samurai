@@ -4,12 +4,13 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Zenject;
 namespace Samurai
 {
     public class MainMenu : MonoBehaviour
     {
-        // [SerializeField]
-        // private SaveLoadSceneAssistant _saveLoadSceneAssistant;
+        [Inject]
+        private SaveLoadManager SaveLoadManager;
 
         [SerializeField]
         private Button _continue;
@@ -77,10 +78,12 @@ namespace Samurai
 
         public void SureMenuYesPressed_UnityEvent()
         {
-            SaveLoadManager.NewGameStart();
+            // SaveLoadManager.NewGameStart();
             // StartCoroutine(StartGameSceneLoading());
-            SceneManager.LoadScene("StartGameScene");
+            // SceneManager.LoadScene("StartGameScene");
+            // SaveLoadManager.SaveData = new(string.Empty);
             // _startGameSceneFeedback?.PlayFeedbacks();
+            SaveLoadManager.ChangeScene(LoadingType.NewGameFromMainMenu, "StartGameScene");
         }
         private IEnumerator StartGameSceneLoading()
         {
