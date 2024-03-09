@@ -56,7 +56,7 @@ namespace Samurai
         public void MainMenuPressed_UnityEvent()
         {
             Time.timeScale = 1;
-            _sceneSwitchToMainMenuFeedback?.PlayFeedbacks();
+            _saveLoadSceneAssistant.LoadMainMenu();
         }
     }
 }

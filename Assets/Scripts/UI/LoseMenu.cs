@@ -7,8 +7,6 @@ namespace Samurai
     {
         [Inject]
         private readonly SaveLoadSceneAssistant _saveLoadSceneAssistant;
-        [Inject]
-        private readonly SaveLoadManager _saveLoadManager;
 
 
         [SerializeField]
@@ -24,7 +22,7 @@ namespace Samurai
         {
             Time.timeScale = 1;
             // _sceneSwitchToMainMenuFeedback?.PlayFeedbacks();
-            _saveLoadManager.ChangeScene(LoadingType.CheckpointReload);
+            _saveLoadSceneAssistant.LoadMainMenu();
         }
     }
 }

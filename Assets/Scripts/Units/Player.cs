@@ -48,6 +48,19 @@ namespace Samurai
                 ChangeHP(-weapon.Damage);
             }
         }
+        protected override void ChangeHP(int delta)
+        {
+            if (UnitStats.HP + delta > UnitStats.MaxHP) UnitStats.HP = UnitStats.MaxHP;
+            else UnitStats.HP += delta;
+
+            // Doesnt fucking work w/out targetPB only with player)))))))))))))
+            HPBar.TargetProgressBar.UpdateBar(UnitStats.HP, 0f, UnitStats.MaxHP);
+
+            if (UnitStats.HP <= 0)
+            {
+                Die();
+            }
+        }
         #endregion
 
 

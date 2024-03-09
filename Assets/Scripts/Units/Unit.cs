@@ -58,8 +58,8 @@ namespace Samurai
             // UnitVisuals = GetComponent<UnitVisuals>();
             // UnitPhysics = GetComponent<UnitPhysics>();
             // UnitInput = GetComponent<UnitInput>();
-            if (UnitStats.HP <= 0 || UnitStats.MaxHP <= 0 || UnitStats.MoveSpeed <= 0) Debug.LogError($"Unit {gameObject.name} has wrong UnitStats");            
-            
+            if (UnitStats.HP <= 0 || UnitStats.MaxHP <= 0 || UnitStats.MoveSpeed <= 0) Debug.LogError($"Unit {gameObject.name} has wrong UnitStats");
+            HPBar.UpdateBar(UnitStats.HP, 0, UnitStats.MaxHP, true);
             // if (TryGetComponent(out MMHealthBar hpbar)) HPBar = hpbar;
             // else Debug.LogError($"No hpbar on {gameObject.name}");
         }

@@ -113,7 +113,11 @@ namespace Samurai
         // Referenced by PlayerUI
         public void LoadLastCheckpoint()
         {
-            SceneManager.LoadScene(SaveLoadManager.CurrentScene);
+            SaveLoadManager.ChangeScene(LoadingType.CheckpointReload);
+        }
+        public void LoadMainMenu()
+        {
+            SaveLoadManager.ChangeScene(LoadingType.None, "MainMenu");
         }
 
     }

@@ -37,8 +37,13 @@ namespace Samurai
 
             _player.OnPlayerPaused += Paused;
             _player.OnPlayerDied += PlayerDied;
-        }       
-
+        }
+        private void Start()
+        {
+#if UNITY_EDITOR
+            if (!FindObjectOfType<SaveLoadSceneAssistant>().UseSaveFile) Initialize();
+#endif
+        }
         private void OnDisable()
         {
             (_player.UnitVisuals as PlayerVisuals).OnPlayerSwapColor -= PlayerChangedColor;
