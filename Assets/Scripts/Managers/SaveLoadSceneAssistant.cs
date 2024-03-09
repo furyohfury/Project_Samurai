@@ -29,6 +29,8 @@ namespace Samurai
                 LoadAndApplyPlayerRangeWeapon();
                 LoadAndApplyPlayerStatsAndBuffs();
             }
+#else
+                UseSaveFile = true;
 #endif
         }
         #endregion

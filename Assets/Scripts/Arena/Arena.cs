@@ -63,12 +63,6 @@ namespace Samurai
 
 
         #region UnityMethods
-        private void Awake()
-        {
-            FloorInit();
-            ObstaclesInit();
-            FinishedArenaInit();
-        }
         private void OnEnable()
         {
             EnteringInit(true);
@@ -76,6 +70,9 @@ namespace Samurai
         }
         private void Start()
         {
+            FloorInit();
+            ObstaclesInit();
+            FinishedArenaInit();
             EntryExitDoorsNonstaticCheck();
             AIManagerCheck();
         }
@@ -140,7 +137,7 @@ namespace Samurai
             {
                 if (_enemyPool.EnemyList == null || _enemyPool.EnemyList.Count <= 0)
                 {
-                    Debug.LogError($"Arena {gameObject.name}'s EnemyPool is empty");
+                    Debug.LogWarning($"Arena {gameObject.name}'s EnemyPool is empty");
                     return;
                 }
                 _enemyPool.OnAllEnemiesDied += FinishedArena;
