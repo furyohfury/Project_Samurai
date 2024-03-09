@@ -205,22 +205,6 @@ namespace Samurai
             PlayerBuffs = (PlayerBuffsStruct)box;
 
             DefaultPlayerWeapon.ApplyBuff(new ProjectileStatsStruct { Damage = PlayerBuffs.DefaultPlayerWeaponDamageBuff });
-
-
-            /* var playerBuffFields = PlayerBuffs.GetType().GetFields();
-            var newBuffFields = playerBuffs.GetType().GetFields();
-            foreach (var field in playerBuffFields)
-            {
-                if (field.GetType() == typeof(int))
-                {
-                    field.SetValue(this, (int)field.GetValue(this) + (int)(newBuffFields.Single((newbuff) => newbuff.Name == field.Name).GetValue(this)));
-                }
-                else if (field.GetType() == typeof(float))
-                {
-                    field.SetValue(this, (float)field.GetValue(this) + (float)(newBuffFields.Single((newbuff) => newbuff.Name == field.Name).GetValue(this)));
-                }
-
-            } */
         }
         #endregion
 
@@ -241,16 +225,14 @@ namespace Samurai
         }
         public void SetupPlayer(UnitBuffsStruct unitBuffs)
         {
-            UnitBuffs = unitBuffs;
-            ApplyBuff(UnitBuffs);
+            ApplyBuff(unitBuffs);
         }
         public void SetupPlayer(PlayerBuffsStruct playerBuffs)
         {
-            PlayerBuffs = playerBuffs;
-            ApplyPlayerBuffs(PlayerBuffs);
+            ApplyPlayerBuffs(playerBuffs);
         }
         public void SetupPlayer(RangeWeapon rWeapon, int numberOfBulletsForPlayer)
-        {            
+        {
             EquipPickableRangeWeapon(rWeapon);
             RangeWeapon.ApplyBuff(numberOfBulletsForPlayer);
         }

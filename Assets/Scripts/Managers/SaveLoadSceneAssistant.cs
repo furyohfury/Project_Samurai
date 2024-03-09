@@ -23,7 +23,7 @@ namespace Samurai
         private void Start()
         {
 #if UNITY_EDITOR
-            if (UseSaveFile)
+            if (UseSaveFile && SaveLoadManager.SaveData.count <= 0)
             {
                 SaveLoadManager.SaveLoadManagerInitialization();
                 LoadAndApplyPlayerRangeWeapon();

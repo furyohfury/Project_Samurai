@@ -121,6 +121,7 @@ namespace Samurai
             SaveData.SetField("Scene", Constants.StartGameSceneName);
             SaveData.SetField("Arena", string.Empty);
             SaveData.SetField("ArenaIsFinished", false);
+
             var player = FindObjectOfType<Player>();
             SaveData.SetField("Player", PlayerJSON(player));
 
@@ -140,9 +141,9 @@ namespace Samurai
         public void ArenaSaving(string arenaName, bool isArenaFinished, Player player)
         {
 #if UNITY_EDITOR
-            SaveData = new(File.ReadAllText(_saveDataPath));
+            // SaveData = new(File.ReadAllText(_saveDataPath));
 #endif
-            SaveData.SetField("Scene", $"{SceneManager.GetActiveScene().name}");
+            // SaveData.SetField("Scene", $"{SceneManager.GetActiveScene().name}");
             SaveData.SetField("Arena", arenaName);
             SaveData.SetField("ArenaIsFinished", isArenaFinished);
 

@@ -17,22 +17,22 @@ namespace Samurai
         [Inject]
         private MinigunProjectile.Factory MinigunProjectile; */
 
-        // [Inject]
+        [Inject]
         private DefaultPlayerWeapon.Factory DefaultPlayerWeaponFactory;
-        // [Inject]
+        [Inject]
         private Shotgun.Factory ShotgunFactory;
-        // [Inject]
+        [Inject]
         private Rifle.Factory RifleFactory;
-        // [Inject]
+        [Inject]
         private Minigun.Factory MinigunFactory;
 
         // Dictionary<string, IPlaceholderFactory> dict = new();
         public override void InstallBindings()
         {
-            DefaultPlayerWeaponFactory = Container.Resolve<DefaultPlayerWeapon.Factory>();
+            /* DefaultPlayerWeaponFactory = Container.Resolve<DefaultPlayerWeapon.Factory>();
             ShotgunFactory = Container.Resolve<Shotgun.Factory>();
             RifleFactory = Container.Resolve<Rifle.Factory>();
-            MinigunFactory = Container.Resolve<Minigun.Factory>();
+            MinigunFactory = Container.Resolve<Minigun.Factory>(); */
         }
         public RangeWeapon CreateWeapon(string rWeapon)
         {
