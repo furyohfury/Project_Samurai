@@ -251,8 +251,8 @@ namespace Samurai
         }
         public void SetupPlayer(RangeWeapon rWeapon, int numberOfBulletsForPlayer)
         {            
-            EquipPickableRangeWeapon(rWeapon.GetComponent<RangeWeapon>());
-            RangeWeapon.ApplyBuff(rWeapon.NumberOfBulletsForPlayer);
+            EquipPickableRangeWeapon(rWeapon);
+            RangeWeapon.ApplyBuff(numberOfBulletsForPlayer);
         }
         #endregion
 

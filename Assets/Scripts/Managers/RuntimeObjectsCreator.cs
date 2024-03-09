@@ -1,11 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using UnityEngine;
 using Zenject;
 
 namespace Samurai
 {
-    public class RuntimeObjectsCreator : MonoBehaviour
+    public class RuntimeObjectsCreator : MonoInstaller
     {
         /* [Inject]
         private DefaultPlayerWeaponProjectile.Factory DefaultPlayerWeaponProjectile;
@@ -16,20 +17,25 @@ namespace Samurai
         [Inject]
         private MinigunProjectile.Factory MinigunProjectile; */
 
-        [Inject]
+        // [Inject]
         private DefaultPlayerWeapon.Factory DefaultPlayerWeaponFactory;
-        [Inject]
+        // [Inject]
         private Shotgun.Factory ShotgunFactory;
-        [Inject]
+        // [Inject]
         private Rifle.Factory RifleFactory;
-        [Inject]
+        // [Inject]
         private Minigun.Factory MinigunFactory;
 
         // Dictionary<string, IPlaceholderFactory> dict = new();
-
+        public override void InstallBindings()
+        {
+            DefaultPlayerWeaponFactory = Container.Resolve<DefaultPlayerWeapon.Factory>();
+            ShotgunFactory = Container.Resolve<Shotgun.Factory>();
+            RifleFactory = Container.Resolve<Rifle.Factory>();
+            MinigunFactory = Container.Resolve<Minigun.Factory>();
+        }
         public RangeWeapon CreateWeapon(string rWeapon)
         {
-            // string name = typeof(T).Name;
             return rWeapon switch
             {
                 "DefaultPlayerWeapon" => DefaultPlayerWeaponFactory.Create(),

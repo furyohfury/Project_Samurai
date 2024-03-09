@@ -83,7 +83,8 @@ namespace Samurai
             // Scene managers
             Container.BindInstance(ProjectileManager).AsSingle();
             Container.BindInstance(SaveLoadSceneAssistant).AsSingle();
-            Container.BindInstance(_runtimeObjectsCreator).AsSingle().NonLazy();
+            Container.BindInstance(_runtimeObjectsCreator).AsSingle();
+
 
             // UI
             Container.BindInstance(PlayerUI).AsSingle();
@@ -95,21 +96,25 @@ namespace Samurai
             // Camera related
             Container.BindInstance(Camera).AsSingle();
 
-            
 
-            // Factories           
-            Container.BindFactory<DefaultPlayerWeapon, DefaultPlayerWeapon.Factory>().FromComponentInNewPrefab(_defaultPlayerWeaponPrefab);
-            Container.BindFactory<Shotgun, Shotgun.Factory>().FromComponentInNewPrefab(_shotgunPrefab);
-            Container.BindFactory<Rifle, Rifle.Factory>().FromComponentInNewPrefab(_riflePrefab);
-            Container.BindFactory<Minigun, Minigun.Factory>().FromComponentInNewPrefab(_minigunPrefab);
 
+            // Factories
             Container.BindFactory<DefaultPlayerWeaponProjectile, DefaultPlayerWeaponProjectile.Factory>().FromComponentInNewPrefab(_defPlayerWeaponProjPrefab);
             Container.BindFactory<ShotgunProjectile, ShotgunProjectile.Factory>().FromComponentInNewPrefab(_shotgunProjectilePrefab);
             Container.BindFactory<RifleProjectile, RifleProjectile.Factory>().FromComponentInNewPrefab(_rifleProjectilePrefab);
             Container.BindFactory<MinigunProjectile, MinigunProjectile.Factory>().FromComponentInNewPrefab(_minigunProjectilePrefab);
 
+            Container.BindFactory<DefaultPlayerWeapon, DefaultPlayerWeapon.Factory>().FromComponentInNewPrefab(_defaultPlayerWeaponPrefab);
+            Container.BindFactory<Shotgun, Shotgun.Factory>().FromComponentInNewPrefab(_shotgunPrefab);
+            Container.BindFactory<Rifle, Rifle.Factory>().FromComponentInNewPrefab(_riflePrefab);
+            Container.BindFactory<Minigun, Minigun.Factory>().FromComponentInNewPrefab(_minigunPrefab);
+
+            
+
             // Other
             Container.Bind<Collider>().FromComponentSibling();
+
+            
         }
     }
 }
