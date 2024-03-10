@@ -87,13 +87,13 @@ namespace Samurai
         private void FloorInit()
         {
             var floorArray = FindObjectsOfType<GameObject>().Where((go) => go.transform.parent == _floorParent).ToArray();
-            if (floorArray.Length <= 0) Debug.LogError("No floor found in the Floors");
+            if (floorArray.Length <= 0) Debug.LogWarning("No floor found in the Floors");
 
             if (floorArray.Where((floor) => floor.layer != Constants.FloorLayer).ToArray().Length > 0)
-                Debug.LogError($"All floors in {gameObject.name} must have floor layer");
+                Debug.LogWarning($"All floors in {gameObject.name} must have floor layer");
 
             if (floorArray.Where((floor) => !floor.isStatic).ToArray().Length > 0)
-                Debug.LogError($"All floors in {gameObject.name} must be static");
+                Debug.LogWarning($"All floors in {gameObject.name} must be static");
         }
         #endregion
 
@@ -101,13 +101,13 @@ namespace Samurai
         private void ObstaclesInit()
         {
             var obstaclesArray = FindObjectsOfType<GameObject>().Where((obs) => obs.transform.parent == _obstaclesParent).ToArray();
-            if (obstaclesArray.Length <= 0) Debug.LogError("No obstacle found in the Obstacles");
+            if (obstaclesArray.Length <= 0) Debug.LogWarning("No obstacle found in the Obstacles");
 
             if (obstaclesArray.Where((obs) => obs.layer != Constants.ObstacleLayer).ToArray().Length > 0)
-                Debug.LogError($"All obstacles in {gameObject.name} must have obstacle layer");
+                Debug.LogWarning($"All obstacles in {gameObject.name} must have obstacle layer");
 
             if (obstaclesArray.Where((obs) => !obs.isStatic).ToArray().Length > 0)
-                Debug.LogError($"All obstacles in {gameObject.name} must be static");
+                Debug.LogWarning($"All obstacles in {gameObject.name} must be static");
         }
         #endregion
 
@@ -118,14 +118,14 @@ namespace Samurai
             if (posFeedback != null && posFeedback.AnimatePositionTarget.isStatic)
             {
                 posFeedback.AnimatePositionTarget.isStatic = false;
-                Debug.LogError($"Entry door of arena {gameObject.name} was static");
+                Debug.LogWarning($"Entry door of arena {gameObject.name} was static");
             }
 
             posFeedback = _exitDoorOpenFeedback.GetFeedbackOfType<MMF_Position>();
             if (posFeedback != null && posFeedback.AnimatePositionTarget.isStatic)
             {
                 posFeedback.AnimatePositionTarget.isStatic = false;
-                Debug.LogError($"Exit door of arena {gameObject.name} was static");
+                Debug.LogWarning($"Exit door of arena {gameObject.name} was static");
             }
         }
         #endregion
@@ -135,21 +135,23 @@ namespace Samurai
         {
             if (on)
             {
+                if (!_enemyPool.Initialized) _enemyPool.Initialize();
+
                 if (_enemyPool.EnemyList == null || _enemyPool.EnemyList.Count <= 0)
                 {
                     Debug.LogWarning($"Arena {gameObject.name}'s EnemyPool is empty");
                     return;
                 }
-                _enemyPool.OnAllEnemiesDied += FinishedArena;
+                _enemyPool.OnAllEnemiesDied += () => FinishedArena();
             }
             else
             {
-                _enemyPool.OnAllEnemiesDied -= FinishedArena;
+                // _enemyPool.OnAllEnemiesDied -= FinishedArena;
             }
         }
         private void AIManagerCheck()
         {
-            if (_aiManager == null) Debug.LogError($"Arena {gameObject.name} doesnt have a AIManager");
+            if (_aiManager == null) Debug.LogWarning($"Arena {gameObject.name} doesnt have a AIManager");
         }
         #endregion
 
@@ -209,7 +211,7 @@ namespace Samurai
         {
             if (_arenaEndActions.Contains(ArenaEndAction.SwitchScene) && _switchSceneFeedback == null)
             {
-                Debug.LogError($"Arena {gameObject.name} must switch scene but doesnt have corresponding feedback");
+                Debug.LogWarning($"Arena {gameObject.name} must switch scene but doesnt have corresponding feedback");
             }
         }
 
@@ -220,16 +222,18 @@ namespace Samurai
                 enemy.DiscardUnit();
             }
         }
-        private bool _loaded = false;
-        public void FinishedArena()
+        // private bool _loaded = false;
+        public void FinishedArena(bool isLoaded = false)
         {
-            if (_enemyPool.EnemyList.Count > 0)
+            if (isLoaded)
             {
-                _loaded = true;
                 ClearArena();
-                return;
             }
-            if (!_loaded) SaveGame(false);
+            else
+            {
+                SaveGame(true);
+            }
+            _arenaEnterTrigger.enabled = false;
             _aiManager.enabled = false;
 
             if (_arenaStartedFeedback.IsPlaying) _arenaStartedFeedback?.StopFeedbacks();
@@ -258,7 +262,7 @@ namespace Samurai
         public void FinishArenaFromSaveFile()
         {
             EntryDoorClose();
-            FinishedArena();
+            FinishedArena(true);
         }
     }
 }

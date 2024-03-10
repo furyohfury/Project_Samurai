@@ -6,11 +6,11 @@ namespace Samurai
 {
     public class EnemyPool : MonoBehaviour
     {
+        public bool Initialized { get; private set; } = false;
         public List<Enemy> EnemyList;
         private void Awake()
         {
-            EnemyList = new List<Enemy>();
-            EnemyList.AddRange(GetComponentsInChildren<Enemy>());
+            Initialize();
         }
         private void Start()
         {
@@ -19,6 +19,13 @@ namespace Samurai
                 Debug.LogError($"EnemyPool in {transform.root.name} didn't have any enemies");
                 EnemyList.AddRange(GetComponentsInChildren<Enemy>());
             } */
+        }
+        public void Initialize()
+        {
+            if (Initialized) return;
+            EnemyList = new List<Enemy>();
+            EnemyList.AddRange(GetComponentsInChildren<Enemy>());
+            Initialized = true;
         }
 
         public void AddEnemyToPool(Enemy enemy)

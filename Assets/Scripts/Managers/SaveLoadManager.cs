@@ -16,6 +16,7 @@ namespace Samurai
     {
         public LoadingType LoadingType = LoadingType.None;
         public Coroutine LoadingCoroutine;
+        public bool Initialized = false;
 
         [SerializeField]
         private MMF_Player _loadingPlayer;
@@ -25,15 +26,15 @@ namespace Samurai
 
         public JSONObject SaveData;
 
-        public string CurrentScene;
-        public string CurrentArena;
-        public bool CurrentArenaIsFinished;
+        public string CurrentScene { get => SaveData.GetField("Scene").stringValue; }
+        public string CurrentArena { get => SaveData.GetField("Arena").stringValue; }
+        public bool CurrentArenaIsFinished { get => SaveData.GetField("ArenaIsFinished").boolValue; }
 
-        public Vector3 CurrentPlayerPosition;
-        public UnitStatsStruct PlayerUnitStats;
-        public UnitBuffsStruct PlayerUnitBuffs;
-        public PlayerBuffsStruct PlayerBuffs;
-        public string PlayerRangeWeapon;
+        public Vector3 CurrentPlayerPosition { get => LoadPlayerTransform(); }
+        public UnitStatsStruct PlayerUnitStats { get => LoadJSONtoStruct<UnitStatsStruct>(SaveData.GetField("Player"), "UnitStats"); }
+        public UnitBuffsStruct PlayerUnitBuffs { get => LoadJSONtoStruct<UnitBuffsStruct>(SaveData.GetField("Player"), "UnitBuffs"); }
+        public PlayerBuffsStruct PlayerBuffs { get => LoadJSONtoStruct<PlayerBuffsStruct>(SaveData.GetField("Player"), "PlayerBuffs"); }
+        public string PlayerRangeWeapon { get => LoadPlayerRangeWeapon(SaveData.GetField("Player"), out NumberOfBulletsForPlayer); }
         public int NumberOfBulletsForPlayer;
 
         #region UnityMethods
@@ -58,17 +59,19 @@ namespace Samurai
         public void SaveLoadManagerInitialization()
         {
             // _loadSceneFeedback = _loadingPlayer.GetFeedbackOfType<MMF_LoadScene>();
+            if (Initialized) return;
 
             // On first launch
             if (!File.Exists(_saveDataPath))
             {
-                File.WriteAllText(_saveDataPath, string.Empty);
+                File.WriteAllText(_saveDataPath, Constants.DefaultSaveFileText);
+                SaveData = new(Constants.DefaultSaveFileText);
             }
             else
             {
-                SaveData = new(_saveDataPath);
                 LoadSaveFile();
             }
+            Initialized = true;
         }
 
         public void ChangeScene(LoadingType type, string destinationScene = "MainMenu")
@@ -125,7 +128,6 @@ namespace Samurai
         }
         private IEnumerator NewGameCoroutine()
         {
-            SaveData = new(string.Empty);
             var loadingTask = SceneManager.LoadSceneAsync(Constants.StartGameSceneName);
             while (!loadingTask.isDone) yield return null;
 
@@ -237,7 +239,7 @@ namespace Samurai
         {
             SaveData = new(File.ReadAllText(_saveDataPath));
             
-            // Scene
+            /* // Scene
             if (SaveData.GetField(out string sceneName, "Scene", string.Empty))
             {
                 CurrentScene = sceneName;
@@ -262,7 +264,7 @@ namespace Samurai
                 PlayerUnitBuffs = LoadJSONtoStruct<UnitBuffsStruct>(playerJSON, "UnitBuffs");
                 PlayerBuffs = LoadJSONtoStruct<PlayerBuffsStruct>(playerJSON, "PlayerBuffs");
                 PlayerRangeWeapon = LoadPlayerRangeWeapon(playerJSON, out NumberOfBulletsForPlayer);
-            }
+            } */
         }
 
         // Mb do for rotation and scale

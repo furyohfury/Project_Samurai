@@ -16,6 +16,10 @@ namespace Samurai
             _collider = GetComponent<BoxCollider>();
             _collider.isTrigger = true;
         }
+        private void OnDisable()
+        {
+            _collider.enabled = false;
+        }
         private void OnTriggerEnter(Collider other)
         {
             if (other.TryGetComponent(out Player _))
