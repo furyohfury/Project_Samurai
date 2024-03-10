@@ -12,8 +12,6 @@ namespace Samurai
     {
         [Inject]
         private SaveLoadSceneAssistant _saveloadSceneAssistant;
-        [Inject]
-        private SaveLoadManager _saveLoadManager;
 
         [SerializeField]
         private Transform _floorParent;
@@ -181,7 +179,7 @@ namespace Samurai
         public void EntryDoorClose()
         {
             _entryDoorCloseFeedback?.PlayFeedbacks();
-            _arenaEntryDoorClosingTrigger.gameObject.GetComponent<Collider>().enabled = false;
+            _arenaEntryDoorClosingTrigger.enabled = false;
         }
 
         private void PlayerEnteredArena()
@@ -195,7 +193,7 @@ namespace Samurai
             }
             _aiManager.enabled = true;
             _arenaEnterTrigger.enabled = false;
-            _arenaEntryDoorClosingTrigger.enabled = false;
+            
 
             // Saving
             SaveGame(false);

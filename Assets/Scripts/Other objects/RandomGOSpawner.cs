@@ -38,7 +38,11 @@ namespace Samurai
                 GameObject objectToSpawn = objectPrefabs[Random.Range(0, objectPrefabs.Length)];
 
                 // Instantiate the object at the random spawn point
-                if (objectToSpawn.TryGetComponent(out RangeWeapon _)) _runtimeObjectsCreator.CreateWeapon(objectToSpawn.name);
+                if (objectToSpawn.TryGetComponent(out RangeWeapon _))
+                {
+                    var rWeapon = _runtimeObjectsCreator.CreateWeapon(objectToSpawn.name);
+                    rWeapon.transform.SetPositionAndRotation(spawnPoints[spawnPointIndex].position, Quaternion.identity);
+                }
                 else Instantiate(objectToSpawn, spawnPoints[spawnPointIndex].position, Quaternion.identity);
             }
         }
