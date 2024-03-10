@@ -8,5 +8,6 @@ namespace Samurai
         public static int ObstacleLayer = 7;
         public static string SaveDataPath = Application.persistentDataPath + "/SaveFile.json";
         public static string StartGameSceneName = "StartGameScene";
+        public static string MainMenuSceneName = "MainMenuScene";
     }
 }

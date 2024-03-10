@@ -1,11 +1,17 @@
+using MoreMountains.Tools;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Zenject;
+
 namespace Samurai
 {
     public class SettingsMenu : MonoBehaviour
     {
+        [Inject]
+        private readonly MMSoundManager _soundManager;
+
         [SerializeField]
         private Slider _volumeSlider;
         [SerializeField]
@@ -22,6 +28,7 @@ namespace Samurai
         public void VolumeChanged_UnityEvent(float v)
         {
             //todo if have time
+            _soundManager.SetVolumeMaster(v);
         }
         
         public void LanguageChanged_UnityEvent(int langInd)

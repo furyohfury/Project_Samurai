@@ -38,6 +38,7 @@ namespace Samurai
         CheckpointReload,
         ContinueFromMainMenu,
         NewGameFromMainMenu,
+        ToMainMenu,
         None
     }
 }

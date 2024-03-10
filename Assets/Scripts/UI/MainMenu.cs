@@ -39,7 +39,8 @@ namespace Samurai
         private void Start()
         {
             _bgMusicFeedback?.PlayFeedbacks();
-            Application.targetFrameRate = 60;
+            Debug.Log(Application.persistentDataPath);
+            Application.targetFrameRate = 144;
 
             // SaveLoadManager.SaveLoadManagerInitialization(true);
         }
@@ -75,7 +76,7 @@ namespace Samurai
 
         public void SureMenuYesPressed_UnityEvent()
         {
-            SaveLoadManager.ChangeScene(LoadingType.NewGameFromMainMenu, "StartGameScene");
+            SaveLoadManager.ChangeScene(LoadingType.NewGameFromMainMenu);
         }
         private IEnumerator StartGameSceneLoading()
         {

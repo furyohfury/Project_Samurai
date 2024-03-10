@@ -1,6 +1,5 @@
 using MoreMountains.Feedbacks;
 using System.Collections;
-using UnityEditor.Animations;
 using UnityEngine;
 using Zenject;
 namespace Samurai
@@ -47,12 +46,13 @@ namespace Samurai
         protected ProjectileStatsStruct EnemyProjectileStats;
 
         [SerializeField]
-        protected AnimatorController _animController;
-        public AnimatorController AnimController
+        protected RuntimeAnimatorController _animController;
+        public RuntimeAnimatorController AnimController
         {
             get => _animController;
             protected set => _animController = value;
         }
+
         [SerializeField]
         protected Renderer[] _mesh;
         [ContextMenu("Get all mesh from children")]

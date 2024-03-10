@@ -57,7 +57,7 @@ namespace Samurai
 
         public void SaveLoadManagerInitialization()
         {
-            _loadSceneFeedback = _loadingPlayer.GetFeedbackOfType<MMF_LoadScene>();
+            // _loadSceneFeedback = _loadingPlayer.GetFeedbackOfType<MMF_LoadScene>();
 
             // On first launch
             if (!File.Exists(_saveDataPath))
@@ -82,6 +82,17 @@ namespace Samurai
                 case LoadingType.NewGameFromMainMenu:
                     LoadingCoroutine = StartCoroutine(NewGameCoroutine());
                     break;
+                case LoadingType.CheckpointReload:
+                    LoadingCoroutine = StartCoroutine(DefaultLoadCoroutine(CurrentScene));
+                    break;
+                case LoadingType.ContinueFromMainMenu:
+                    if (CurrentScene.Length > 0) LoadingCoroutine = StartCoroutine(DefaultLoadCoroutine(CurrentScene));
+                    break;
+                case LoadingType.ToMainMenu:
+                    LoadingCoroutine = StartCoroutine(DefaultLoadCoroutine(Constants.MainMenuSceneName));
+                    break;
+                case LoadingType.None:
+                    break;
                 default:
                     LoadingCoroutine = StartCoroutine(DefaultLoadCoroutine(CurrentScene));
                     break;
@@ -91,7 +102,8 @@ namespace Samurai
         {
             LoadingCoroutine = null;
             UpdateSaveFile();
-            FindObjectOfType<SaveLoadSceneAssistant>().InitializeScene(LoadingType);
+            var assistant = FindObjectOfType<SaveLoadSceneAssistant>();
+            if (assistant != null) assistant.InitializeScene(LoadingType);
         }
 
         private IEnumerator SwitchBetweenLevels(string destinationScene)
@@ -127,9 +139,9 @@ namespace Samurai
 
             FinishingLoad();
         }
-        private IEnumerator DefaultLoadCoroutine(string _)
+        private IEnumerator DefaultLoadCoroutine(string destinationScene)
         {
-            var loadingTask = SceneManager.LoadSceneAsync(CurrentScene);
+            var loadingTask = SceneManager.LoadSceneAsync(destinationScene);
             while (!loadingTask.isDone) yield return null;
             FinishingLoad();
         }
@@ -224,7 +236,7 @@ namespace Samurai
         public void LoadSaveFile()
         {
             SaveData = new(File.ReadAllText(_saveDataPath));
-
+            
             // Scene
             if (SaveData.GetField(out string sceneName, "Scene", string.Empty))
             {

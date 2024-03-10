@@ -63,18 +63,18 @@ namespace Samurai
 
 
         #region UnityMethods
-        private void OnEnable()
-        {
-            EnteringInit(true);
-            EnemyPoolInit(true);
-        }
-        private void Start()
+        private void Awake()
         {
             FloorInit();
             ObstaclesInit();
             FinishedArenaInit();
             EntryExitDoorsNonstaticCheck();
             AIManagerCheck();
+        }
+        private void OnEnable()
+        {
+            EnteringInit(true);
+            EnemyPoolInit(true);
         }
         private void OnDisable()
         {
@@ -239,12 +239,12 @@ namespace Samurai
             {
                 switch (arenaEndAction)
                 {
-                    case ArenaEndAction.OpenDoor:                        
+                    case ArenaEndAction.OpenDoor:
                         _exitDoorOpenFeedback?.PlayFeedbacks();
                         break;
                     case ArenaEndAction.SwitchScene:
                         // _switchSceneFeedback?.PlayFeedbacks();
-                        _saveLoadManager.ChangeScene(LoadingType.SwitchBetweenLevels, _destinationSceneName);
+                        _saveloadSceneAssistant.LoadSwitchBetweenLevels(_destinationSceneName);
                         break;
                     case ArenaEndAction.None:
                         break;
@@ -252,7 +252,7 @@ namespace Samurai
             }
         }
         #endregion
-    
+
 
         // Referenced by SaveLoadSceneAssistant
         public void FinishArenaFromSaveFile()

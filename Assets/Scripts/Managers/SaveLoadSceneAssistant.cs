@@ -112,6 +112,12 @@ namespace Samurai
             SaveLoadManager.ArenaSaving(arenaName, arenaFinished, _player);
         }
 
+        #region Loading_References
+        //Referenced by arena
+        public void LoadSwitchBetweenLevels(string destinationScene)
+        {
+            SaveLoadManager.ChangeScene(LoadingType.SwitchBetweenLevels, destinationScene);
+        }
         // Referenced by PlayerUI
         public void LoadLastCheckpoint()
         {
@@ -119,8 +125,8 @@ namespace Samurai
         }
         public void LoadMainMenu()
         {
-            SaveLoadManager.ChangeScene(LoadingType.None, "MainMenu");
+            SaveLoadManager.ChangeScene(LoadingType.ToMainMenu);
         }
-
+        #endregion
     }
 }

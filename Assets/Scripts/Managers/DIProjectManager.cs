@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using MoreMountains.Tools;
+using System.Collections;
 using UnityEngine;
 using Zenject;
 
@@ -13,7 +14,7 @@ namespace Samurai
         public override void InstallBindings()
         {
             Container.BindInstance(_saveLoadManager).AsSingle().NonLazy();
-            
+            Container.BindInstance(FindObjectOfType<MMSoundManager>()).AsSingle();
         }
     }
 }
