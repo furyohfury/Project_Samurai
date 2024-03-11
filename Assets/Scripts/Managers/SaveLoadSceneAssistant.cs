@@ -28,6 +28,7 @@ namespace Samurai
                 if (SaveLoadManager.SaveData == null || SaveLoadManager.SaveData.count <= 0) SaveLoadManager.SaveLoadManagerInitialization();
                 LoadAndApplyPlayerRangeWeapon();
                 LoadAndApplyPlayerStatsAndBuffs();
+                LoadAndApplyPlayerPosition();
             }
             _playerUI.Initialize();
 #else

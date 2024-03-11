@@ -319,7 +319,7 @@ MonoBehaviour:
         BypassEffects: 0
         BypassListenerEffects: 0
         BypassReverbZones: 0
-        Priority: 128
+        Priority: 255
         ReverbZoneMix: 1
         PlaybackTime: {x: 0, y: 0}
         PlaybackDuration: {x: 0, y: 0}
