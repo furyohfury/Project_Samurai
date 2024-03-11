@@ -1,0 +1,64 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2908721044663963405
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2908721044663963404}
+  - component: {fileID: 2908721044663963400}
+  m_Layer: 0
+  m_Name: DIScene
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2908721044663963404
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2908721044663963405}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2908721044663963400
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2908721044663963405}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ae0c07317647f4469052f12a5be6965, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Player: {fileID: 0}
+  _defaultPlayerWeaponPrefab: {fileID: 7427328916742107267, guid: 75f1015f5f914624985d87af2785789c, type: 3}
+  _shotgunPrefab: {fileID: 2466196476239685382, guid: 95df30ba4bbf10e4cbea77e318eb43e1, type: 3}
+  _riflePrefab: {fileID: 7084902129715823050, guid: cbe476239ebebf440b4c1f4c33f46dde, type: 3}
+  _minigunPrefab: {fileID: 2974129234411162116, guid: 3e1bb6ca455c7e441ba6812395709f38, type: 3}
+  _defPlayerWeaponProjPrefab: {fileID: 8827768608434931341, guid: 3bccae5e596adfe428a80979030e8fc9, type: 3}
+  _shotgunProjectilePrefab: {fileID: 8827768608434931341, guid: c31434ac1e5b97b4188a4d89df032f79, type: 3}
+  _rifleProjectilePrefab: {fileID: 8827768608434931341, guid: db4c1f67955e92942bd8dd725a88bb63, type: 3}
+  _minigunProjectilePrefab: {fileID: 8827768608434931341, guid: 90948d1728c57e44d9962c1833668918, type: 3}
+  DefaultPlayerGunPool: {fileID: 0}
+  ProjectileManager: {fileID: 0}
+  SaveLoadSceneAssistant: {fileID: 0}
+  _runtimeObjectsCreator: {fileID: 0}
+  PlayerUI: {fileID: 0}
+  SettingsMenuUI: {fileID: 0}
+  PauseMenu: {fileID: 0}
+  LoseMenu: {fileID: 0}
+  Camera: {fileID: 0}

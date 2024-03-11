@@ -1,0 +1,12 @@
+{
+	"Scene": "",
+	"Arena": "",
+	"ArenaIsFinished": false,
+	"Player": {
+		"UnitStats": null,
+		"UnitBuffs": null,
+		"PlayerBuffs": null,
+		"RangeWeapon": null,
+		"Transform": null
+	}
+}

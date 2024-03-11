@@ -9,30 +9,6 @@
 /[Bb]uilds/
 /[Ll]ogs/
 /[Uu]ser[Ss]ettings/
-/[Aa]ssets/GhostSamurai_Animset/
-/[Aa]ssets/Scifi/
-/[Aa]ssets/Frank_RPG_Gunslinger
-/[Aa]ssets/EditorThemes/
-/[Aa]ssets/PROTOFACTOR/
-/[Aa]ssets/Ultimate Animation Collection/
-/[Aa]ssets/Sci-fi Pistol/
-/[Aa]ssets/Animations/
-/[Aa]ssets/Mech_Constructor_LtMed/
-/[Aa]ssets/UnityTechnologies/
-/[Aa]ssets/1.Fantasy Hammer/
-/[Aa]ssets/Feel/
-/[Aa]ssets/Epic Toon FX/
-/[Aa]ssets/TextMesh Pro/
-/[Aa]ssets/Resources/
-/Assets/Low Polygon potions Pack/
-/Assets/MyAssets/
-/Assets/Robot_soldier/
-/Assets/Baseball Bats/
-/Assets/SF Weapons MLX/
-/Assets/Survival Melee Weapons/
-/Assets/Sci Fi Gun Light/
-/Assets/Lowpoly Wooden Chest/
-/Assets/Mech_Constructor_Humanoids/
 /Bildak/
 /Build/
 /BuildNoDev/
@@ -74,17 +50,11 @@ ExportedObj/
 *.mdb
 *.opendb
 *.VC.db
-*.mat
-*.anim
-*.fbx
-*.png
-*.jpg
 
 # Unity3D generated meta files
 *.pidb.meta
 *.pdb.meta
 *.mdb.meta
-# *.meta
 
 # Unity3D generated file on crash reports
 sysinfo.txt
