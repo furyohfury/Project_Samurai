@@ -1130,7 +1130,7 @@ MonoBehaviour:
     - rid: 3344307795914915841
       type: {class: MMF_MMSoundManagerSound, ns: MoreMountains.Feedbacks, asm: MoreMountains.Feedbacks.MMTools}
       data:
-        Active: 1
+        Active: 0
         UniqueID: 1423806871
         Label: MMSoundManager Sound
         ChannelMode: 0
@@ -1304,7 +1304,7 @@ MonoBehaviour:
     - rid: 6763064553564536840
       type: {class: MMF_Sound, ns: MoreMountains.Feedbacks, asm: MoreMountains.Feedbacks.MMTools}
       data:
-        Active: 0
+        Active: 1
         UniqueID: 1661424063
         Label: Sound
         ChannelMode: 0

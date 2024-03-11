@@ -134,7 +134,7 @@ MonoBehaviour:
     - rid: 3344307795914915851
       type: {class: MMF_MMSoundManagerSound, ns: MoreMountains.Feedbacks, asm: MoreMountains.Feedbacks.MMTools}
       data:
-        Active: 1
+        Active: 0
         UniqueID: 203527830
         Label: MMSoundManager Sound
         ChannelMode: 0
@@ -308,7 +308,7 @@ MonoBehaviour:
     - rid: 6763064553564536840
       type: {class: MMF_Sound, ns: MoreMountains.Feedbacks, asm: MoreMountains.Feedbacks.MMTools}
       data:
-        Active: 0
+        Active: 1
         UniqueID: 1661424063
         Label: Sound
         ChannelMode: 0
@@ -679,7 +679,7 @@ MonoBehaviour:
     - rid: 3344307795914915852
       type: {class: MMF_MMSoundManagerSound, ns: MoreMountains.Feedbacks, asm: MoreMountains.Feedbacks.MMTools}
       data:
-        Active: 1
+        Active: 0
         UniqueID: 1602390185
         Label: MMSoundManager Sound
         ChannelMode: 0
@@ -853,7 +853,7 @@ MonoBehaviour:
     - rid: 6763064580906680327
       type: {class: MMF_Sound, ns: MoreMountains.Feedbacks, asm: MoreMountains.Feedbacks.MMTools}
       data:
-        Active: 0
+        Active: 1
         UniqueID: 1786910281
         Label: Sound
         ChannelMode: 0
